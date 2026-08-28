@@ -1,5 +1,7 @@
 const userModel = require('../models/user.model');
 
+const { sendSuccess } = require('../utils/response');
+
 function parseId(value) {
 	const id = Number(value);
 
@@ -18,7 +20,7 @@ async function index(request, response) {
 	try {
 		const users = await userModel.findAllUsers();
 
-		return response.status(200).json(users);
+		return sendSuccess(response, { data: users });
 	} catch (error) {
 		console.error(error);
 
@@ -42,7 +44,7 @@ async function show(request, response) {
 			return response.status(404).json({ message: 'Kullanıcı bulunamadı.' });
 		}
 
-		return response.status(200).json(user);
+		return sendSuccess(response, { data: user });
 	} catch (error) {
 		console.error(error);
 
@@ -71,7 +73,11 @@ async function store(request, response) {
 
 		const user = await userModel.createUser({ name, email });
 
-		return response.status(201).json(user);
+		return sendSuccess(response, {
+			statusCode: 201,
+			message: 'Kullanıcı oluşturuldu.',
+			data: user,
+		});
 	} catch (error) {
 		console.error(error);
 
@@ -114,7 +120,10 @@ async function replace(request, response) {
 
 		const user = await userModel.replaceUser(id, { name, email });
 
-		return response.status(200).json(user);
+		return sendSuccess(response, {
+			message: 'Kullanıcı güncellendi.',
+			data: user,
+		});
 	} catch (error) {
 		console.error(error);
 
@@ -138,7 +147,10 @@ async function destroy(request, response) {
 			return response.status(404).json({ message: 'Kullanıcı bulunamadı.' });
 		}
 
-		return response.status(200).json({ message: 'Kullanıcı silindi.' });
+		return sendSuccess(response, {
+			message: 'Kullanıcı silindi.',
+			data: { id },
+		});
 	} catch (error) {
 		console.error(error);
 
