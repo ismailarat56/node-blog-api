@@ -47,11 +47,24 @@ async function findAllUsers(options) {
 		FROM users
 		${whereClause}
 		ORDER BY ${sortColumn} ${sortDirection}, id ${sortDirection}
+		LIMIT ?
+		OFFSET ?
 	`;
 
-	const [rows] = await pool.execute(sql, values);
+	const queryValues = [...values, options.limit, options.offset];
+	const [rows] = await pool.execute(sql, queryValues);
 
 	return rows;
+}
+
+async function countUsers(options) {
+	const { whereClause, values } = buildUserWhereClause(options);
+	const [rows] = await pool.execute(
+		`SELECT COUNT(*) AS total FROM users ${whereClause}`,
+		values
+	);
+
+	return Number(rows[0].total);
 }
 
 async function findUserById(id) {
@@ -119,6 +132,7 @@ async function deleteUser(id) {
 
 module.exports = {
 	findAllUsers,
+	countUsers,
 	findUserById,
 	findUserByEmail,
 	createUser,

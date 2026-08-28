@@ -13,10 +13,23 @@ const {
 
 async function index(request, response) {
 	const options = parseUserListQuery(request.query);
-	const users = await userModel.findAllUsers(options);
+	const [users, total] = await Promise.all([
+		userModel.findAllUsers(options),
+		userModel.countUsers(options),
+	]);
+
+	const totalPages = total === 0 ? 0 : Math.ceil(total / options.limit);
 
 	return sendSuccess(response, {
 		data: users,
+		meta: {
+			page: options.page,
+			limit: options.limit,
+			total,
+			total_pages: totalPages,
+			has_next_page: options.page < totalPages,
+			has_previous_page: options.page > 1,
+		},
 	});
 }
 

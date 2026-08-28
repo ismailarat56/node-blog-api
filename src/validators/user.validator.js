@@ -1,5 +1,7 @@
 const AppError = require('../utils/app-error');
 
+const { getPagination } = require('../utils/pagination');
+
 const allowedSortFields = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
 function parsePositiveId(value) {
@@ -49,6 +51,8 @@ function parseBooleanFilter(value, fieldName) {
 }
 
 function parseUserListQuery(query) {
+	const { page, limit, offset } = getPagination(query);
+
 	const search = typeof query.search === 'string' ? query.search.trim() : '';
 
 	if (search.length > 100) {
@@ -60,6 +64,9 @@ function parseUserListQuery(query) {
 		isActive: parseBooleanFilter(query.is_active, 'is_active'),
 		sortBy: allowedSortFields.includes(query.sort_by) ? query.sort_by : 'id',
 		sortOrder: query.sort_order === 'asc' ? 'asc' : 'desc',
+		page,
+		limit,
+		offset,
 	};
 }
 
