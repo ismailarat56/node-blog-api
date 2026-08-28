@@ -14,6 +14,8 @@ router.post('/', asyncHandler(userController.store));
 
 router.put('/:id', asyncHandler(userController.replace));
 
+router.patch('/:id/restore', asyncHandler(userController.restore));
+
 router.patch('/:id', asyncHandler(userController.update));
 
 router.delete('/:id', asyncHandler(userController.destroy));

@@ -170,6 +170,31 @@ async function destroy(request, response) {
 	});
 }
 
+async function restore(request, response) {
+	const id = parsePositiveId(request.params.id);
+
+	const deletedUser = await userModel.findUserById(id, {
+		includeDeleted: true,
+	});
+
+	if (!deletedUser || deletedUser.deleted_at === null) {
+		throw new AppError(
+			404,
+			'Geri getirilecek silinmiş kullanıcı bulunamadı.',
+			'DELETED_USER_NOT_FOUND'
+		);
+	}
+
+	await userModel.restoreUser(id);
+
+	const restoredUser = await userModel.findUserById(id);
+
+	return sendSuccess(response, {
+		message: 'Kullanıcı geri getirildi.',
+		data: restoredUser,
+	});
+}
+
 module.exports = {
 	index,
 	show,
@@ -177,4 +202,5 @@ module.exports = {
 	replace,
 	update,
 	destroy,
+	restore,
 };

@@ -243,6 +243,21 @@ async function softDeleteUser(id) {
 	return result.affectedRows;
 }
 
+async function restoreUser(id) {
+	const sql = `
+    UPDATE users
+    SET
+      deleted_at = NULL,
+      is_active = 1
+    WHERE id = ?
+      AND deleted_at IS NOT NULL
+  `;
+
+	const [result] = await pool.execute(sql, [id]);
+
+	return result.affectedRows;
+}
+
 module.exports = {
 	findAllUsers,
 	countUsers,
@@ -252,4 +267,5 @@ module.exports = {
 	replaceUser,
 	updateUserFields,
 	softDeleteUser,
+	restoreUser,
 };
