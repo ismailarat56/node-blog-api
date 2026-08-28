@@ -2,11 +2,15 @@ const express = require('express');
 
 const userRouter = require('./routes/user.routes');
 
+const requestLogger = require('./middlewares/request-logger.middleware');
+
 const notFoundHandler = require('./middlewares/not-found.middleware');
 
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
+
+app.use(requestLogger);
 
 app.use(
 	express.json({
