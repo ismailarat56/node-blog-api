@@ -15,4 +15,13 @@ ALTER TABLE users
     ADD COLUMN deleted_at TIMESTAMP
         NULL
         DEFAULT NULL
-        AFTER updated_at;
+        AFTER updated_at,
+
+    ADD INDEX idx_users_active_deleted (
+        is_active,
+        deleted_at
+    ),
+
+    ADD INDEX idx_users_created_at (
+        created_at
+    );
