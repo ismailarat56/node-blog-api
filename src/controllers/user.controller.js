@@ -5,13 +5,15 @@ const AppError = require('../utils/app-error');
 const { sendSuccess } = require('../utils/response');
 
 const {
+	parseUserListQuery,
 	parsePositiveId,
 	normalizeName,
 	normalizeEmail,
 } = require('../validators/user.validator');
 
 async function index(request, response) {
-	const users = await userModel.findAllUsers();
+	const options = parseUserListQuery(request.query);
+	const users = await userModel.findAllUsers(options);
 
 	return sendSuccess(response, {
 		data: users,

@@ -1,17 +1,55 @@
 const pool = require('../config/database');
 
-async function findAllUsers() {
+const sortColumnMap = {
+	id: 'id',
+	name: 'name',
+	email: 'email',
+	created_at: 'created_at',
+	updated_at: 'updated_at',
+};
+
+function buildUserWhereClause(options) {
+	const conditions = [];
+	const values = [];
+
+	if (options.search) {
+		const searchPattern = `%${options.search}%`;
+
+		conditions.push('(name LIKE ? OR email LIKE ?)');
+		values.push(searchPattern, searchPattern);
+	}
+
+	if (options.isActive !== null) {
+		conditions.push('is_active = ?');
+		values.push(options.isActive);
+	}
+
+	return {
+		whereClause: conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '',
+		values,
+	};
+}
+
+async function findAllUsers(options) {
+	const { whereClause, values } = buildUserWhereClause(options);
+	const sortColumn = sortColumnMap[options.sortBy] || 'id';
+	const sortDirection = options.sortOrder === 'asc' ? 'ASC' : 'DESC';
+
 	const sql = `
 		SELECT
 			id,
 			name,
 			email,
-			created_at
+			is_active,
+			created_at,
+			updated_at,
+			deleted_at
 		FROM users
-		ORDER BY id ASC
+		${whereClause}
+		ORDER BY ${sortColumn} ${sortDirection}, id ${sortDirection}
 	`;
 
-	const [rows] = await pool.execute(sql);
+	const [rows] = await pool.execute(sql, values);
 
 	return rows;
 }
