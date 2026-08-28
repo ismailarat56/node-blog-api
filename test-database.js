@@ -1,5 +1,4 @@
-const pool = require('./database');
-
+const pool = require('./src/config/database');
 async function testDatabase() {
 	try {
 		const [rows] = await pool.execute('SELECT 1 AS connection_test');
