@@ -4,7 +4,7 @@ const { getPagination } = require('../utils/pagination');
 
 const allowedSortFields = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //regEx
 
 const patchFieldMap = {
 	name: 'name',
@@ -53,9 +53,14 @@ function parseBooleanFilter(value, fieldName) {
 		return 0;
 	}
 
-	throw new AppError(422, `${fieldName} yalnızca 0, 1, true veya false olabilir.`, 'INVALID_QUERY_PARAMETER', {
-		field: fieldName,
-	});
+	throw new AppError(
+		422,
+		`${fieldName} yalnızca 0, 1, true veya false olabilir.`,
+		'INVALID_QUERY_PARAMETER',
+		{
+			field: fieldName,
+		}
+	);
 }
 
 function parseUserListQuery(query) {
@@ -64,14 +69,27 @@ function parseUserListQuery(query) {
 	const search = typeof query.search === 'string' ? query.search.trim() : '';
 
 	if (search.length > 100) {
-		throw new AppError(422, 'search en fazla 100 karakter olabilir.', 'INVALID_QUERY_PARAMETER');
+		throw new AppError(
+			422,
+			'search en fazla 100 karakter olabilir.',
+			'INVALID_QUERY_PARAMETER'
+		);
 	}
+
+	const isActive = parseBooleanFilter(query.is_active, 'is_active');
+
+	const includeDeleted = parseBooleanFilter(query.include_deleted, 'include_deleted') ?? 0;
+
+	const sortBy = allowedSortFields.includes(query.sort_by) ? query.sort_by : 'id';
+
+	const sortOrder = query.sort_order === 'asc' ? 'asc' : 'desc';
 
 	return {
 		search,
-		isActive: parseBooleanFilter(query.is_active, 'is_active'),
-		sortBy: allowedSortFields.includes(query.sort_by) ? query.sort_by : 'id',
-		sortOrder: query.sort_order === 'asc' ? 'asc' : 'desc',
+		isActive,
+		includeDeleted,
+		sortBy,
+		sortOrder,
 		page,
 		limit,
 		offset,
@@ -129,9 +147,9 @@ function validatePatchUser(body) {
 }
 
 module.exports = {
-	parseUserListQuery,
 	parsePositiveId,
 	normalizeName,
 	normalizeEmail,
+	parseUserListQuery,
 	validatePatchUser,
 };

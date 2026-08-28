@@ -14,6 +14,7 @@ const {
 
 async function index(request, response) {
 	const options = parseUserListQuery(request.query);
+
 	const [users, total] = await Promise.all([
 		userModel.findAllUsers(options),
 		userModel.countUsers(options),
@@ -159,7 +160,7 @@ async function destroy(request, response) {
 		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
 	}
 
-	await userModel.deleteUser(id);
+	await userModel.softDeleteUser(id);
 
 	return sendSuccess(response, {
 		message: 'Kullanıcı silindi.',

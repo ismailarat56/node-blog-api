@@ -17,10 +17,21 @@ function buildUserWhereClause(options) {
 	const conditions = [];
 	const values = [];
 
+	if (!options.includeDeleted) {
+		conditions.push('deleted_at IS NULL');
+	}
+
+	// İsim veya e-posta içinde arama yapar.
 	if (options.search) {
 		const searchPattern = `%${options.search}%`;
 
-		conditions.push('(name LIKE ? OR email LIKE ?)');
+		conditions.push(`
+			(
+				name LIKE ?
+				OR email LIKE ?
+			)
+		`);
+
 		values.push(searchPattern, searchPattern);
 	}
 
@@ -29,15 +40,19 @@ function buildUserWhereClause(options) {
 		values.push(options.isActive);
 	}
 
+	const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
 	return {
-		whereClause: conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '',
+		whereClause,
 		values,
 	};
 }
 
 async function findAllUsers(options) {
 	const { whereClause, values } = buildUserWhereClause(options);
+
 	const sortColumn = sortColumnMap[options.sortBy] || 'id';
+
 	const sortDirection = options.sortOrder === 'asc' ? 'ASC' : 'DESC';
 
 	const sql = `
@@ -51,12 +66,15 @@ async function findAllUsers(options) {
 			deleted_at
 		FROM users
 		${whereClause}
-		ORDER BY ${sortColumn} ${sortDirection}, id ${sortDirection}
+		ORDER BY
+			${sortColumn} ${sortDirection},
+			id ${sortDirection}
 		LIMIT ?
 		OFFSET ?
 	`;
 
 	const queryValues = [...values, options.limit, options.offset];
+
 	const [rows] = await pool.execute(sql, queryValues);
 
 	return rows;
@@ -64,25 +82,39 @@ async function findAllUsers(options) {
 
 async function countUsers(options) {
 	const { whereClause, values } = buildUserWhereClause(options);
-	const [rows] = await pool.execute(
-		`SELECT COUNT(*) AS total FROM users ${whereClause}`,
-		values
-	);
+
+	const sql = `
+		SELECT
+			COUNT(*) AS total
+		FROM users
+		${whereClause}
+	`;
+
+	const [rows] = await pool.execute(sql, values);
 
 	return Number(rows[0].total);
 }
 
-async function findUserById(id) {
+async function findUserById(id, { includeDeleted = false } = {}) {
+	const conditions = ['id = ?'];
+
+	if (!includeDeleted) {
+		conditions.push('deleted_at IS NULL');
+	}
+
 	const sql = `
-		SELECT
-			id,
-			name,
-			email,
-			created_at
-		FROM users
-		WHERE id = ?
-		LIMIT 1
-	`;
+    SELECT
+      id,
+      name,
+      email,
+      is_active,
+      created_at,
+      updated_at,
+      deleted_at
+    FROM users
+    WHERE ${conditions.join(' AND ')}
+    LIMIT 1
+  `;
 
 	const [rows] = await pool.execute(sql, [id]);
 
@@ -91,7 +123,8 @@ async function findUserById(id) {
 
 async function findUserByEmail(email, ignoredUserId = null) {
 	let sql = `
-		SELECT id
+		SELECT
+			id
 		FROM users
 		WHERE email = ?
 	`;
@@ -111,22 +144,57 @@ async function findUserByEmail(email, ignoredUserId = null) {
 }
 
 async function createUser(data) {
-	const [result] = await pool.execute(
-		'INSERT INTO users (name, email) VALUES (?, ?)',
-		[data.name, data.email]
-	);
+	const insertSql = `
+		INSERT INTO users (
+			name,
+			email
+		)
+		VALUES (?, ?)
+	`;
 
-	return findUserById(result.insertId);
+	const [result] = await pool.execute(insertSql, [data.name, data.email]);
+
+	const selectSql = `
+		SELECT
+			id,
+			name,
+			email,
+			created_at
+		FROM users
+		WHERE id = ?
+		LIMIT 1
+	`;
+
+	const [createdRows] = await pool.execute(selectSql, [result.insertId]);
+
+	return createdRows[0];
 }
 
 async function replaceUser(id, data) {
-	await pool.execute('UPDATE users SET name = ?, email = ? WHERE id = ?', [
-		data.name,
-		data.email,
-		id,
-	]);
+	const updateSql = `
+		UPDATE users
+		SET
+			name = ?,
+			email = ?
+		WHERE id = ?
+	`;
 
-	return findUserById(id);
+	await pool.execute(updateSql, [data.name, data.email, id]);
+
+	const selectSql = `
+		SELECT
+			id,
+			name,
+			email,
+			created_at
+		FROM users
+		WHERE id = ?
+		LIMIT 1
+	`;
+
+	const [updatedRows] = await pool.execute(selectSql, [id]);
+
+	return updatedRows[0];
 }
 
 async function updateUserFields(id, data) {
@@ -136,22 +204,41 @@ async function updateUserFields(id, data) {
 	for (const [dataField, columnName] of Object.entries(patchColumnMap)) {
 		if (Object.prototype.hasOwnProperty.call(data, dataField)) {
 			assignments.push(`${columnName} = ?`);
+
 			values.push(data[dataField]);
 		}
 	}
 
+	if (assignments.length === 0) {
+		return 0;
+	}
+
 	values.push(id);
 
-	const [result] = await pool.execute(
-		`UPDATE users SET ${assignments.join(', ')} WHERE id = ?`,
-		values
-	);
+	const sql = `
+    UPDATE users
+    SET ${assignments.join(', ')}
+    WHERE id = ?
+      AND deleted_at IS NULL
+  `;
+
+	const [result] = await pool.execute(sql, values);
 
 	return result.affectedRows;
 }
 
-async function deleteUser(id) {
-	const [result] = await pool.execute('DELETE FROM users WHERE id = ?', [id]);
+async function softDeleteUser(id) {
+	const sql = `
+    UPDATE users
+    SET
+      deleted_at =
+        CURRENT_TIMESTAMP,
+      is_active = 0
+    WHERE id = ?
+      AND deleted_at IS NULL
+  `;
+
+	const [result] = await pool.execute(sql, [id]);
 
 	return result.affectedRows;
 }
@@ -164,5 +251,5 @@ module.exports = {
 	createUser,
 	replaceUser,
 	updateUserFields,
-	deleteUser,
+	softDeleteUser,
 };
