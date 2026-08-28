@@ -7,6 +7,11 @@ const sortColumnMap = {
 	created_at: 'created_at',
 	updated_at: 'updated_at',
 };
+const patchColumnMap = {
+	name: 'name',
+	email: 'email',
+	isActive: 'is_active',
+};
 
 function buildUserWhereClause(options) {
 	const conditions = [];
@@ -124,6 +129,27 @@ async function replaceUser(id, data) {
 	return findUserById(id);
 }
 
+async function updateUserFields(id, data) {
+	const assignments = [];
+	const values = [];
+
+	for (const [dataField, columnName] of Object.entries(patchColumnMap)) {
+		if (Object.prototype.hasOwnProperty.call(data, dataField)) {
+			assignments.push(`${columnName} = ?`);
+			values.push(data[dataField]);
+		}
+	}
+
+	values.push(id);
+
+	const [result] = await pool.execute(
+		`UPDATE users SET ${assignments.join(', ')} WHERE id = ?`,
+		values
+	);
+
+	return result.affectedRows;
+}
+
 async function deleteUser(id) {
 	const [result] = await pool.execute('DELETE FROM users WHERE id = ?', [id]);
 
@@ -137,5 +163,6 @@ module.exports = {
 	findUserByEmail,
 	createUser,
 	replaceUser,
+	updateUserFields,
 	deleteUser,
 };

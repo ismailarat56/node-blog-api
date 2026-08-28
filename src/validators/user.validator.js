@@ -4,6 +4,14 @@ const { getPagination } = require('../utils/pagination');
 
 const allowedSortFields = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const patchFieldMap = {
+	name: 'name',
+	email: 'email',
+	is_active: 'isActive',
+};
+
 function parsePositiveId(value) {
 	const parsedValue = Number(value);
 
@@ -70,9 +78,60 @@ function parseUserListQuery(query) {
 	};
 }
 
+function validatePatchUser(body) {
+	if (!body || Array.isArray(body) || typeof body !== 'object') {
+		throw new AppError(422, 'Geçerli bir JSON object gönderin.', 'INVALID_REQUEST_BODY');
+	}
+
+	const receivedFields = Object.keys(body);
+
+	if (receivedFields.length === 0) {
+		throw new AppError(422, 'Güncellenecek en az bir alan gönderin.', 'EMPTY_PATCH_BODY');
+	}
+
+	const unsupportedFields = receivedFields.filter(
+		(field) => !Object.prototype.hasOwnProperty.call(patchFieldMap, field)
+	);
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(422, 'Desteklenmeyen alan gönderildi.', 'UNSUPPORTED_FIELDS', {
+			fields: unsupportedFields,
+		});
+	}
+
+	const data = {};
+
+	if ('name' in body) {
+		const name = normalizeName(body.name);
+
+		if (name.length < 2 || name.length > 100) {
+			throw new AppError(422, 'name 2 ile 100 karakter arasında olmalıdır.', 'INVALID_NAME');
+		}
+
+		data.name = name;
+	}
+
+	if ('email' in body) {
+		const email = normalizeEmail(body.email);
+
+		if (!emailPattern.test(email) || email.length > 255) {
+			throw new AppError(422, 'Geçerli bir e-posta adresi girin.', 'INVALID_EMAIL');
+		}
+
+		data.email = email;
+	}
+
+	if ('is_active' in body) {
+		data.isActive = parseBooleanFilter(body.is_active, 'is_active');
+	}
+
+	return data;
+}
+
 module.exports = {
 	parseUserListQuery,
 	parsePositiveId,
 	normalizeName,
 	normalizeEmail,
+	validatePatchUser,
 };

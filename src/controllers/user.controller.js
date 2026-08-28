@@ -7,6 +7,7 @@ const { sendSuccess } = require('../utils/response');
 const {
 	parseUserListQuery,
 	parsePositiveId,
+	validatePatchUser,
 	normalizeName,
 	normalizeEmail,
 } = require('../validators/user.validator');
@@ -116,6 +117,39 @@ async function replace(request, response) {
 	});
 }
 
+async function update(request, response) {
+	const id = parsePositiveId(request.params.id);
+
+	const existingUser = await userModel.findUserById(id);
+
+	if (!existingUser) {
+		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
+	}
+
+	const data = validatePatchUser(request.body);
+
+	if (data.email) {
+		const emailOwner = await userModel.findUserByEmail(data.email, id);
+
+		if (emailOwner) {
+			throw new AppError(
+				409,
+				'Bu e-posta başka bir kullanıcı tarafından kullanılıyor.',
+				'EMAIL_ALREADY_EXISTS'
+			);
+		}
+	}
+
+	await userModel.updateUserFields(id, data);
+
+	const updatedUser = await userModel.findUserById(id);
+
+	return sendSuccess(response, {
+		message: 'Kullanıcı güncellendi.',
+		data: updatedUser,
+	});
+}
+
 async function destroy(request, response) {
 	const id = parsePositiveId(request.params.id);
 
@@ -140,5 +174,6 @@ module.exports = {
 	show,
 	store,
 	replace,
+	update,
 	destroy,
 };
