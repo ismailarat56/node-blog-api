@@ -1,161 +1,123 @@
 const userModel = require('../models/user.model');
 
+const AppError = require('../utils/app-error');
+
 const { sendSuccess } = require('../utils/response');
 
-function parseId(value) {
-	const id = Number(value);
-
-	return Number.isInteger(id) && id > 0 ? id : null;
-}
-
-function normalizeName(value) {
-	return typeof value === 'string' ? value.trim() : '';
-}
-
-function normalizeEmail(value) {
-	return typeof value === 'string' ? value.trim().toLowerCase() : '';
-}
+const {
+	parsePositiveId,
+	normalizeName,
+	normalizeEmail,
+} = require('../validators/user.validator');
 
 async function index(request, response) {
-	try {
-		const users = await userModel.findAllUsers();
+	const users = await userModel.findAllUsers();
 
-		return sendSuccess(response, { data: users });
-	} catch (error) {
-		console.error(error);
-
-		return response.status(500).json({ message: 'Kullanıcılar alınamadı.' });
-	}
+	return sendSuccess(response, {
+		data: users,
+	});
 }
 
 async function show(request, response) {
-	const id = parseId(request.params.id);
+	const id = parsePositiveId(request.params.id);
 
-	if (!id) {
-		return response.status(400).json({
-			message: 'Geçerli bir kullanıcı ID değeri girin.',
-		});
+	const user = await userModel.findUserById(id);
+
+	if (!user) {
+		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
 	}
 
-	try {
-		const user = await userModel.findUserById(id);
-
-		if (!user) {
-			return response.status(404).json({ message: 'Kullanıcı bulunamadı.' });
-		}
-
-		return sendSuccess(response, { data: user });
-	} catch (error) {
-		console.error(error);
-
-		return response.status(500).json({ message: 'Kullanıcı alınamadı.' });
-	}
+	return sendSuccess(response, {
+		data: user,
+	});
 }
 
 async function store(request, response) {
-	const name = normalizeName(request.body?.name);
-	const email = normalizeEmail(request.body?.email);
+	const body = request.body || {};
+
+	const name = normalizeName(body.name);
+
+	const email = normalizeEmail(body.email);
 
 	if (!name || !email) {
-		return response.status(400).json({
-			message: 'name ve email alanları zorunludur.',
-		});
+		throw new AppError(422, 'name ve email alanları zorunludur.', 'INVALID_REQUEST_BODY');
 	}
 
-	try {
-		const emailOwner = await userModel.findUserByEmail(email);
+	const emailOwner = await userModel.findUserByEmail(email);
 
-		if (emailOwner) {
-			return response.status(409).json({
-				message: 'Bu e-posta zaten kullanılıyor.',
-			});
-		}
-
-		const user = await userModel.createUser({ name, email });
-
-		return sendSuccess(response, {
-			statusCode: 201,
-			message: 'Kullanıcı oluşturuldu.',
-			data: user,
-		});
-	} catch (error) {
-		console.error(error);
-
-		return response.status(500).json({ message: 'Kullanıcı oluşturulamadı.' });
+	if (emailOwner) {
+		throw new AppError(409, 'Bu e-posta zaten kullanılıyor.', 'EMAIL_ALREADY_EXISTS');
 	}
+
+	const createdUser = await userModel.createUser({
+		name,
+		email,
+	});
+
+	return sendSuccess(response, {
+		statusCode: 201,
+		message: 'Kullanıcı oluşturuldu.',
+		data: createdUser,
+	});
 }
 
 async function replace(request, response) {
-	const id = parseId(request.params.id);
+	const id = parsePositiveId(request.params.id);
 
-	if (!id) {
-		return response.status(400).json({
-			message: 'Geçerli bir kullanıcı ID değeri girin.',
-		});
+	const existingUser = await userModel.findUserById(id);
+
+	if (!existingUser) {
+		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
 	}
 
-	const name = normalizeName(request.body?.name);
-	const email = normalizeEmail(request.body?.email);
+	const body = request.body || {};
+
+	const name = normalizeName(body.name);
+
+	const email = normalizeEmail(body.email);
 
 	if (!name || !email) {
-		return response.status(400).json({
-			message: 'name ve email alanları zorunludur.',
-		});
+		throw new AppError(422, 'name ve email alanları zorunludur.', 'INVALID_REQUEST_BODY');
 	}
 
-	try {
-		const existingUser = await userModel.findUserById(id);
+	const emailOwner = await userModel.findUserByEmail(email, id);
 
-		if (!existingUser) {
-			return response.status(404).json({ message: 'Kullanıcı bulunamadı.' });
-		}
-
-		const emailOwner = await userModel.findUserByEmail(email, id);
-
-		if (emailOwner) {
-			return response.status(409).json({
-				message: 'Bu e-posta başka bir kullanıcı tarafından kullanılıyor.',
-			});
-		}
-
-		const user = await userModel.replaceUser(id, { name, email });
-
-		return sendSuccess(response, {
-			message: 'Kullanıcı güncellendi.',
-			data: user,
-		});
-	} catch (error) {
-		console.error(error);
-
-		return response.status(500).json({ message: 'Kullanıcı güncellenemedi.' });
+	if (emailOwner) {
+		throw new AppError(
+			409,
+			'Bu e-posta başka bir kullanıcı tarafından kullanılıyor.',
+			'EMAIL_ALREADY_EXISTS'
+		);
 	}
+
+	const updatedUser = await userModel.replaceUser(id, {
+		name,
+		email,
+	});
+
+	return sendSuccess(response, {
+		message: 'Kullanıcı güncellendi.',
+		data: updatedUser,
+	});
 }
 
 async function destroy(request, response) {
-	const id = parseId(request.params.id);
+	const id = parsePositiveId(request.params.id);
 
-	if (!id) {
-		return response.status(400).json({
-			message: 'Geçerli bir kullanıcı ID değeri girin.',
-		});
+	const existingUser = await userModel.findUserById(id);
+
+	if (!existingUser) {
+		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
 	}
 
-	try {
-		const affectedRows = await userModel.deleteUser(id);
+	await userModel.deleteUser(id);
 
-		if (affectedRows === 0) {
-			return response.status(404).json({ message: 'Kullanıcı bulunamadı.' });
-		}
-
-		return sendSuccess(response, {
-			message: 'Kullanıcı silindi.',
-			data: { id },
-		});
-	} catch (error) {
-		console.error(error);
-
-		return response.status(500).json({ message: 'Kullanıcı silinemedi.' });
-	}
+	return sendSuccess(response, {
+		message: 'Kullanıcı silindi.',
+		data: {
+			id,
+		},
+	});
 }
 
 module.exports = {

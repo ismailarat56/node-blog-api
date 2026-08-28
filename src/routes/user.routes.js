@@ -2,16 +2,18 @@ const { Router } = require('express');
 
 const userController = require('../controllers/user.controller');
 
+const asyncHandler = require('../utils/async-handler');
+
 const router = Router();
 
-router.get('/', userController.index);
+router.get('/', asyncHandler(userController.index));
 
-router.get('/:id', userController.show);
+router.get('/:id', asyncHandler(userController.show));
 
-router.post('/', userController.store);
+router.post('/', asyncHandler(userController.store));
 
-router.put('/:id', userController.replace);
+router.put('/:id', asyncHandler(userController.replace));
 
-router.delete('/:id', userController.destroy);
+router.delete('/:id', asyncHandler(userController.destroy));
 
 module.exports = router;
