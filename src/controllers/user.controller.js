@@ -154,13 +154,7 @@ async function update(request, response) {
 async function destroy(request, response) {
 	const id = parsePositiveId(request.params.id);
 
-	const existingUser = await userModel.findUserById(id);
-
-	if (!existingUser) {
-		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
-	}
-
-	await userModel.softDeleteUser(id);
+	await userModel.softDeleteUserWithAudit(id, request.requestId);
 
 	return sendSuccess(response, {
 		message: 'Kullanıcı silindi.',

@@ -1,5 +1,7 @@
 const pool = require('../config/database');
 
+const AppError = require('../utils/app-error');
+
 const sortColumnMap = {
 	id: 'id',
 	name: 'name',
@@ -227,20 +229,57 @@ async function updateUserFields(id, data) {
 	return result.affectedRows;
 }
 
-async function softDeleteUser(id) {
-	const sql = `
-    UPDATE users
-    SET
-      deleted_at =
-        CURRENT_TIMESTAMP,
-      is_active = 0
-    WHERE id = ?
-      AND deleted_at IS NULL
-  `;
+async function softDeleteUserWithAudit(id, requestId) {
+	const connection = await pool.getConnection();
 
-	const [result] = await pool.execute(sql, [id]);
+	try {
+		await connection.beginTransaction();
 
-	return result.affectedRows;
+		const [deleteResult] = await connection.execute(
+			`
+          UPDATE users
+          SET
+            deleted_at =
+              CURRENT_TIMESTAMP,
+            is_active = 0
+          WHERE id = ?
+            AND deleted_at IS NULL
+        `,
+			[id]
+		);
+
+		if (deleteResult.affectedRows === 0) {
+			throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
+		}
+
+		await connection.execute(
+			`
+        INSERT INTO user_audit_logs_wrong (
+          user_id,
+          action,
+          details
+        )
+        VALUES (?, ?, ?)
+      `,
+			[
+				id,
+				'user_soft_deleted',
+				JSON.stringify({
+					requestId,
+				}),
+			]
+		);
+
+		await connection.commit();
+
+		return true;
+	} catch (error) {
+		await connection.rollback();
+
+		throw error;
+	} finally {
+		connection.release();
+	}
 }
 
 async function restoreUser(id) {
@@ -266,6 +305,6 @@ module.exports = {
 	createUser,
 	replaceUser,
 	updateUserFields,
-	softDeleteUser,
+	softDeleteUserWithAudit,
 	restoreUser,
 };
