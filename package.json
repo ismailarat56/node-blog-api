@@ -5,7 +5,8 @@
 	"main": "database.js",
 	"scripts": {
 		"start": "node --watch server.js",
-		"memory": "node server-memory.js"
+		"memory": "node server-memory.js",
+		"set-user-password": "node scripts/set-user-password.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -14,6 +15,7 @@
 	"dependencies": {
 		"dotenv": "^17.4.2",
 		"express": "^5.2.1",
+		"jsonwebtoken": "^9.0.3",
 		"mysql2": "^3.24.2"
 	}
 }

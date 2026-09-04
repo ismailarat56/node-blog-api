@@ -254,7 +254,7 @@ async function softDeleteUserWithAudit(id, requestId) {
 
 		await connection.execute(
 			`
-        INSERT INTO user_audit_logs_wrong (
+        INSERT INTO user_audit_logs (
           user_id,
           action,
           details
