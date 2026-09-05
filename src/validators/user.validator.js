@@ -2,9 +2,15 @@ const AppError = require('../utils/app-error');
 
 const { getPagination } = require('../utils/pagination');
 
+const {
+	assertPlainObject,
+	parsePositiveId: parseCommonPositiveId,
+	parseBooleanFilter,
+} = require('./common.validator');
+
 const allowedSortFields = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //regEx
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const patchFieldMap = {
 	name: 'name',
@@ -13,13 +19,10 @@ const patchFieldMap = {
 };
 
 function parsePositiveId(value) {
-	const parsedValue = Number(value);
-
-	if (!Number.isInteger(parsedValue) || parsedValue <= 0) {
-		throw new AppError(400, 'Geçerli bir kullanıcı ID değeri girin.', 'INVALID_USER_ID');
-	}
-
-	return parsedValue;
+	return parseCommonPositiveId(value, {
+		resourceName: 'kullanıcı',
+		appCode: 'INVALID_USER_ID',
+	});
 }
 
 function normalizeName(value) {
@@ -38,29 +41,53 @@ function normalizeEmail(value) {
 	return value.trim().toLowerCase();
 }
 
-function parseBooleanFilter(value, fieldName) {
-	if (value === undefined) {
-		return null;
+function validateNewPassword(value) {
+	if (typeof value !== 'string') {
+		throw new AppError(422, 'password string olmalıdır.', 'INVALID_PASSWORD');
 	}
 
-	const normalized = String(value).trim().toLowerCase();
+	const length = Array.from(value).length;
 
-	if (normalized === '1' || normalized === 'true') {
-		return 1;
+	if (length < 8 || length > 128) {
+		throw new AppError(
+			422,
+			'password 15 ile 128 karakter arasında olmalıdır.',
+			'INVALID_PASSWORD'
+		);
 	}
 
-	if (normalized === '0' || normalized === 'false') {
-		return 0;
+	return value;
+}
+
+function validateCreateUser(body) {
+	assertPlainObject(body);
+
+	const name = normalizeName(body.name);
+	const email = normalizeEmail(body.email);
+
+	if (!name || !email || body.password === undefined) {
+		throw new AppError(
+			422,
+			'name, email ve password alanları zorunludur.',
+			'INVALID_REQUEST_BODY'
+		);
 	}
 
-	throw new AppError(
-		422,
-		`${fieldName} yalnızca 0, 1, true veya false olabilir.`,
-		'INVALID_QUERY_PARAMETER',
-		{
-			field: fieldName,
-		}
-	);
+	if (name.length < 2 || name.length > 100) {
+		throw new AppError(422, 'name 2 ile 100 karakter arasında olmalıdır.', 'INVALID_NAME');
+	}
+
+	if (!emailPattern.test(email) || email.length > 255) {
+		throw new AppError(422, 'Geçerli bir e-posta adresi girin.', 'INVALID_EMAIL');
+	}
+
+	const password = validateNewPassword(body.password);
+
+	return {
+		name,
+		email,
+		password,
+	};
 }
 
 function parseUserListQuery(query) {
@@ -78,7 +105,9 @@ function parseUserListQuery(query) {
 
 	const isActive = parseBooleanFilter(query.is_active, 'is_active');
 
-	const includeDeleted = parseBooleanFilter(query.include_deleted, 'include_deleted') ?? 0;
+	const includeDeleted = parseBooleanFilter(query.include_deleted, 'include_deleted', {
+		defaultValue: 0,
+	});
 
 	const sortBy = allowedSortFields.includes(query.sort_by) ? query.sort_by : 'id';
 
@@ -97,9 +126,7 @@ function parseUserListQuery(query) {
 }
 
 function validatePatchUser(body) {
-	if (!body || Array.isArray(body) || typeof body !== 'object') {
-		throw new AppError(422, 'Geçerli bir JSON object gönderin.', 'INVALID_REQUEST_BODY');
-	}
+	assertPlainObject(body);
 
 	const receivedFields = Object.keys(body);
 
@@ -150,6 +177,8 @@ module.exports = {
 	parsePositiveId,
 	normalizeName,
 	normalizeEmail,
+	validateNewPassword,
+	validateCreateUser,
 	parseUserListQuery,
 	validatePatchUser,
 };

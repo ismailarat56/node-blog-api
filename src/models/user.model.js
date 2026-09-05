@@ -145,31 +145,20 @@ async function findUserByEmail(email, ignoredUserId = null) {
 	return rows[0] || null;
 }
 
-async function createUser(data) {
-	const insertSql = `
-		INSERT INTO users (
-			name,
-			email
-		)
-		VALUES (?, ?)
-	`;
+async function createUser({ name, email, passwordHash }) {
+	const [result] = await pool.execute(
+		`
+			INSERT INTO users (
+				name,
+				email,
+				password_hash
+			)
+			VALUES (?, ?, ?)
+		`,
+		[name, email, passwordHash]
+	);
 
-	const [result] = await pool.execute(insertSql, [data.name, data.email]);
-
-	const selectSql = `
-		SELECT
-			id,
-			name,
-			email,
-			created_at
-		FROM users
-		WHERE id = ?
-		LIMIT 1
-	`;
-
-	const [createdRows] = await pool.execute(selectSql, [result.insertId]);
-
-	return createdRows[0];
+	return result.insertId;
 }
 
 async function replaceUser(id, data) {

@@ -2,6 +2,8 @@ const { Router } = require('express');
 
 const userController = require('../controllers/user.controller');
 
+const authenticate = require('../middlewares/authenticate.middleware');
+
 const asyncHandler = require('../utils/async-handler');
 
 const router = Router();
@@ -13,6 +15,8 @@ router.get('/:id', asyncHandler(userController.show));
 router.post('/', asyncHandler(userController.store));
 
 router.put('/:id', asyncHandler(userController.replace));
+
+router.use(asyncHandler(authenticate));
 
 router.patch('/:id/restore', asyncHandler(userController.restore));
 

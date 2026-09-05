@@ -4,10 +4,13 @@ const AppError = require('../utils/app-error');
 
 const { sendSuccess } = require('../utils/response');
 
+const { hashPassword } = require('../utils/password');
+
 const {
 	parseUserListQuery,
 	parsePositiveId,
 	validatePatchUser,
+	validateCreateUser,
 	normalizeName,
 	normalizeEmail,
 } = require('../validators/user.validator');
@@ -50,26 +53,23 @@ async function show(request, response) {
 }
 
 async function store(request, response) {
-	const body = request.body || {};
+	const data = validateCreateUser(request.body);
 
-	const name = normalizeName(body.name);
+	const existingUser = await userModel.findUserByEmail(data.email);
 
-	const email = normalizeEmail(body.email);
-
-	if (!name || !email) {
-		throw new AppError(422, 'name ve email alanları zorunludur.', 'INVALID_REQUEST_BODY');
+	if (existingUser) {
+		throw new AppError(409, 'Bu e-posta adresi zaten kullanılıyor.', 'EMAIL_ALREADY_EXISTS');
 	}
 
-	const emailOwner = await userModel.findUserByEmail(email);
+	const passwordHash = await hashPassword(data.password);
 
-	if (emailOwner) {
-		throw new AppError(409, 'Bu e-posta zaten kullanılıyor.', 'EMAIL_ALREADY_EXISTS');
-	}
-
-	const createdUser = await userModel.createUser({
-		name,
-		email,
+	const userId = await userModel.createUser({
+		name: data.name,
+		email: data.email,
+		passwordHash,
 	});
+
+	const createdUser = await userModel.findUserById(userId);
 
 	return sendSuccess(response, {
 		statusCode: 201,
