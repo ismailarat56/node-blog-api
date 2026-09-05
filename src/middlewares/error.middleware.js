@@ -14,20 +14,31 @@ function errorHandler(error, request, response, next) {
 	if (error.code === 'ER_DUP_ENTRY') {
 		statusCode = 409;
 		appCode = 'DUPLICATE_VALUE';
-		message = 'Bu e-posta adresi zaten kullanılıyor.';
+		message = 'Benzersiz olması gereken bir değer zaten kullanılıyor.';
+		details = null;
 	}
 
 	if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
 		statusCode = 400;
 		appCode = 'INVALID_JSON';
 		message = 'Gönderilen JSON okunamadı.';
+		details = null;
+	}
+
+	if (statusCode === 401 && error.wwwAuthenticate) {
+		response.setHeader('WWW-Authenticate', error.wwwAuthenticate);
+	}
+
+	if (statusCode >= 500 && !error.isOperational) {
+		message = 'Beklenmeyen bir hata oluştu.';
+		details = null;
 	}
 
 	if (statusCode >= 500) {
-		console.error(error);
-
-		message = 'Beklenmeyen bir hata oluştu.';
-		details = null;
+		console.error({
+			requestId: request.requestId || null,
+			error,
+		});
 	}
 
 	return response.status(statusCode).json({
