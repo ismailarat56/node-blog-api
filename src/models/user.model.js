@@ -9,6 +9,7 @@ const sortColumnMap = {
 	created_at: 'created_at',
 	updated_at: 'updated_at',
 };
+
 const patchColumnMap = {
 	name: 'name',
 	email: 'email',
@@ -62,6 +63,7 @@ async function findAllUsers(options) {
 			id,
 			name,
 			email,
+			role,
 			is_active,
 			created_at,
 			updated_at,
@@ -105,18 +107,19 @@ async function findUserById(id, { includeDeleted = false } = {}) {
 	}
 
 	const sql = `
-    SELECT
-      id,
-      name,
-      email,
-      is_active,
-      created_at,
-      updated_at,
-      deleted_at
-    FROM users
-    WHERE ${conditions.join(' AND ')}
-    LIMIT 1
-  `;
+		SELECT
+			id,
+			name,
+			email,
+			role,
+			is_active,
+			created_at,
+			updated_at,
+			deleted_at
+		FROM users
+		WHERE ${conditions.join(' AND ')}
+		LIMIT 1
+	`;
 
 	const [rows] = await pool.execute(sql, [id]);
 
@@ -207,13 +210,27 @@ async function updateUserFields(id, data) {
 	values.push(id);
 
 	const sql = `
-    UPDATE users
-    SET ${assignments.join(', ')}
-    WHERE id = ?
-      AND deleted_at IS NULL
-  `;
+		UPDATE users
+		SET ${assignments.join(', ')}
+		WHERE id = ?
+			AND deleted_at IS NULL
+	`;
 
 	const [result] = await pool.execute(sql, values);
+
+	return result.affectedRows;
+}
+
+async function updateUserRole(id, role) {
+	const [result] = await pool.execute(
+		`
+			UPDATE users
+			SET role = ?
+			WHERE id = ?
+				AND deleted_at IS NULL
+		`,
+		[role, id]
+	);
 
 	return result.affectedRows;
 }
@@ -226,14 +243,14 @@ async function softDeleteUserWithAudit(id, requestId) {
 
 		const [deleteResult] = await connection.execute(
 			`
-          UPDATE users
-          SET
-            deleted_at =
-              CURRENT_TIMESTAMP,
-            is_active = 0
-          WHERE id = ?
-            AND deleted_at IS NULL
-        `,
+					UPDATE users
+					SET
+						deleted_at =
+							CURRENT_TIMESTAMP,
+						is_active = 0
+					WHERE id = ?
+						AND deleted_at IS NULL
+				`,
 			[id]
 		);
 
@@ -243,13 +260,13 @@ async function softDeleteUserWithAudit(id, requestId) {
 
 		await connection.execute(
 			`
-        INSERT INTO user_audit_logs (
-          user_id,
-          action,
-          details
-        )
-        VALUES (?, ?, ?)
-      `,
+				INSERT INTO user_audit_logs (
+					user_id,
+					action,
+					details
+				)
+				VALUES (?, ?, ?)
+			`,
 			[
 				id,
 				'user_soft_deleted',
@@ -273,13 +290,13 @@ async function softDeleteUserWithAudit(id, requestId) {
 
 async function restoreUser(id) {
 	const sql = `
-    UPDATE users
-    SET
-      deleted_at = NULL,
-      is_active = 1
-    WHERE id = ?
-      AND deleted_at IS NOT NULL
-  `;
+		UPDATE users
+		SET
+			deleted_at = NULL,
+			is_active = 1
+		WHERE id = ?
+			AND deleted_at IS NOT NULL
+	`;
 
 	const [result] = await pool.execute(sql, [id]);
 
@@ -294,6 +311,7 @@ module.exports = {
 	createUser,
 	replaceUser,
 	updateUserFields,
+	updateUserRole,
 	softDeleteUserWithAudit,
 	restoreUser,
 };

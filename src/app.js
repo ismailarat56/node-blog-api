@@ -6,6 +6,8 @@ const userRouter = require('./routes/user.routes');
 
 const categoryRouter = require('./routes/category.routes');
 
+const postRouter = require('./routes/post.routes');
+
 const requestLogger = require('./middlewares/request-logger.middleware');
 
 const notFoundHandler = require('./middlewares/not-found.middleware');
@@ -34,6 +36,8 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 
 app.use('/api/v1/categories', categoryRouter);
+
+app.use('/api/v1/posts', postRouter);
 
 app.use(notFoundHandler);
 
