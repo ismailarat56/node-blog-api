@@ -12,11 +12,17 @@ const allowedSortFields = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// POST /users için sadece bu alanlara izin verilir.
+const createAllowedFields = ['name', 'email', 'password'];
+
 const patchFieldMap = {
 	name: 'name',
 	email: 'email',
 	is_active: 'isActive',
 };
+
+// Kullanıcının sahip olabileceği roller.
+const allowedRoles = new Set(['user', 'admin']);
 
 function parsePositiveId(value) {
 	return parseCommonPositiveId(value, {
@@ -51,7 +57,7 @@ function validateNewPassword(value) {
 	if (length < 8 || length > 128) {
 		throw new AppError(
 			422,
-			'password 15 ile 128 karakter arasında olmalıdır.',
+			'password 8 ile 128 karakter arasında olmalıdır.',
 			'INVALID_PASSWORD'
 		);
 	}
@@ -62,7 +68,20 @@ function validateNewPassword(value) {
 function validateCreateUser(body) {
 	assertPlainObject(body);
 
+	const receivedFields = Object.keys(body);
+
+	const unsupportedFields = receivedFields.filter(
+		(field) => !createAllowedFields.includes(field)
+	);
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(422, 'Desteklenmeyen alan gönderildi.', 'UNSUPPORTED_FIELDS', {
+			fields: unsupportedFields,
+		});
+	}
+
 	const name = normalizeName(body.name);
+
 	const email = normalizeEmail(body.email);
 
 	if (!name || !email || body.password === undefined) {
@@ -173,6 +192,31 @@ function validatePatchUser(body) {
 	return data;
 }
 
+function validateRoleBody(body) {
+	assertPlainObject(body);
+
+	const unsupportedFields = Object.keys(body).filter((field) => field !== 'role');
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(
+			422,
+			'Role güncellemesi yalnızca role alanını kabul eder.',
+			'UNSUPPORTED_ROLE_FIELDS',
+			{
+				fields: unsupportedFields,
+			}
+		);
+	}
+
+	if (typeof body.role !== 'string' || !allowedRoles.has(body.role)) {
+		throw new AppError(422, 'role yalnızca user veya admin olabilir.', 'INVALID_USER_ROLE');
+	}
+
+	return {
+		role: body.role,
+	};
+}
+
 module.exports = {
 	parsePositiveId,
 	normalizeName,
@@ -181,4 +225,5 @@ module.exports = {
 	validateCreateUser,
 	parseUserListQuery,
 	validatePatchUser,
+	validateRoleBody,
 };

@@ -18,6 +18,20 @@ function errorHandler(error, request, response, next) {
 		details = null;
 	}
 
+	if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+		statusCode = 422;
+		appCode = 'INVALID_REFERENCE';
+		message = 'Bağlı kayıt bulunamadı.';
+		details = null;
+	}
+
+	if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+		statusCode = 409;
+		appCode = 'RESOURCE_IN_USE';
+		message = 'Kayıt başka kayıtlar tarafından kullanılıyor.';
+		details = null;
+	}
+
 	if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
 		statusCode = 400;
 		appCode = 'INVALID_JSON';

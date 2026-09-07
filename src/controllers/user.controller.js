@@ -11,6 +11,7 @@ const {
 	parsePositiveId,
 	validatePatchUser,
 	validateCreateUser,
+	validateRoleBody,
 	normalizeName,
 	normalizeEmail,
 } = require('../validators/user.validator');
@@ -151,6 +152,31 @@ async function update(request, response) {
 	});
 }
 
+async function changeRole(request, response) {
+	const id = parsePositiveId(request.params.id);
+
+	const { role } = validateRoleBody(request.body);
+
+	if (Number(request.user.id) === id) {
+		throw new AppError(409, 'Kendi rolünüzü değiştiremezsiniz.', 'CANNOT_CHANGE_OWN_ROLE');
+	}
+
+	const user = await userModel.findUserById(id);
+
+	if (!user) {
+		throw new AppError(404, 'Kullanıcı bulunamadı.', 'USER_NOT_FOUND');
+	}
+
+	await userModel.updateUserRole(id, role);
+
+	const updatedUser = await userModel.findUserById(id);
+
+	return sendSuccess(response, {
+		message: 'Kullanıcı rolü güncellendi.',
+		data: updatedUser,
+	});
+}
+
 async function destroy(request, response) {
 	const id = parsePositiveId(request.params.id);
 
@@ -195,6 +221,7 @@ module.exports = {
 	store,
 	replace,
 	update,
+	changeRole,
 	destroy,
 	restore,
 };

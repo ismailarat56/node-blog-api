@@ -2,6 +2,8 @@ const AppError = require('../utils/app-error');
 
 const categoryModel = require('../models/category.model');
 
+const postModel = require('../models/post.model');
+
 const { sendSuccess } = require('../utils/response');
 
 const {
@@ -127,6 +129,14 @@ async function destroy(request, response) {
 	const id = parseCategoryId(request.params.id);
 
 	await findExistingCategory(id);
+
+	const activePostCount = await postModel.countActivePostsByCategory(id);
+
+	if (activePostCount > 0) {
+		throw new AppError(409, 'Bu categoryye bağlı aktif postlar var.', 'CATEGORY_HAS_POSTS', {
+			active_posts: activePostCount,
+		});
+	}
 
 	await categoryModel.softDeleteCategory(id);
 

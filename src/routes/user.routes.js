@@ -4,9 +4,15 @@ const userController = require('../controllers/user.controller');
 
 const authenticate = require('../middlewares/authenticate.middleware');
 
+const { requireRole } = require('../middlewares/authorize.middleware');
+
 const asyncHandler = require('../utils/async-handler');
 
 const router = Router();
+
+router.use(asyncHandler(authenticate));
+
+router.use(requireRole('admin'));
 
 router.get('/', asyncHandler(userController.index));
 
@@ -16,9 +22,9 @@ router.post('/', asyncHandler(userController.store));
 
 router.put('/:id', asyncHandler(userController.replace));
 
-router.use(asyncHandler(authenticate));
-
 router.patch('/:id/restore', asyncHandler(userController.restore));
+
+router.patch('/:id/role', asyncHandler(userController.changeRole));
 
 router.patch('/:id', asyncHandler(userController.update));
 

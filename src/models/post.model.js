@@ -1,0 +1,378 @@
+const pool = require('../config/database');
+
+const sortColumnMap = {
+	id: 'p.id',
+	title: 'p.title',
+	created_at: 'p.created_at',
+	updated_at: 'p.updated_at',
+	published_at: 'p.published_at',
+};
+
+const listColumns = `
+	p.id,
+	p.title,
+	p.slug,
+	p.excerpt,
+	p.status,
+	p.published_at,
+	p.created_at,
+	p.updated_at,
+	p.deleted_at,
+	u.id AS author_id,
+	u.name AS author_name,
+	c.id AS category_id,
+	c.name AS category_name,
+	c.slug AS category_slug
+`;
+
+const detailColumns = `
+	${listColumns},
+	p.content
+`;
+
+const fromClause = `
+	FROM posts AS p
+	INNER JOIN users AS u
+		ON u.id = p.user_id
+	INNER JOIN categories AS c
+		ON c.id = p.category_id
+`;
+
+const patchColumnMap = {
+	categoryId: 'category_id',
+	title: 'title',
+	excerpt: 'excerpt',
+	content: 'content',
+};
+
+function buildPostWhereClause(options) {
+	const conditions = [];
+	const values = [];
+
+	if (!options.includeDeleted) {
+		conditions.push('p.deleted_at IS NULL');
+	}
+
+	if (options.viewer && options.viewer.role !== 'admin') {
+		conditions.push(`
+			(
+				p.status = 'published'
+				OR p.user_id = ?
+			)
+		`);
+
+		values.push(options.viewer.id);
+	}
+
+	if (options.search) {
+		const pattern = `%${options.search}%`;
+
+		conditions.push(`
+			(
+				p.title LIKE ?
+				OR p.excerpt LIKE ?
+			)
+		`);
+
+		values.push(pattern, pattern);
+	}
+
+	if (options.status !== null) {
+		conditions.push('p.status = ?');
+
+		values.push(options.status);
+	}
+
+	if (options.categoryId !== null) {
+		conditions.push('p.category_id = ?');
+
+		values.push(options.categoryId);
+	}
+
+	if (options.userId !== null) {
+		conditions.push('p.user_id = ?');
+
+		values.push(options.userId);
+	}
+
+	const whereClause = conditions.length === 0 ? '' : `WHERE ${conditions.join(' AND ')}`;
+
+	return {
+		whereClause,
+		values,
+	};
+}
+
+function mapPostRow(row) {
+	if (!row) {
+		return null;
+	}
+
+	const post = {
+		id: row.id,
+		title: row.title,
+		slug: row.slug,
+		excerpt: row.excerpt,
+		status: row.status,
+		published_at: row.published_at,
+		author: {
+			id: row.author_id,
+			name: row.author_name,
+		},
+		category: {
+			id: row.category_id,
+			name: row.category_name,
+			slug: row.category_slug,
+		},
+		created_at: row.created_at,
+		updated_at: row.updated_at,
+		deleted_at: row.deleted_at,
+	};
+
+	if (Object.prototype.hasOwnProperty.call(row, 'content')) {
+		post.content = row.content;
+	}
+
+	return post;
+}
+
+async function findAllPosts(options) {
+	const { whereClause, values } = buildPostWhereClause(options);
+
+	const sortColumn = sortColumnMap[options.sortBy] || 'p.id';
+
+	const sortDirection = options.sortOrder === 'asc' ? 'ASC' : 'DESC';
+
+	const sql = `
+		SELECT
+			${listColumns}
+		${fromClause}
+		${whereClause}
+		ORDER BY
+			${sortColumn}
+			${sortDirection},
+			p.id ${sortDirection}
+		LIMIT ?
+		OFFSET ?
+	`;
+
+	const [rows] = await pool.execute(sql, [...values, options.limit, options.offset]);
+
+	return rows.map(mapPostRow);
+}
+
+async function countPosts(options) {
+	const { whereClause, values } = buildPostWhereClause(options);
+
+	const [rows] = await pool.execute(
+		`
+				SELECT
+					COUNT(*) AS total
+				${fromClause}
+				${whereClause}
+			`,
+		values
+	);
+
+	return Number(rows[0].total);
+}
+
+async function findPostById(id, { includeDeleted = false } = {}) {
+	const conditions = ['p.id = ?'];
+
+	if (!includeDeleted) {
+		conditions.push('p.deleted_at IS NULL');
+	}
+
+	const [rows] = await pool.execute(
+		`
+				SELECT
+					${detailColumns}
+				${fromClause}
+				WHERE ${conditions.join(' AND ')}
+				LIMIT 1
+			`,
+		[id]
+	);
+
+	return mapPostRow(rows[0]);
+}
+
+async function findPostBySlug(slug) {
+	const [rows] = await pool.execute(
+		`
+				SELECT
+					id,
+					slug,
+					deleted_at
+				FROM posts
+				WHERE slug = ?
+				LIMIT 1
+			`,
+		[slug]
+	);
+
+	return rows[0] || null;
+}
+
+async function countActivePostsByCategory(categoryId) {
+	const [rows] = await pool.execute(
+		`
+				SELECT
+					COUNT(*) AS total
+				FROM posts
+				WHERE category_id = ?
+					AND deleted_at IS NULL
+			`,
+		[categoryId]
+	);
+
+	return Number(rows[0].total);
+}
+
+async function createPost({ userId, categoryId, title, slug, excerpt, content }) {
+	const [result] = await pool.execute(
+		`
+				INSERT INTO posts (
+					user_id,
+					category_id,
+					title,
+					slug,
+					excerpt,
+					content
+				)
+				VALUES (?, ?, ?, ?, ?, ?)
+			`,
+		[userId, categoryId, title, slug, excerpt, content]
+	);
+
+	return result.insertId;
+}
+
+async function replacePost(id, { categoryId, title, excerpt, content }) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET
+					category_id = ?,
+					title = ?,
+					excerpt = ?,
+					content = ?
+				WHERE id = ?
+					AND deleted_at IS NULL
+			`,
+		[categoryId, title, excerpt, content, id]
+	);
+
+	return result.affectedRows;
+}
+
+async function updatePostFields(id, data) {
+	const assignments = [];
+	const values = [];
+
+	for (const [dataField, columnName] of Object.entries(patchColumnMap)) {
+		if (Object.prototype.hasOwnProperty.call(data, dataField)) {
+			assignments.push(`${columnName} = ?`);
+
+			values.push(data[dataField]);
+		}
+	}
+
+	if (assignments.length === 0) {
+		return 0;
+	}
+
+	values.push(id);
+
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET ${assignments.join(', ')}
+				WHERE id = ?
+					AND deleted_at IS NULL
+			`,
+		values
+	);
+
+	return result.affectedRows;
+}
+
+async function publishPost(id) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET
+					status = 'published',
+					published_at = COALESCE(
+						published_at,
+						CURRENT_TIMESTAMP
+					)
+				WHERE id = ?
+					AND deleted_at IS NULL
+					AND status = 'draft'
+			`,
+		[id]
+	);
+
+	return result.affectedRows;
+}
+
+async function unpublishPost(id) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET status = 'draft'
+				WHERE id = ?
+					AND deleted_at IS NULL
+					AND status = 'published'
+			`,
+		[id]
+	);
+
+	return result.affectedRows;
+}
+
+async function softDeletePost(id) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET deleted_at =
+					CURRENT_TIMESTAMP
+				WHERE id = ?
+					AND deleted_at IS NULL
+			`,
+		[id]
+	);
+
+	return result.affectedRows;
+}
+
+async function restorePost(id) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET deleted_at = NULL
+				WHERE id = ?
+					AND deleted_at IS NOT NULL
+			`,
+		[id]
+	);
+
+	return result.affectedRows;
+}
+
+module.exports = {
+	findAllPosts,
+	countPosts,
+	findPostById,
+	findPostBySlug,
+	countActivePostsByCategory,
+	createPost,
+	replacePost,
+	updatePostFields,
+	publishPost,
+	unpublishPost,
+	softDeletePost,
+	restorePost,
+};
