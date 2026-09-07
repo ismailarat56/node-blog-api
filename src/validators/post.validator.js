@@ -20,7 +20,7 @@ const allowedSortFields = new Set(['id', 'title', 'created_at', 'updated_at', 'p
 
 const allowedStatuses = new Set(['draft', 'published']);
 
-const postFields = new Set(['title', 'content', 'excerpt', 'category_id']);
+const postFields = new Set(['title', 'content', 'excerpt', 'categoryId']);
 
 function parsePostId(value) {
 	return parsePositiveId(value, {
@@ -265,7 +265,7 @@ function validateCreatePost(body) {
 
 		excerpt: 'excerpt' in body ? validatePostExcerpt(body.excerpt) : null,
 
-		categoryId: validatePostCategoryId(body.category_id),
+		categoryId: validatePostCategoryId(body.categoryId),
 	};
 }
 
@@ -294,7 +294,7 @@ function validateReplacePost(body) {
 
 		excerpt: validatePostExcerpt(body.excerpt),
 
-		categoryId: validatePostCategoryId(body.category_id),
+		categoryId: validatePostCategoryId(body.categoryId),
 	};
 }
 
@@ -326,7 +326,7 @@ function validatePatchPost(body) {
 	}
 
 	if ('category_id' in body) {
-		data.categoryId = validatePostCategoryId(body.category_id);
+		data.categoryId = validatePostCategoryId(body.categoryId);
 	}
 
 	return data;
