@@ -47,6 +47,20 @@ function getPagination(query) {
 	};
 }
 
+function buildPaginationMeta(page, limit, total) {
+	const totalPages = total === 0 ? 0 : Math.ceil(total / limit);
+
+	return {
+		page,
+		limit,
+		total,
+		total_pages: totalPages,
+		has_next_page: page < totalPages,
+		has_previous_page: page > 1,
+	};
+}
+
 module.exports = {
 	getPagination,
+	buildPaginationMeta,
 };

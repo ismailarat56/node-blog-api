@@ -2,9 +2,11 @@ const AppError = require('../utils/app-error');
 
 const authModel = require('../models/auth.model');
 
-const { validateLoginBody } = require('../validators/auth.validator');
+const userModel = require('../models/user.model');
 
-const { verifyPassword, performDummyPasswordWork } = require('../utils/password');
+const { validateLoginBody, validateRegisterBody } = require('../validators/auth.validator');
+
+const { verifyPassword, performDummyPasswordWork, hashPassword } = require('../utils/password');
 
 const { createAccessToken } = require('../utils/jwt');
 
@@ -12,6 +14,32 @@ const { sendSuccess } = require('../utils/response');
 
 function throwInvalidCredentials() {
 	throw new AppError(401, 'E-posta veya password hatalı.', 'INVALID_CREDENTIALS');
+}
+
+async function register(request, response) {
+	const data = validateRegisterBody(request.body);
+
+	const existingUser = await userModel.findUserByEmail(data.email);
+
+	if (existingUser) {
+		throw new AppError(409, 'Bu e-posta adresi zaten kullanılıyor.', 'EMAIL_ALREADY_EXISTS');
+	}
+
+	const passwordHash = await hashPassword(data.password);
+
+	const userId = await userModel.createUser({
+		name: data.name,
+		email: data.email,
+		passwordHash,
+	});
+
+	const user = await userModel.findUserById(userId);
+
+	return sendSuccess(response, {
+		statusCode: 201,
+		message: 'Kayıt tamamlandı. Giriş yapabilirsiniz.',
+		data: user,
+	});
 }
 
 async function login(request, response) {
@@ -75,7 +103,9 @@ async function logout(request, response) {
 		message: 'Çıkış yapıldı.',
 	});
 }
+
 module.exports = {
+	register,
 	login,
 	me,
 	logout,

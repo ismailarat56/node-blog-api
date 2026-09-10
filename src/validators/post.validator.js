@@ -20,13 +20,23 @@ const allowedSortFields = new Set(['id', 'title', 'created_at', 'updated_at', 'p
 
 const allowedStatuses = new Set(['draft', 'published']);
 
-const postFields = new Set(['title', 'content', 'excerpt', 'categoryId']);
+const postFields = new Set(['title', 'content', 'excerpt', 'category_id']);
+
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function parsePostId(value) {
 	return parsePositiveId(value, {
 		resourceName: 'post',
 		appCode: 'INVALID_POST_ID',
 	});
+}
+
+function parsePostSlug(value) {
+	if (typeof value !== 'string' || value.length > 220 || !slugPattern.test(value)) {
+		throw new AppError(400, 'Geçerli bir post slug değeri girin.', 'INVALID_POST_SLUG');
+	}
+
+	return value;
 }
 
 function parseOptionalFilterId(value, fieldName) {
@@ -158,6 +168,54 @@ function parsePostListQuery(query) {
 	};
 }
 
+const publicQueryFields = new Set([
+	'search',
+	'category_id',
+	'user_id',
+	'sort_by',
+	'sort_order',
+	'page',
+	'limit',
+]);
+
+const publicSortFields = new Set(['published_at', 'title', 'id']);
+
+function parsePublicPostListQuery(query) {
+	const unsupportedFields = Object.keys(query).filter((field) => !publicQueryFields.has(field));
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(
+			422,
+			'Desteklenmeyen query parameter gönderildi.',
+			'UNSUPPORTED_QUERY_PARAMETERS',
+			{
+				fields: unsupportedFields,
+			}
+		);
+	}
+
+	if (query.sort_by !== undefined && !publicSortFields.has(query.sort_by)) {
+		throw new AppError(
+			422,
+			'sort_by published_at, title veya id olmalıdır.',
+			'INVALID_QUERY_PARAMETER',
+			{
+				field: 'sort_by',
+			}
+		);
+	}
+
+	const options = parsePostListQuery(query);
+
+	return {
+		...options,
+		sortBy: query.sort_by === undefined ? 'published_at' : options.sortBy,
+		status: null,
+		includeDeleted: 0,
+		visibility: 'published',
+	};
+}
+
 function countCharacters(value) {
 	return Array.from(value).length;
 }
@@ -265,7 +323,7 @@ function validateCreatePost(body) {
 
 		excerpt: 'excerpt' in body ? validatePostExcerpt(body.excerpt) : null,
 
-		categoryId: validatePostCategoryId(body.categoryId),
+		categoryId: validatePostCategoryId(body.category_id),
 	};
 }
 
@@ -294,7 +352,7 @@ function validateReplacePost(body) {
 
 		excerpt: validatePostExcerpt(body.excerpt),
 
-		categoryId: validatePostCategoryId(body.categoryId),
+		categoryId: validatePostCategoryId(body.category_id),
 	};
 }
 
@@ -326,7 +384,7 @@ function validatePatchPost(body) {
 	}
 
 	if ('category_id' in body) {
-		data.categoryId = validatePostCategoryId(body.categoryId);
+		data.categoryId = validatePostCategoryId(body.category_id);
 	}
 
 	return data;
@@ -334,7 +392,9 @@ function validatePatchPost(body) {
 
 module.exports = {
 	parsePostId,
+	parsePostSlug,
 	parsePostListQuery,
+	parsePublicPostListQuery,
 	validateCreatePost,
 	validateReplacePost,
 	validatePatchPost,

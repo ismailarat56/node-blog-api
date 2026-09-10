@@ -8,6 +8,8 @@ const { slugify } = require('../utils/slugify');
 
 const { isAdmin } = require('../middlewares/authorize.middleware');
 
+const { canViewPost, canManagePost } = require('../utils/post-visibility');
+
 const { sendSuccess } = require('../utils/response');
 
 const {
@@ -65,16 +67,8 @@ async function findExistingPost(id, { includeDeleted = false } = {}) {
 	return post;
 }
 
-function isPostOwner(post, user) {
-	return Number(post.author.id) === Number(user.id);
-}
-
-function canViewPost(post, user) {
-	return post.status === 'published' || isAdmin(user) || isPostOwner(post, user);
-}
-
 function assertPostOwnerOrAdmin(post, user) {
-	if (isAdmin(user) || isPostOwner(post, user)) {
+	if (canManagePost(post, user)) {
 		return;
 	}
 
@@ -90,7 +84,10 @@ async function index(request, response) {
 
 	const listOptions = {
 		...options,
-		viewer: request.user,
+
+		visibility: isAdmin(request.user) ? 'all' : 'own_or_published',
+
+		viewerId: request.user.id,
 	};
 
 	const [posts, total] = await Promise.all([
@@ -102,12 +99,15 @@ async function index(request, response) {
 
 	return sendSuccess(response, {
 		data: posts,
+
 		meta: {
 			page: options.page,
 			limit: options.limit,
 			total,
 			total_pages: totalPages,
+
 			has_next_page: options.page < totalPages,
+
 			has_previous_page: options.page > 1,
 		},
 	});

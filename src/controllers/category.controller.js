@@ -4,6 +4,8 @@ const categoryModel = require('../models/category.model');
 
 const postModel = require('../models/post.model');
 
+const { isAdmin } = require('../middlewares/authorize.middleware');
+
 const { sendSuccess } = require('../utils/response');
 
 const {
@@ -38,6 +40,14 @@ async function findExistingCategory(id) {
 
 async function index(request, response) {
 	const options = parseCategoryListQuery(request.query);
+
+	if (options.includeDeleted && !isAdmin(request.user)) {
+		throw new AppError(
+			403,
+			'Silinmiş categoryleri yalnızca admin listeleyebilir.',
+			'FORBIDDEN'
+		);
+	}
 
 	const [categories, total] = await Promise.all([
 		categoryModel.findAllCategories(options),
