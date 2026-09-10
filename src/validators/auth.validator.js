@@ -1,6 +1,12 @@
 const AppError = require('../utils/app-error');
 
+const { assertPlainObject } = require('./common.validator');
+
+const { validateCreateUser } = require('./user.validator');
+
 const loginFields = new Set(['email', 'password']);
+
+const registerFields = new Set(['name', 'email', 'password']);
 
 function validateLoginBody(body) {
 	if (!body || Array.isArray(body) || typeof body !== 'object') {
@@ -40,6 +46,32 @@ function validateLoginBody(body) {
 	};
 }
 
+function validateRegisterBody(body) {
+	assertPlainObject(body);
+
+	const unsupportedFields = Object.keys(body).filter((field) => !registerFields.has(field));
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(
+			422,
+			'Kayıt yalnızca name, email ve password alanlarını kabul eder.',
+			'UNSUPPORTED_REGISTER_FIELDS',
+			{
+				fields: unsupportedFields,
+			}
+		);
+	}
+
+	const { name, email, password } = validateCreateUser(body);
+
+	return {
+		name,
+		email,
+		password,
+	};
+}
+
 module.exports = {
 	validateLoginBody,
+	validateRegisterBody,
 };

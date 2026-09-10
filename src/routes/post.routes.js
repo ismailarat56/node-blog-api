@@ -2,6 +2,8 @@ const { Router } = require('express');
 
 const postController = require('../controllers/post.controller');
 
+const postCommentRouter = require('./post-comment.routes');
+
 const authenticate = require('../middlewares/authenticate.middleware');
 
 const asyncHandler = require('../utils/async-handler');
@@ -9,6 +11,8 @@ const asyncHandler = require('../utils/async-handler');
 const router = Router();
 
 router.use(asyncHandler(authenticate));
+
+router.use('/:postId/comments', postCommentRouter);
 
 router.get('/', asyncHandler(postController.index));
 

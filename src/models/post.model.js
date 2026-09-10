@@ -8,6 +8,37 @@ const sortColumnMap = {
 	published_at: 'p.published_at',
 };
 
+const visibilityConditions = {
+	published: () => ({
+		sql: "p.status = 'published'",
+		values: [],
+	}),
+
+	own_or_published: (options) => {
+		if (!options.viewerId) {
+			throw new Error('own_or_published görünürlüğü viewerId ister.');
+		}
+
+		return {
+			sql: `
+				(
+					p.status = 'published'
+					OR p.user_id = ?
+				)
+			`,
+			values: [options.viewerId],
+		};
+	},
+
+	all: () => null,
+};
+
+function buildVisibilityCondition(options) {
+	const build = visibilityConditions[options.visibility] || visibilityConditions.published;
+
+	return build(options);
+}
+
 const listColumns = `
 	p.id,
 	p.title,
@@ -22,7 +53,14 @@ const listColumns = `
 	u.name AS author_name,
 	c.id AS category_id,
 	c.name AS category_name,
-	c.slug AS category_slug
+	c.slug AS category_slug,
+	(
+		SELECT COUNT(*)
+		FROM comments AS cm
+		WHERE cm.post_id = p.id
+			AND cm.deleted_at IS NULL
+			AND cm.status = 'visible'
+	) AS comment_count
 `;
 
 const detailColumns = `
@@ -53,15 +91,11 @@ function buildPostWhereClause(options) {
 		conditions.push('p.deleted_at IS NULL');
 	}
 
-	if (options.viewer && options.viewer.role !== 'admin') {
-		conditions.push(`
-			(
-				p.status = 'published'
-				OR p.user_id = ?
-			)
-		`);
+	const visibility = buildVisibilityCondition(options);
 
-		values.push(options.viewer.id);
+	if (visibility) {
+		conditions.push(visibility.sql);
+		values.push(...visibility.values);
 	}
 
 	if (options.search) {
@@ -115,15 +149,20 @@ function mapPostRow(row) {
 		excerpt: row.excerpt,
 		status: row.status,
 		published_at: row.published_at,
+
 		author: {
 			id: row.author_id,
 			name: row.author_name,
 		},
+
 		category: {
 			id: row.category_id,
 			name: row.category_name,
 			slug: row.category_slug,
 		},
+
+		comment_count: Number(row.comment_count),
+
 		created_at: row.created_at,
 		updated_at: row.updated_at,
 		deleted_at: row.deleted_at,
@@ -213,6 +252,23 @@ async function findPostBySlug(slug) {
 	);
 
 	return rows[0] || null;
+}
+
+async function findPublishedPostBySlug(slug) {
+	const [rows] = await pool.execute(
+		`
+				SELECT
+					${detailColumns}
+				${fromClause}
+				WHERE p.slug = ?
+					AND p.status = 'published'
+					AND p.deleted_at IS NULL
+				LIMIT 1
+			`,
+		[slug]
+	);
+
+	return mapPostRow(rows[0]);
 }
 
 async function countActivePostsByCategory(categoryId) {
@@ -322,7 +378,8 @@ async function unpublishPost(id) {
 	const [result] = await pool.execute(
 		`
 				UPDATE posts
-				SET status = 'draft'
+				SET
+					status = 'draft'
 				WHERE id = ?
 					AND deleted_at IS NULL
 					AND status = 'published'
@@ -337,8 +394,9 @@ async function softDeletePost(id) {
 	const [result] = await pool.execute(
 		`
 				UPDATE posts
-				SET deleted_at =
-					CURRENT_TIMESTAMP
+				SET
+					deleted_at =
+						CURRENT_TIMESTAMP
 				WHERE id = ?
 					AND deleted_at IS NULL
 			`,
@@ -352,7 +410,8 @@ async function restorePost(id) {
 	const [result] = await pool.execute(
 		`
 				UPDATE posts
-				SET deleted_at = NULL
+				SET
+					deleted_at = NULL
 				WHERE id = ?
 					AND deleted_at IS NOT NULL
 			`,
@@ -367,6 +426,7 @@ module.exports = {
 	countPosts,
 	findPostById,
 	findPostBySlug,
+	findPublishedPostBySlug,
 	countActivePostsByCategory,
 	createPost,
 	replacePost,

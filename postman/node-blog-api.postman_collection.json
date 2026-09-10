@@ -1,0 +1,4087 @@
+{
+	"id": "84c4f36b-0b70-4f15-817a-4852b4f39cda",
+	"name": "Node Blog API",
+	"timestamp": "2026-09-10T13:09:47.367Z",
+	"collection_id": "57626617-e54040f9-2ace-4c11-a101-60a98397a04e",
+	"folder_id": 0,
+	"environment_id": "57626617-763c8d49-c918-499f-bd40-a99318697384",
+	"totalPass": 206,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-09-10T13:09:42.697Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "202b6307-d4ed-4f6d-ba8a-22a829a0bfa0",
+			"name": "GET health",
+			"url": "http://localhost:3000/health",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "3798a9ff-9f33-4de7-922f-b587bbf66942",
+			"name": "POST login (admin)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 204,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login 200 döndü": true
+			},
+			"testPassFailCounts": {
+				"Login 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [204],
+			"allTests": [
+				{
+					"Login 200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "cf85a3d6-450c-415b-bac1-03b61a3e59dc",
+			"name": "POST login (user)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 198,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login 200 döndü": true
+			},
+			"testPassFailCounts": {
+				"Login 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [198],
+			"allTests": [
+				{
+					"Login 200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "24b694b5-c24c-4bb4-9186-2ac45753c7d0",
+			"name": "GET me (admin)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Rol admin": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Rol admin": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Rol admin": true
+				}
+			]
+		},
+		{
+			"id": "fadc5dfc-b03d-4925-9311-dfc06439780e",
+			"name": "GET me (user)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Rol user": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Rol user": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Rol user": true
+				}
+			]
+		},
+		{
+			"id": "a1f141e0-51b6-4418-b00b-5ab9d73b18e7",
+			"name": "POST login (wrong password)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 181,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Yanlış parola 401 döndü": true,
+				"Hata kodu INVALID_CREDENTIALS": true
+			},
+			"testPassFailCounts": {
+				"Yanlış parola 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu INVALID_CREDENTIALS": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [181],
+			"allTests": [
+				{
+					"Yanlış parola 401 döndü": true,
+					"Hata kodu INVALID_CREDENTIALS": true
+				}
+			]
+		},
+		{
+			"id": "5e36de58-eee4-463f-b36e-3021b8b4e8ce",
+			"name": "POST login (olmayan email)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 183,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Olmayan e-posta 401 döndü": true,
+				"Yanlış parola ile aynı hata döndü": true
+			},
+			"testPassFailCounts": {
+				"Olmayan e-posta 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Yanlış parola ile aynı hata döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [183],
+			"allTests": [
+				{
+					"Olmayan e-posta 401 döndü": true,
+					"Yanlış parola ile aynı hata döndü": true
+				}
+			]
+		},
+		{
+			"id": "e2887aaa-572b-4640-9286-febcf7678c81",
+			"name": "POST login (eksik password)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Eksik password 422 döndü": true,
+				"Hata kodu INVALID_LOGIN_INPUT": true
+			},
+			"testPassFailCounts": {
+				"Eksik password 422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu INVALID_LOGIN_INPUT": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Eksik password 422 döndü": true,
+					"Hata kodu INVALID_LOGIN_INPUT": true
+				}
+			]
+		},
+		{
+			"id": "407bb939-1b69-4108-b056-28396a658704",
+			"name": "POST login (desteklenmeyen alan)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Desteklenmeyen alan 422 döndü": true,
+				"Hata kodu UNSUPPORTED_LOGIN_FIELDS": true
+			},
+			"testPassFailCounts": {
+				"Desteklenmeyen alan 422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu UNSUPPORTED_LOGIN_FIELDS": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Desteklenmeyen alan 422 döndü": true,
+					"Hata kodu UNSUPPORTED_LOGIN_FIELDS": true
+				}
+			]
+		},
+		{
+			"id": "d79e52c3-32ba-4038-93a1-5548b6d69777",
+			"name": "POST login (geçersiz JSON)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 2,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Geçersiz JSON 400 döndü": true,
+				"Hata kodu INVALID_JSON": true
+			},
+			"testPassFailCounts": {
+				"Geçersiz JSON 400 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu INVALID_JSON": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Geçersiz JSON 400 döndü": true,
+					"Hata kodu INVALID_JSON": true
+				}
+			]
+		},
+		{
+			"id": "49a62930-d793-4f06-93a5-e85ffd230c9c",
+			"name": "GET me (header yok)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"401 döndü": true,
+				"Kimlik doğrulama gerekli": true,
+				"WWW-Authenticate doğru": true
+			},
+			"testPassFailCounts": {
+				"401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kimlik doğrulama gerekli": {
+					"pass": 1,
+					"fail": 0
+				},
+				"WWW-Authenticate doğru": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"401 döndü": true,
+					"Kimlik doğrulama gerekli": true,
+					"WWW-Authenticate doğru": true
+				}
+			]
+		},
+		{
+			"id": "e3e5a814-db6b-44cd-86f1-61be4ad11960",
+			"name": "GET me (wrong scheme)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 1,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"401 döndü": true,
+				"Authorization biçimi geçersiz": true
+			},
+			"testPassFailCounts": {
+				"401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Authorization biçimi geçersiz": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [1],
+			"allTests": [
+				{
+					"401 döndü": true,
+					"Authorization biçimi geçersiz": true
+				}
+			]
+		},
+		{
+			"id": "9a6e622d-b299-43fc-8823-f37e2236865f",
+			"name": "GET me (boş Bearer)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 1,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"401 döndü": true,
+				"Eksik token başlığı reddedildi": true
+			},
+			"testPassFailCounts": {
+				"401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Eksik token başlığı reddedildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [1],
+			"allTests": [
+				{
+					"401 döndü": true,
+					"Eksik token başlığı reddedildi": true
+				}
+			]
+		},
+		{
+			"id": "be0c1c9b-7bfa-4abc-bdd4-95e673348361",
+			"name": "GET me (sahte token)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"401 döndü": true,
+				"Sahte token reddedildi": true
+			},
+			"testPassFailCounts": {
+				"401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sahte token reddedildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"401 döndü": true,
+					"Sahte token reddedildi": true
+				}
+			]
+		},
+		{
+			"id": "99e8896d-8198-48c7-a810-6b55012427f8",
+			"name": "POST logout (user)",
+			"url": "http://localhost:3000/api/v1/auth/logout",
+			"time": 13,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Logout 200 döndü": true,
+				"Çıkış başarılı": true
+			},
+			"testPassFailCounts": {
+				"Logout 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Çıkış başarılı": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [13],
+			"allTests": [
+				{
+					"Logout 200 döndü": true,
+					"Çıkış başarılı": true
+				}
+			]
+		},
+		{
+			"id": "3bc23e5e-6020-4af1-aa84-7543a15432ff",
+			"name": "GET me (logout sonrası user)",
+			"url": "http://localhost:3000/api/v1/auth/me",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Logout sonrası 401 döndü": true,
+				"Token iptal edilmiş": true
+			},
+			"testPassFailCounts": {
+				"Logout sonrası 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token iptal edilmiş": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Logout sonrası 401 döndü": true,
+					"Token iptal edilmiş": true
+				}
+			]
+		},
+		{
+			"id": "6a3cc9f3-ff70-4472-ac1d-80a7424f303c",
+			"name": "POST logout (ikinci deneme user)",
+			"url": "http://localhost:3000/api/v1/auth/logout",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"İkinci logout 401 döndü": true,
+				"İptal edilmiş token tekrar kullanılamadı": true
+			},
+			"testPassFailCounts": {
+				"İkinci logout 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"İptal edilmiş token tekrar kullanılamadı": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"İkinci logout 401 döndü": true,
+					"İptal edilmiş token tekrar kullanılamadı": true
+				}
+			]
+		},
+		{
+			"id": "ab84e580-56cf-45a1-b73f-857c29a0c1b4",
+			"name": "POST login (user tekrar)",
+			"url": "http://localhost:3000/api/v1/auth/login",
+			"time": 195,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Login 200 döndü": true
+			},
+			"testPassFailCounts": {
+				"Login 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [195],
+			"allTests": [
+				{
+					"Login 200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "88de7408-027d-4fea-8ee3-f737c5449372",
+			"name": "GET users (sayfalama)",
+			"url": "http://localhost:3000/api/v1/users?page=1&limit=2",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Kullanıcı listesinde role var, password_hash yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kullanıcı listesinde role var, password_hash yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Kullanıcı listesinde role var, password_hash yok": true
+				}
+			]
+		},
+		{
+			"id": "8533dad0-3a55-4fd7-b626-3414522f3305",
+			"name": "GET users (arama)",
+			"url": "http://localhost:3000/api/v1/users?search=ayse",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Kullanıcı listesinde role var, password_hash yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kullanıcı listesinde role var, password_hash yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Kullanıcı listesinde role var, password_hash yok": true
+				}
+			]
+		},
+		{
+			"id": "4b6c2a6e-d968-429d-b675-c0dbc8be7243",
+			"name": "GET users (aktif kullanıcılar)",
+			"url": "http://localhost:3000/api/v1/users?is_active=1",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Kullanıcı listesinde role var, password_hash yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kullanıcı listesinde role var, password_hash yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Kullanıcı listesinde role var, password_hash yok": true
+				}
+			]
+		},
+		{
+			"id": "80495f42-6c3d-483e-89e7-9d5fca43ec0c",
+			"name": "GET users (isme göre artan)",
+			"url": "http://localhost:3000/api/v1/users?sort_by=name&sort_order=asc",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Kullanıcı listesinde role var, password_hash yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kullanıcı listesinde role var, password_hash yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Kullanıcı listesinde role var, password_hash yok": true
+				}
+			]
+		},
+		{
+			"id": "fddca3f0-388d-4f52-9fd1-7e014707f2ff",
+			"name": "GET user (ID ile)",
+			"url": "http://localhost:3000/api/v1/users/15",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"İstenen kullanıcı döndü": true,
+				"Role var, password_hash yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"İstenen kullanıcı döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Role var, password_hash yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"İstenen kullanıcı döndü": true,
+					"Role var, password_hash yok": true
+				}
+			]
+		},
+		{
+			"id": "a6118ff5-b45c-495b-bd7d-11dec645830b",
+			"name": "POST user (oluştur)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 200,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [200],
+			"allTests": [
+				{
+					"201 döndü": true
+				}
+			]
+		},
+		{
+			"id": "015a59c8-2a79-46c6-9a10-5b794334f3f2",
+			"name": "POST user (duplicate email)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 3,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"Duplicate email 409 döndü": true,
+				"Hata kodu EMAIL_ALREADY_EXISTS": true
+			},
+			"testPassFailCounts": {
+				"Duplicate email 409 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu EMAIL_ALREADY_EXISTS": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"Duplicate email 409 döndü": true,
+					"Hata kodu EMAIL_ALREADY_EXISTS": true
+				}
+			]
+		},
+		{
+			"id": "ca33cedf-e522-4e4e-abf2-8b5385c9f562",
+			"name": "POST user (role alanı)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Role alanı 422 döndü": true,
+				"Desteklenmeyen alan reddedildi": true
+			},
+			"testPassFailCounts": {
+				"Role alanı 422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Desteklenmeyen alan reddedildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Role alanı 422 döndü": true,
+					"Desteklenmeyen alan reddedildi": true
+				}
+			]
+		},
+		{
+			"id": "b184d19b-702f-4d0d-a959-ed42b159776f",
+			"name": "POST user (token yok)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Token olmadan 401 döndü": true,
+				"Kimlik doğrulama gerekli": true
+			},
+			"testPassFailCounts": {
+				"Token olmadan 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kimlik doğrulama gerekli": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Token olmadan 401 döndü": true,
+					"Kimlik doğrulama gerekli": true
+				}
+			]
+		},
+		{
+			"id": "32c56f2f-3ae0-4d7e-ad4d-1e6468f0ec3e",
+			"name": "PUT user (ad ve email)",
+			"url": "http://localhost:3000/api/v1/users/15",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"PUT 200 döndü": true,
+				"Ad ve email doğru": true
+			},
+			"testPassFailCounts": {
+				"PUT 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Ad ve email doğru": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"PUT 200 döndü": true,
+					"Ad ve email doğru": true
+				}
+			]
+		},
+		{
+			"id": "54a6ea4b-ebaa-4310-b550-a90db61bd6a2",
+			"name": "PATCH user (yalnızca ad)",
+			"url": "http://localhost:3000/api/v1/users/15",
+			"time": 10,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"PATCH 200 döndü": true,
+				"Ad değişti, email korundu": true
+			},
+			"testPassFailCounts": {
+				"PATCH 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Ad değişti, email korundu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [10],
+			"allTests": [
+				{
+					"PATCH 200 döndü": true,
+					"Ad değişti, email korundu": true
+				}
+			]
+		},
+		{
+			"id": "3eb65022-b234-43d5-975c-203aa71b1ca4",
+			"name": "PATCH user (role reddedilir)",
+			"url": "http://localhost:3000/api/v1/users/15",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Role alanı 422 döndü": true,
+				"Desteklenmeyen alan role": true
+			},
+			"testPassFailCounts": {
+				"Role alanı 422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Desteklenmeyen alan role": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Role alanı 422 döndü": true,
+					"Desteklenmeyen alan role": true
+				}
+			]
+		},
+		{
+			"id": "905dec40-573c-478c-b73f-39bee8fcd3a7",
+			"name": "PATCH role (user yetkisiz)",
+			"url": "http://localhost:3000/api/v1/users/15/role",
+			"time": 2,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 FORBIDDEN döndü": true
+			},
+			"testPassFailCounts": {
+				"403 FORBIDDEN döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"403 FORBIDDEN döndü": true
+				}
+			]
+		},
+		{
+			"id": "7e743cb8-37ab-4f01-920a-7139de80d23a",
+			"name": "PATCH role (geçersiz rol)",
+			"url": "http://localhost:3000/api/v1/users/15/role",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 INVALID_USER_ROLE döndü": true
+			},
+			"testPassFailCounts": {
+				"422 INVALID_USER_ROLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 INVALID_USER_ROLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "e6b68cdc-6024-4ac7-a7f2-538735357542",
+			"name": "PATCH role (ek alan)",
+			"url": "http://localhost:3000/api/v1/users/15/role",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 UNSUPPORTED_ROLE_FIELDS döndü": true
+			},
+			"testPassFailCounts": {
+				"422 UNSUPPORTED_ROLE_FIELDS döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 UNSUPPORTED_ROLE_FIELDS döndü": true
+				}
+			]
+		},
+		{
+			"id": "6b516701-105b-48e7-85b8-f395d7237b55",
+			"name": "PATCH role (kendi rolü)",
+			"url": "http://localhost:3000/api/v1/users/11/role",
+			"time": 2,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"409 CANNOT_CHANGE_OWN_ROLE döndü": true
+			},
+			"testPassFailCounts": {
+				"409 CANNOT_CHANGE_OWN_ROLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"409 CANNOT_CHANGE_OWN_ROLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "b21ba131-e6ef-40ce-8283-054dcad67402",
+			"name": "PATCH role (user → admin)",
+			"url": "http://localhost:3000/api/v1/users/15/role",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü ve rol admin oldu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü ve rol admin oldu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü ve rol admin oldu": true
+				}
+			]
+		},
+		{
+			"id": "2c97e810-8fad-4bb7-a28f-628595c83b2f",
+			"name": "GET users (terfi sonrası aynı token)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Aynı token yeni yetkiyle 200 döndü": true
+			},
+			"testPassFailCounts": {
+				"Aynı token yeni yetkiyle 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Aynı token yeni yetkiyle 200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "6f657977-8c74-4d2b-9928-31255fbf513e",
+			"name": "PATCH role (admin → user)",
+			"url": "http://localhost:3000/api/v1/users/15/role",
+			"time": 9,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü ve rol tekrar user oldu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü ve rol tekrar user oldu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [9],
+			"allTests": [
+				{
+					"200 döndü ve rol tekrar user oldu": true
+				}
+			]
+		},
+		{
+			"id": "6e9ca3b5-74cc-474e-8492-b44b30c2d8f7",
+			"name": "GET users (rol geri alındı)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 4,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"Kullanıcı listesi 403 FORBIDDEN döndü": true
+			},
+			"testPassFailCounts": {
+				"Kullanıcı listesi 403 FORBIDDEN döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [4],
+			"allTests": [
+				{
+					"Kullanıcı listesi 403 FORBIDDEN döndü": true
+				}
+			]
+		},
+		{
+			"id": "b16fface-8af8-4dfe-a575-31fc6eaf8c55",
+			"name": "GET user (yetkisiz detay)",
+			"url": "http://localhost:3000/api/v1/users/15",
+			"time": 3,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"Kullanıcı detayı 403 FORBIDDEN döndü": true
+			},
+			"testPassFailCounts": {
+				"Kullanıcı detayı 403 FORBIDDEN döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"Kullanıcı detayı 403 FORBIDDEN döndü": true
+				}
+			]
+		},
+		{
+			"id": "2e65537d-e7fb-46d3-adf6-da1bc50432ee",
+			"name": "GET users (token yok)",
+			"url": "http://localhost:3000/api/v1/users",
+			"time": 2,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Tokensız istek 401 döndü": true,
+				"Kimlik doğrulama gerekli": true
+			},
+			"testPassFailCounts": {
+				"Tokensız istek 401 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kimlik doğrulama gerekli": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Tokensız istek 401 döndü": true,
+					"Kimlik doğrulama gerekli": true
+				}
+			]
+		},
+		{
+			"id": "ff977fe6-268e-43a8-85bd-06f58f6061aa",
+			"name": "DELETE user (soft delete)",
+			"url": "http://localhost:3000/api/v1/users/22",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Soft delete 200 döndü": true,
+				"Doğru kullanıcı silindi": true
+			},
+			"testPassFailCounts": {
+				"Soft delete 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Doğru kullanıcı silindi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"Soft delete 200 döndü": true,
+					"Doğru kullanıcı silindi": true
+				}
+			]
+		},
+		{
+			"id": "658beded-a97b-4198-a7ca-9722ba80e642",
+			"name": "GET user (silindikten sonra)",
+			"url": "http://localhost:3000/api/v1/users/22",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Silinen kullanıcı 404 döndü": true,
+				"Hata kodu USER_NOT_FOUND": true
+			},
+			"testPassFailCounts": {
+				"Silinen kullanıcı 404 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Hata kodu USER_NOT_FOUND": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"Silinen kullanıcı 404 döndü": true,
+					"Hata kodu USER_NOT_FOUND": true
+				}
+			]
+		},
+		{
+			"id": "ba9ef6ff-a00d-4316-9f83-11045e66a246",
+			"name": "PATCH user (restore)",
+			"url": "http://localhost:3000/api/v1/users/22/restore",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Restore 200 döndü": true,
+				"Doğru kullanıcı geri getirildi": true
+			},
+			"testPassFailCounts": {
+				"Restore 200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Doğru kullanıcı geri getirildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"Restore 200 döndü": true,
+					"Doğru kullanıcı geri getirildi": true
+				}
+			]
+		},
+		{
+			"id": "1d4dda0a-aece-4ee9-9b74-f968581fab57",
+			"name": "GET categories (user)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "a3bea03c-dfba-4a10-9c1d-003b6e6f4fe3",
+			"name": "GET categories (arama)",
+			"url": "http://localhost:3000/api/v1/categories?search=web",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "4aa7f26b-c77d-4aae-9032-f10ca9415ee1",
+			"name": "GET categories (aktif)",
+			"url": "http://localhost:3000/api/v1/categories?is_active=1",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "39f4cf78-da4d-4647-a1eb-c1b7a38c2b96",
+			"name": "GET categories (pasif)",
+			"url": "http://localhost:3000/api/v1/categories?is_active=0",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "64e0b7e9-4996-4839-b8be-17977353d249",
+			"name": "GET categories (slug artan)",
+			"url": "http://localhost:3000/api/v1/categories?sort_by=slug&sort_order=asc",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "3a54f48e-be8c-412a-a76e-8927722d489e",
+			"name": "GET categories (sayfalama)",
+			"url": "http://localhost:3000/api/v1/categories?page=1&limit=5",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Sayfalama doğru": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sayfalama doğru": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Sayfalama doğru": true
+				}
+			]
+		},
+		{
+			"id": "41308183-804e-4529-83f5-479fcf5e9e7f",
+			"name": "GET categories (birleşik filtre)",
+			"url": "http://localhost:3000/api/v1/categories?search=web&is_active=1&sort_by=created_at&sort_order=desc&page=1&limit=10",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Sayfalama ve aktiflik doğru": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sayfalama ve aktiflik doğru": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Sayfalama ve aktiflik doğru": true
+				}
+			]
+		},
+		{
+			"id": "43548b8a-83b9-4876-9127-1910ebbd6088",
+			"name": "GET category (ID ile)",
+			"url": "http://localhost:3000/api/v1/categories/11",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"İstenen kategori döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"İstenen kategori döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"İstenen kategori döndü": true
+				}
+			]
+		},
+		{
+			"id": "a862bab6-e73d-4d6c-92ee-817335a4c4d4",
+			"name": "POST categories (oluştur)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"201 döndü": true
+				}
+			]
+		},
+		{
+			"id": "9d78514a-0b85-4435-ade2-34f67bf00984",
+			"name": "POST categories (duplicate slug)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 2,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"409 döndü": true,
+				"CATEGORY_SLUG_ALREADY_EXISTS döndü": true
+			},
+			"testPassFailCounts": {
+				"409 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"CATEGORY_SLUG_ALREADY_EXISTS döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"409 döndü": true,
+					"CATEGORY_SLUG_ALREADY_EXISTS döndü": true
+				}
+			]
+		},
+		{
+			"id": "e63d8e0c-bec5-4ef5-ba09-d97229345dc7",
+			"name": "POST categories (geçersiz slug)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_CATEGORY_SLUG döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_CATEGORY_SLUG döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_CATEGORY_SLUG döndü": true
+				}
+			]
+		},
+		{
+			"id": "25df37f9-98d0-4ad9-9cb7-1e7ee9e7fad3",
+			"name": "POST categories (ardışık tire)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_CATEGORY_SLUG döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_CATEGORY_SLUG döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_CATEGORY_SLUG döndü": true
+				}
+			]
+		},
+		{
+			"id": "0c98f209-58d2-43c7-8cb0-3acf063ee2f6",
+			"name": "GET categories (bilinmeyen query)",
+			"url": "http://localhost:3000/api/v1/categories?unknown=value",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"UNSUPPORTED_QUERY_PARAMETERS döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"UNSUPPORTED_QUERY_PARAMETERS döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"UNSUPPORTED_QUERY_PARAMETERS döndü": true
+				}
+			]
+		},
+		{
+			"id": "2ee4d9f6-ece8-457b-a0c1-e5e415da5e77",
+			"name": "GET categories (geçersiz sort_by)",
+			"url": "http://localhost:3000/api/v1/categories?sort_by=password_hash",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_QUERY_PARAMETER döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_QUERY_PARAMETER döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_QUERY_PARAMETER döndü": true
+				}
+			]
+		},
+		{
+			"id": "0a169cde-5d0a-4a8b-9c1b-f28fe8dcc75d",
+			"name": "PUT categories (tam güncelle)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 11,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [11],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "23cea18f-73c2-4032-aa2b-58741637b988",
+			"name": "PUT categories (eksik alanlar)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "54e06330-ffcb-472f-8940-4ad57da9c414",
+			"name": "PATCH categories (adı güncelle)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "90e88892-8bd2-449f-af6b-6e5cbb17c575",
+			"name": "PATCH categories (pasif yap)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "08fd415f-94f8-4146-97f3-44b8956c673d",
+			"name": "PATCH categories (aktif yap)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "b63f6af3-18bc-43d5-8514-7c35b16d0c36",
+			"name": "PATCH categories (description null)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "7bf934df-0494-48f0-87f1-0bdbf981167d",
+			"name": "PATCH categories (boş body)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "12116a17-ffe9-4bbd-ad11-d8fc72ea5322",
+			"name": "PATCH categories (izin verilmeyen alanlar)",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "029f58e1-afad-4e14-b726-dd9fcccca33e",
+			"name": "POST categories (geçici oluştur)",
+			"url": "http://localhost:3000/api/v1/categories",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"201 döndü": true
+				}
+			]
+		},
+		{
+			"id": "55dac6b4-b40a-4e76-b282-3d80573a4659",
+			"name": "DELETE categories (geçiciyi sil)",
+			"url": "http://localhost:3000/api/v1/categories/14",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "b2df4694-f3eb-4a2a-9609-06e4b6d9d514",
+			"name": "GET categories (silinmiş kayıt)",
+			"url": "http://localhost:3000/api/v1/categories/14",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true
+				}
+			]
+		},
+		{
+			"id": "607ea5cb-60e0-4d88-a827-b841ba2075ff",
+			"name": "GET categories (silinenler dahil)",
+			"url": "http://localhost:3000/api/v1/categories?include_deleted=1",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Silinen geçici kategori listede var": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Silinen geçici kategori listede var": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Silinen geçici kategori listede var": true
+				}
+			]
+		},
+		{
+			"id": "66a55fd3-448c-4336-9c9f-3e6db4ad8a12",
+			"name": "PATCH categories (restore)",
+			"url": "http://localhost:3000/api/v1/categories/14/restore",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "13d207ee-c44e-416e-a6fa-17b099491457",
+			"name": "PATCH categories (tekrar restore)",
+			"url": "http://localhost:3000/api/v1/categories/14/restore",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true
+				}
+			]
+		},
+		{
+			"id": "da3fc7c5-d06f-4147-acb5-528fef487c2d",
+			"name": "DELETE categories (geçiciyi tekrar sil)",
+			"url": "http://localhost:3000/api/v1/categories/14",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü; geçici kategori yeniden silindi": true
+			},
+			"testPassFailCounts": {
+				"200 döndü; geçici kategori yeniden silindi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"200 döndü; geçici kategori yeniden silindi": true
+				}
+			]
+		},
+		{
+			"id": "acd388fc-ff78-4aa5-926e-735858f6508c",
+			"name": "POST posts (oluştur user)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true,
+				"Slug Türkçe karakterlerden üretildi": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Slug Türkçe karakterlerden üretildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"201 döndü": true,
+					"Slug Türkçe karakterlerden üretildi": true
+				}
+			]
+		},
+		{
+			"id": "1d57f2df-35e9-48fb-8b8b-9abebb58973f",
+			"name": "POST posts (aynı başlık user)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true,
+				"Aynı başlık slugı -2 veya sonraki ekle bitti": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Aynı başlık slugı -2 veya sonraki ekle bitti": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"201 döndü": true,
+					"Aynı başlık slugı -2 veya sonraki ekle bitti": true
+				}
+			]
+		},
+		{
+			"id": "81d0af2c-71ce-42f9-8901-b04f16238d17",
+			"name": "POST posts (oluştur admin)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 7,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"201 döndü": true
+			},
+			"testPassFailCounts": {
+				"201 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"201 döndü": true
+				}
+			]
+		},
+		{
+			"id": "93ce0034-2f8b-4422-91ad-39917c5cb7b2",
+			"name": "POST posts (title eksik)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_POST_TITLE döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_POST_TITLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_POST_TITLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "90709a34-7560-49fc-8c61-a25fc7f89e80",
+			"name": "POST posts (title kısa)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_POST_TITLE döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_POST_TITLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_POST_TITLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "ba628f0d-80e9-49f6-bfe3-3bc81a2d4b95",
+			"name": "POST posts (content boş)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 3,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"INVALID_POST_CONTENT döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_POST_CONTENT döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"INVALID_POST_CONTENT döndü": true
+				}
+			]
+		},
+		{
+			"id": "7ea298a9-aa6e-4d2a-a04f-b1884a981bcd",
+			"name": "POST posts (category bulunamadı)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"CATEGORY_NOT_AVAILABLE döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"CATEGORY_NOT_AVAILABLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"CATEGORY_NOT_AVAILABLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "f29f01d3-8a32-49ad-aa12-caafa9170f8b",
+			"name": "POST posts (izin verilmeyen alanlar)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"UNSUPPORTED_POST_FIELDS döndü": true,
+				"Yalnızca user_id, slug ve status reddedildi": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"UNSUPPORTED_POST_FIELDS döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Yalnızca user_id, slug ve status reddedildi": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"UNSUPPORTED_POST_FIELDS döndü": true,
+					"Yalnızca user_id, slug ve status reddedildi": true
+				}
+			]
+		},
+		{
+			"id": "813d8114-9689-4f4a-99d1-ccd6d7940c94",
+			"name": "POST posts (bozuk JSON)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"400 döndü": true,
+				"INVALID_JSON döndü": true
+			},
+			"testPassFailCounts": {
+				"400 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"INVALID_JSON döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"400 döndü": true,
+					"INVALID_JSON döndü": true
+				}
+			]
+		},
+		{
+			"id": "7aa2c6ba-1f6e-43cc-9768-1e2e4c000c22",
+			"name": "GET posts (listele user)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "a5b8c0ab-2a66-4989-919b-afaa9275e920",
+			"name": "GET posts (listele admin)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Oluşturulan üç draft listede var": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Oluşturulan üç draft listede var": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Oluşturulan üç draft listede var": true
+				}
+			]
+		},
+		{
+			"id": "7abc79c6-66d5-43c6-b590-5afc1c6c1cb0",
+			"name": "GET posts (search)",
+			"url": "http://localhost:3000/api/v1/posts?search=%C5%9Fifreleme",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "931b339e-0535-45ed-8627-2fe0ff60b369",
+			"name": "GET posts (status draft)",
+			"url": "http://localhost:3000/api/v1/posts?status=draft",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "96b19209-a8d9-4a71-9d89-6a70749995ec",
+			"name": "GET posts (category_id)",
+			"url": "http://localhost:3000/api/v1/posts?category_id=13",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "a59f221f-f4ee-4781-97e8-554c0eb80257",
+			"name": "GET posts (user_id admin)",
+			"url": "http://localhost:3000/api/v1/posts?user_id=11",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "1f07629c-cbd1-44b6-a461-f47a16199c3f",
+			"name": "GET posts (title artan sırala)",
+			"url": "http://localhost:3000/api/v1/posts?sort_by=title&sort_order=asc",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "72e18414-bd41-4627-9893-dbc1c2881a7d",
+			"name": "GET posts (sayfalama)",
+			"url": "http://localhost:3000/api/v1/posts?page=1&limit=1",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Admin draftı user listesinde yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin draftı user listesinde yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Admin draftı user listesinde yok": true
+				}
+			]
+		},
+		{
+			"id": "1f60c29a-7065-4420-97ee-e008f16e3056",
+			"name": "GET posts (birleşik filtre admin)",
+			"url": "http://localhost:3000/api/v1/posts?search=api&status=draft&category_id=13&sort_by=created_at&sort_order=desc&page=1&limit=5",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true
+				}
+			]
+		},
+		{
+			"id": "5904f6c4-c3dc-4cb1-9506-7fc55581c439",
+			"name": "GET posts (geçersiz status)",
+			"url": "http://localhost:3000/api/v1/posts?status=archived",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "f8defbb0-7e51-44a1-8f26-17c1325f67cb",
+			"name": "GET posts (geçersiz sort_by)",
+			"url": "http://localhost:3000/api/v1/posts?sort_by=user_id",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "e926a7bd-0d98-476d-b29e-5d64769cddbb",
+			"name": "GET posts (bilinmeyen query)",
+			"url": "http://localhost:3000/api/v1/posts?author=1",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true
+				}
+			]
+		},
+		{
+			"id": "91794877-b6ca-491d-855c-c7d02e56110b",
+			"name": "GET posts (silinenler dahil user)",
+			"url": "http://localhost:3000/api/v1/posts?include_deleted=1",
+			"time": 2,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 döndü": true
+			},
+			"testPassFailCounts": {
+				"403 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"403 döndü": true
+				}
+			]
+		},
+		{
+			"id": "bbb6b507-1368-4ae2-b818-3aff5e5b3d25",
+			"name": "GET posts (kendi postu user)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Detayda content alanı var": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Detayda content alanı var": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Detayda content alanı var": true
+				}
+			]
+		},
+		{
+			"id": "3ed51bce-7e29-48db-9bb6-b34568d1695d",
+			"name": "GET posts (admin draftı user)",
+			"url": "http://localhost:3000/api/v1/posts/14",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true
+				}
+			]
+		},
+		{
+			"id": "c98b39df-b13a-408f-b7da-0a6595cb6f99",
+			"name": "GET posts (user postu admin)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"İstenen postun detayı döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"İstenen postun detayı döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"İstenen postun detayı döndü": true
+				}
+			]
+		},
+		{
+			"id": "6b209cf6-8822-4015-8033-e99155cf9d45",
+			"name": "GET posts (bulunamayan ID)",
+			"url": "http://localhost:3000/api/v1/posts/999999",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true
+				}
+			]
+		},
+		{
+			"id": "5c2b24ec-9c3c-4c67-8052-e8245268be66",
+			"name": "GET posts (geçersiz ID)",
+			"url": "http://localhost:3000/api/v1/posts/abc",
+			"time": 3,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"400 döndü": true
+			},
+			"testPassFailCounts": {
+				"400 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"400 döndü": true
+				}
+			]
+		},
+		{
+			"id": "bc599430-16db-4576-ba87-578dc43706cc",
+			"name": "PATCH posts (title güncelle)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Slug title değişince korundu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Slug title değişince korundu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [14],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Slug title değişince korundu": true
+				}
+			]
+		},
+		{
+			"id": "6e1dfa1e-144f-46c4-ad00-3a237839a49d",
+			"name": "PATCH posts (başkasının postu user)",
+			"url": "http://localhost:3000/api/v1/posts/14",
+			"time": 3,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 döndü": true
+			},
+			"testPassFailCounts": {
+				"403 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"403 döndü": true
+				}
+			]
+		},
+		{
+			"id": "33f280d9-df23-47ee-b5f4-ad97feb0de7e",
+			"name": "PATCH posts (user postu admin)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "9cf1c662-2e29-4417-8354-04717fd85266",
+			"name": "PUT posts (tam güncelle)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"excerpt null oldu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"excerpt null oldu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"excerpt null oldu": true
+				}
+			]
+		},
+		{
+			"id": "7f26c394-cebc-4fdb-90fe-8496fc897767",
+			"name": "PUT posts (eksik alanlar)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"MISSING_POST_FIELDS döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"MISSING_POST_FIELDS döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"MISSING_POST_FIELDS döndü": true
+				}
+			]
+		},
+		{
+			"id": "56fd2322-e4a1-4104-a540-853797179944",
+			"name": "PATCH posts (boş body)",
+			"url": "http://localhost:3000/api/v1/posts/12",
+			"time": 2,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"EMPTY_POST_PATCH_BODY döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"EMPTY_POST_PATCH_BODY döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"EMPTY_POST_PATCH_BODY döndü": true
+				}
+			]
+		},
+		{
+			"id": "ea399494-f637-4780-b6b6-5f6d3343e6fe",
+			"name": "PATCH posts (başkasının postu boş body)",
+			"url": "http://localhost:3000/api/v1/posts/14",
+			"time": 2,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 döndü": true
+			},
+			"testPassFailCounts": {
+				"403 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"403 döndü": true
+				}
+			]
+		},
+		{
+			"id": "3dad8d88-c8ba-4b43-a55e-cb9056062c86",
+			"name": "PATCH posts (publish user)",
+			"url": "http://localhost:3000/api/v1/posts/12/publish",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"published_at doldu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"published_at doldu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"published_at doldu": true
+				}
+			]
+		},
+		{
+			"id": "861cc7c6-9e93-4bf2-b860-106235d00a10",
+			"name": "PATCH posts (tekrar publish)",
+			"url": "http://localhost:3000/api/v1/posts/12/publish",
+			"time": 2,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"409 döndü": true,
+				"POST_ALREADY_PUBLISHED döndü": true
+			},
+			"testPassFailCounts": {
+				"409 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"POST_ALREADY_PUBLISHED döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"409 döndü": true,
+					"POST_ALREADY_PUBLISHED döndü": true
+				}
+			]
+		},
+		{
+			"id": "bba7bc14-c5a7-4e57-b115-b4c560a9ddbf",
+			"name": "PATCH posts (admin postunu publish user)",
+			"url": "http://localhost:3000/api/v1/posts/14/publish",
+			"time": 2,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 döndü": true
+			},
+			"testPassFailCounts": {
+				"403 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"403 döndü": true
+				}
+			]
+		},
+		{
+			"id": "526065af-e26b-4c0f-86c3-b5c877dfb11f",
+			"name": "PATCH posts (publish admin)",
+			"url": "http://localhost:3000/api/v1/posts/14/publish",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "3e3eefb6-0c27-4de1-b3df-9c037c888d46",
+			"name": "GET posts (yayımlanan admin postu user)",
+			"url": "http://localhost:3000/api/v1/posts/14",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "4f915e64-f8f0-4be8-b13c-14692db69fc5",
+			"name": "PATCH posts (unpublish user)",
+			"url": "http://localhost:3000/api/v1/posts/12/unpublish",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"published_at ilk yayın tarihini korudu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"published_at ilk yayın tarihini korudu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [6],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"published_at ilk yayın tarihini korudu": true
+				}
+			]
+		},
+		{
+			"id": "1ed1c56b-3475-4577-9fa7-2874ecd4800e",
+			"name": "PATCH posts (tekrar unpublish)",
+			"url": "http://localhost:3000/api/v1/posts/12/unpublish",
+			"time": 2,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"409 döndü": true,
+				"POST_NOT_PUBLISHED döndü": true
+			},
+			"testPassFailCounts": {
+				"409 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"POST_NOT_PUBLISHED döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"409 döndü": true,
+					"POST_NOT_PUBLISHED döndü": true
+				}
+			]
+		},
+		{
+			"id": "5281b1e2-19df-4a4c-9ebc-77356dce5a58",
+			"name": "PATCH posts (yeniden publish)",
+			"url": "http://localhost:3000/api/v1/posts/12/publish",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"published_at ilk yayın tarihini korudu": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"published_at ilk yayın tarihini korudu": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"published_at ilk yayın tarihini korudu": true
+				}
+			]
+		},
+		{
+			"id": "49129a2d-afed-4597-af5f-04163741406b",
+			"name": "DELETE posts (başkasının postu user)",
+			"url": "http://localhost:3000/api/v1/posts/14",
+			"time": 2,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"403 döndü": true
+			},
+			"testPassFailCounts": {
+				"403 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"403 döndü": true
+				}
+			]
+		},
+		{
+			"id": "bdb28a6d-0b2f-4e53-9f8c-c8f6ce34f155",
+			"name": "DELETE posts (ikinci postu sil)",
+			"url": "http://localhost:3000/api/v1/posts/13",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [5],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "28b476f2-c567-47da-96d2-c555d5b046f3",
+			"name": "GET posts (silinmiş kayıt)",
+			"url": "http://localhost:3000/api/v1/posts/13",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true
+				}
+			]
+		},
+		{
+			"id": "d4fcc4d5-0596-49cf-a62e-107d5d26b6ec",
+			"name": "GET posts (silinenler dahil admin)",
+			"url": "http://localhost:3000/api/v1/posts?include_deleted=1",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true,
+				"Listede content alanı yok": true,
+				"Silinen ikinci post listede var": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Listede content alanı yok": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Silinen ikinci post listede var": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"200 döndü": true,
+					"Listede content alanı yok": true,
+					"Silinen ikinci post listede var": true
+				}
+			]
+		},
+		{
+			"id": "18de4835-2feb-428c-847c-3df663bec9ca",
+			"name": "PATCH posts (restore user)",
+			"url": "http://localhost:3000/api/v1/posts/13/restore",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200 döndü": true
+			},
+			"testPassFailCounts": {
+				"200 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [7],
+			"allTests": [
+				{
+					"200 döndü": true
+				}
+			]
+		},
+		{
+			"id": "157e5ee0-0a9d-41ca-99e5-0eb9c1ef6856",
+			"name": "PATCH posts (tekrar restore)",
+			"url": "http://localhost:3000/api/v1/posts/13/restore",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"404 döndü": true,
+				"DELETED_POST_NOT_FOUND döndü": true
+			},
+			"testPassFailCounts": {
+				"404 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"DELETED_POST_NOT_FOUND döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"404 döndü": true,
+					"DELETED_POST_NOT_FOUND döndü": true
+				}
+			]
+		},
+		{
+			"id": "c78337ca-c158-4072-9091-eafb66f151d3",
+			"name": "POST posts (silinmiş category)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 3,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"422 döndü": true,
+				"CATEGORY_NOT_AVAILABLE döndü": true
+			},
+			"testPassFailCounts": {
+				"422 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"CATEGORY_NOT_AVAILABLE döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [3],
+			"allTests": [
+				{
+					"422 döndü": true,
+					"CATEGORY_NOT_AVAILABLE döndü": true
+				}
+			]
+		},
+		{
+			"id": "c6061ceb-443f-4024-abd4-4c70e7f0415d",
+			"name": "GET posts (token yok)",
+			"url": "http://localhost:3000/api/v1/posts",
+			"time": 1,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"401 döndü": true
+			},
+			"testPassFailCounts": {
+				"401 döndü": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [1],
+			"allTests": [
+				{
+					"401 döndü": true
+				}
+			]
+		},
+		{
+			"id": "fcd29517-1340-4748-804e-6dab426d12b4",
+			"name": "DELETE category aktif postlu",
+			"url": "http://localhost:3000/api/v1/categories/13",
+			"time": 2,
+			"responseCode": {
+				"code": 409,
+				"name": "Conflict"
+			},
+			"tests": {
+				"409 döndü": true,
+				"CATEGORY_HAS_POSTS döndü": true,
+				"Kategoride oluşturulan üç aktif post var": true
+			},
+			"testPassFailCounts": {
+				"409 döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"CATEGORY_HAS_POSTS döndü": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Kategoride oluşturulan üç aktif post var": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [2],
+			"allTests": [
+				{
+					"409 döndü": true,
+					"CATEGORY_HAS_POSTS döndü": true,
+					"Kategoride oluşturulan üç aktif post var": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1566,
+	"collection": {
+		"requests": [
+			{
+				"id": "202b6307-d4ed-4f6d-ba8a-22a829a0bfa0",
+				"method": "GET"
+			},
+			{
+				"id": "3798a9ff-9f33-4de7-922f-b587bbf66942",
+				"method": "POST"
+			},
+			{
+				"id": "cf85a3d6-450c-415b-bac1-03b61a3e59dc",
+				"method": "POST"
+			},
+			{
+				"id": "24b694b5-c24c-4bb4-9186-2ac45753c7d0",
+				"method": "GET"
+			},
+			{
+				"id": "fadc5dfc-b03d-4925-9311-dfc06439780e",
+				"method": "GET"
+			},
+			{
+				"id": "a1f141e0-51b6-4418-b00b-5ab9d73b18e7",
+				"method": "POST"
+			},
+			{
+				"id": "5e36de58-eee4-463f-b36e-3021b8b4e8ce",
+				"method": "POST"
+			},
+			{
+				"id": "e2887aaa-572b-4640-9286-febcf7678c81",
+				"method": "POST"
+			},
+			{
+				"id": "407bb939-1b69-4108-b056-28396a658704",
+				"method": "POST"
+			},
+			{
+				"id": "d79e52c3-32ba-4038-93a1-5548b6d69777",
+				"method": "POST"
+			},
+			{
+				"id": "49a62930-d793-4f06-93a5-e85ffd230c9c",
+				"method": "GET"
+			},
+			{
+				"id": "e3e5a814-db6b-44cd-86f1-61be4ad11960",
+				"method": "GET"
+			},
+			{
+				"id": "9a6e622d-b299-43fc-8823-f37e2236865f",
+				"method": "GET"
+			},
+			{
+				"id": "be0c1c9b-7bfa-4abc-bdd4-95e673348361",
+				"method": "GET"
+			},
+			{
+				"id": "99e8896d-8198-48c7-a810-6b55012427f8",
+				"method": "POST"
+			},
+			{
+				"id": "3bc23e5e-6020-4af1-aa84-7543a15432ff",
+				"method": "GET"
+			},
+			{
+				"id": "6a3cc9f3-ff70-4472-ac1d-80a7424f303c",
+				"method": "POST"
+			},
+			{
+				"id": "ab84e580-56cf-45a1-b73f-857c29a0c1b4",
+				"method": "POST"
+			},
+			{
+				"id": "88de7408-027d-4fea-8ee3-f737c5449372",
+				"method": "GET"
+			},
+			{
+				"id": "8533dad0-3a55-4fd7-b626-3414522f3305",
+				"method": "GET"
+			},
+			{
+				"id": "4b6c2a6e-d968-429d-b675-c0dbc8be7243",
+				"method": "GET"
+			},
+			{
+				"id": "80495f42-6c3d-483e-89e7-9d5fca43ec0c",
+				"method": "GET"
+			},
+			{
+				"id": "fddca3f0-388d-4f52-9fd1-7e014707f2ff",
+				"method": "GET"
+			},
+			{
+				"id": "a6118ff5-b45c-495b-bd7d-11dec645830b",
+				"method": "POST"
+			},
+			{
+				"id": "015a59c8-2a79-46c6-9a10-5b794334f3f2",
+				"method": "POST"
+			},
+			{
+				"id": "ca33cedf-e522-4e4e-abf2-8b5385c9f562",
+				"method": "POST"
+			},
+			{
+				"id": "b184d19b-702f-4d0d-a959-ed42b159776f",
+				"method": "POST"
+			},
+			{
+				"id": "32c56f2f-3ae0-4d7e-ad4d-1e6468f0ec3e",
+				"method": "PUT"
+			},
+			{
+				"id": "54a6ea4b-ebaa-4310-b550-a90db61bd6a2",
+				"method": "PATCH"
+			},
+			{
+				"id": "3eb65022-b234-43d5-975c-203aa71b1ca4",
+				"method": "PATCH"
+			},
+			{
+				"id": "905dec40-573c-478c-b73f-39bee8fcd3a7",
+				"method": "PATCH"
+			},
+			{
+				"id": "7e743cb8-37ab-4f01-920a-7139de80d23a",
+				"method": "PATCH"
+			},
+			{
+				"id": "e6b68cdc-6024-4ac7-a7f2-538735357542",
+				"method": "PATCH"
+			},
+			{
+				"id": "6b516701-105b-48e7-85b8-f395d7237b55",
+				"method": "PATCH"
+			},
+			{
+				"id": "b21ba131-e6ef-40ce-8283-054dcad67402",
+				"method": "PATCH"
+			},
+			{
+				"id": "2c97e810-8fad-4bb7-a28f-628595c83b2f",
+				"method": "GET"
+			},
+			{
+				"id": "6f657977-8c74-4d2b-9928-31255fbf513e",
+				"method": "PATCH"
+			},
+			{
+				"id": "6e9ca3b5-74cc-474e-8492-b44b30c2d8f7",
+				"method": "GET"
+			},
+			{
+				"id": "b16fface-8af8-4dfe-a575-31fc6eaf8c55",
+				"method": "GET"
+			},
+			{
+				"id": "2e65537d-e7fb-46d3-adf6-da1bc50432ee",
+				"method": "GET"
+			},
+			{
+				"id": "ff977fe6-268e-43a8-85bd-06f58f6061aa",
+				"method": "DELETE"
+			},
+			{
+				"id": "658beded-a97b-4198-a7ca-9722ba80e642",
+				"method": "GET"
+			},
+			{
+				"id": "ba9ef6ff-a00d-4316-9f83-11045e66a246",
+				"method": "PATCH"
+			},
+			{
+				"id": "1d4dda0a-aece-4ee9-9b74-f968581fab57",
+				"method": "GET"
+			},
+			{
+				"id": "a3bea03c-dfba-4a10-9c1d-003b6e6f4fe3",
+				"method": "GET"
+			},
+			{
+				"id": "4aa7f26b-c77d-4aae-9032-f10ca9415ee1",
+				"method": "GET"
+			},
+			{
+				"id": "39f4cf78-da4d-4647-a1eb-c1b7a38c2b96",
+				"method": "GET"
+			},
+			{
+				"id": "64e0b7e9-4996-4839-b8be-17977353d249",
+				"method": "GET"
+			},
+			{
+				"id": "3a54f48e-be8c-412a-a76e-8927722d489e",
+				"method": "GET"
+			},
+			{
+				"id": "41308183-804e-4529-83f5-479fcf5e9e7f",
+				"method": "GET"
+			},
+			{
+				"id": "43548b8a-83b9-4876-9127-1910ebbd6088",
+				"method": "GET"
+			},
+			{
+				"id": "a862bab6-e73d-4d6c-92ee-817335a4c4d4",
+				"method": "POST"
+			},
+			{
+				"id": "9d78514a-0b85-4435-ade2-34f67bf00984",
+				"method": "POST"
+			},
+			{
+				"id": "e63d8e0c-bec5-4ef5-ba09-d97229345dc7",
+				"method": "POST"
+			},
+			{
+				"id": "25df37f9-98d0-4ad9-9cb7-1e7ee9e7fad3",
+				"method": "POST"
+			},
+			{
+				"id": "0c98f209-58d2-43c7-8cb0-3acf063ee2f6",
+				"method": "GET"
+			},
+			{
+				"id": "2ee4d9f6-ece8-457b-a0c1-e5e415da5e77",
+				"method": "GET"
+			},
+			{
+				"id": "0a169cde-5d0a-4a8b-9c1b-f28fe8dcc75d",
+				"method": "PUT"
+			},
+			{
+				"id": "23cea18f-73c2-4032-aa2b-58741637b988",
+				"method": "PUT"
+			},
+			{
+				"id": "54e06330-ffcb-472f-8940-4ad57da9c414",
+				"method": "PATCH"
+			},
+			{
+				"id": "90e88892-8bd2-449f-af6b-6e5cbb17c575",
+				"method": "PATCH"
+			},
+			{
+				"id": "08fd415f-94f8-4146-97f3-44b8956c673d",
+				"method": "PATCH"
+			},
+			{
+				"id": "b63f6af3-18bc-43d5-8514-7c35b16d0c36",
+				"method": "PATCH"
+			},
+			{
+				"id": "7bf934df-0494-48f0-87f1-0bdbf981167d",
+				"method": "PATCH"
+			},
+			{
+				"id": "12116a17-ffe9-4bbd-ad11-d8fc72ea5322",
+				"method": "PATCH"
+			},
+			{
+				"id": "029f58e1-afad-4e14-b726-dd9fcccca33e",
+				"method": "POST"
+			},
+			{
+				"id": "55dac6b4-b40a-4e76-b282-3d80573a4659",
+				"method": "DELETE"
+			},
+			{
+				"id": "b2df4694-f3eb-4a2a-9609-06e4b6d9d514",
+				"method": "GET"
+			},
+			{
+				"id": "607ea5cb-60e0-4d88-a827-b841ba2075ff",
+				"method": "GET"
+			},
+			{
+				"id": "66a55fd3-448c-4336-9c9f-3e6db4ad8a12",
+				"method": "PATCH"
+			},
+			{
+				"id": "13d207ee-c44e-416e-a6fa-17b099491457",
+				"method": "PATCH"
+			},
+			{
+				"id": "da3fc7c5-d06f-4147-acb5-528fef487c2d",
+				"method": "DELETE"
+			},
+			{
+				"id": "acd388fc-ff78-4aa5-926e-735858f6508c",
+				"method": "POST"
+			},
+			{
+				"id": "1d57f2df-35e9-48fb-8b8b-9abebb58973f",
+				"method": "POST"
+			},
+			{
+				"id": "81d0af2c-71ce-42f9-8901-b04f16238d17",
+				"method": "POST"
+			},
+			{
+				"id": "93ce0034-2f8b-4422-91ad-39917c5cb7b2",
+				"method": "POST"
+			},
+			{
+				"id": "90709a34-7560-49fc-8c61-a25fc7f89e80",
+				"method": "POST"
+			},
+			{
+				"id": "ba628f0d-80e9-49f6-bfe3-3bc81a2d4b95",
+				"method": "POST"
+			},
+			{
+				"id": "7ea298a9-aa6e-4d2a-a04f-b1884a981bcd",
+				"method": "POST"
+			},
+			{
+				"id": "f29f01d3-8a32-49ad-aa12-caafa9170f8b",
+				"method": "POST"
+			},
+			{
+				"id": "813d8114-9689-4f4a-99d1-ccd6d7940c94",
+				"method": "POST"
+			},
+			{
+				"id": "7aa2c6ba-1f6e-43cc-9768-1e2e4c000c22",
+				"method": "GET"
+			},
+			{
+				"id": "a5b8c0ab-2a66-4989-919b-afaa9275e920",
+				"method": "GET"
+			},
+			{
+				"id": "7abc79c6-66d5-43c6-b590-5afc1c6c1cb0",
+				"method": "GET"
+			},
+			{
+				"id": "931b339e-0535-45ed-8627-2fe0ff60b369",
+				"method": "GET"
+			},
+			{
+				"id": "96b19209-a8d9-4a71-9d89-6a70749995ec",
+				"method": "GET"
+			},
+			{
+				"id": "a59f221f-f4ee-4781-97e8-554c0eb80257",
+				"method": "GET"
+			},
+			{
+				"id": "1f07629c-cbd1-44b6-a461-f47a16199c3f",
+				"method": "GET"
+			},
+			{
+				"id": "72e18414-bd41-4627-9893-dbc1c2881a7d",
+				"method": "GET"
+			},
+			{
+				"id": "1f60c29a-7065-4420-97ee-e008f16e3056",
+				"method": "GET"
+			},
+			{
+				"id": "5904f6c4-c3dc-4cb1-9506-7fc55581c439",
+				"method": "GET"
+			},
+			{
+				"id": "f8defbb0-7e51-44a1-8f26-17c1325f67cb",
+				"method": "GET"
+			},
+			{
+				"id": "e926a7bd-0d98-476d-b29e-5d64769cddbb",
+				"method": "GET"
+			},
+			{
+				"id": "91794877-b6ca-491d-855c-c7d02e56110b",
+				"method": "GET"
+			},
+			{
+				"id": "bbb6b507-1368-4ae2-b818-3aff5e5b3d25",
+				"method": "GET"
+			},
+			{
+				"id": "3ed51bce-7e29-48db-9bb6-b34568d1695d",
+				"method": "GET"
+			},
+			{
+				"id": "c98b39df-b13a-408f-b7da-0a6595cb6f99",
+				"method": "GET"
+			},
+			{
+				"id": "6b209cf6-8822-4015-8033-e99155cf9d45",
+				"method": "GET"
+			},
+			{
+				"id": "5c2b24ec-9c3c-4c67-8052-e8245268be66",
+				"method": "GET"
+			},
+			{
+				"id": "bc599430-16db-4576-ba87-578dc43706cc",
+				"method": "PATCH"
+			},
+			{
+				"id": "6e1dfa1e-144f-46c4-ad00-3a237839a49d",
+				"method": "PATCH"
+			},
+			{
+				"id": "33f280d9-df23-47ee-b5f4-ad97feb0de7e",
+				"method": "PATCH"
+			},
+			{
+				"id": "9cf1c662-2e29-4417-8354-04717fd85266",
+				"method": "PUT"
+			},
+			{
+				"id": "7f26c394-cebc-4fdb-90fe-8496fc897767",
+				"method": "PUT"
+			},
+			{
+				"id": "56fd2322-e4a1-4104-a540-853797179944",
+				"method": "PATCH"
+			},
+			{
+				"id": "ea399494-f637-4780-b6b6-5f6d3343e6fe",
+				"method": "PATCH"
+			},
+			{
+				"id": "3dad8d88-c8ba-4b43-a55e-cb9056062c86",
+				"method": "PATCH"
+			},
+			{
+				"id": "861cc7c6-9e93-4bf2-b860-106235d00a10",
+				"method": "PATCH"
+			},
+			{
+				"id": "bba7bc14-c5a7-4e57-b115-b4c560a9ddbf",
+				"method": "PATCH"
+			},
+			{
+				"id": "526065af-e26b-4c0f-86c3-b5c877dfb11f",
+				"method": "PATCH"
+			},
+			{
+				"id": "3e3eefb6-0c27-4de1-b3df-9c037c888d46",
+				"method": "GET"
+			},
+			{
+				"id": "4f915e64-f8f0-4be8-b13c-14692db69fc5",
+				"method": "PATCH"
+			},
+			{
+				"id": "1ed1c56b-3475-4577-9fa7-2874ecd4800e",
+				"method": "PATCH"
+			},
+			{
+				"id": "5281b1e2-19df-4a4c-9ebc-77356dce5a58",
+				"method": "PATCH"
+			},
+			{
+				"id": "49129a2d-afed-4597-af5f-04163741406b",
+				"method": "DELETE"
+			},
+			{
+				"id": "bdb28a6d-0b2f-4e53-9f8c-c8f6ce34f155",
+				"method": "DELETE"
+			},
+			{
+				"id": "28b476f2-c567-47da-96d2-c555d5b046f3",
+				"method": "GET"
+			},
+			{
+				"id": "d4fcc4d5-0596-49cf-a62e-107d5d26b6ec",
+				"method": "GET"
+			},
+			{
+				"id": "18de4835-2feb-428c-847c-3df663bec9ca",
+				"method": "PATCH"
+			},
+			{
+				"id": "157e5ee0-0a9d-41ca-99e5-0eb9c1ef6856",
+				"method": "PATCH"
+			},
+			{
+				"id": "c78337ca-c158-4072-9091-eafb66f151d3",
+				"method": "POST"
+			},
+			{
+				"id": "c6061ceb-443f-4024-abd4-4c70e7f0415d",
+				"method": "GET"
+			},
+			{
+				"id": "fcd29517-1340-4748-804e-6dab426d12b4",
+				"method": "DELETE"
+			}
+		]
+	}
+}

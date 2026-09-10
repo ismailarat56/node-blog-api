@@ -153,6 +153,38 @@ async function findCategoryBySlug(slug, ignoredCategoryId = null) {
 	return rows[0] || null;
 }
 
+async function findPublicCategories() {
+	const [rows] = await pool.execute(
+		`
+			SELECT
+				c.id,
+				c.name,
+				c.slug,
+				c.description,
+				COUNT(p.id) AS published_post_count
+			FROM categories AS c
+			LEFT JOIN posts AS p
+				ON p.category_id = c.id
+				AND p.status = 'published'
+				AND p.deleted_at IS NULL
+			WHERE c.deleted_at IS NULL
+				AND c.is_active = 1
+			GROUP BY
+				c.id,
+				c.name,
+				c.slug,
+				c.description
+			ORDER BY
+				c.name ASC
+		`
+	);
+
+	return rows.map((row) => ({
+		...row,
+		published_post_count: Number(row.published_post_count),
+	}));
+}
+
 async function createCategory({ name, slug, description, isActive }) {
 	const [result] = await pool.execute(
 		`
@@ -257,6 +289,7 @@ module.exports = {
 	countCategories,
 	findCategoryById,
 	findCategoryBySlug,
+	findPublicCategories,
 	createCategory,
 	replaceCategory,
 	updateCategoryFields,
