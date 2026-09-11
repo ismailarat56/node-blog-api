@@ -24,7 +24,7 @@ async function findLoginUserByEmail(email) {
 	return rows[0] || null;
 }
 
-async function findAuthenticatedUserById(id) {
+async function findAuthenticationStateById(id) {
 	const [rows] = await pool.execute(
 		`
       SELECT
@@ -35,7 +35,10 @@ async function findAuthenticatedUserById(id) {
         is_active,
         created_at,
         updated_at,
-        last_login_at
+        last_login_at,
+        UNIX_TIMESTAMP(
+          password_changed_at
+        ) AS password_changed_at_epoch
       FROM users
       WHERE id = ?
         AND deleted_at IS NULL
@@ -44,7 +47,55 @@ async function findAuthenticatedUserById(id) {
 		[id]
 	);
 
-	return rows[0] || null;
+	if (rows.length === 0) {
+		return null;
+	}
+
+	const { password_changed_at_epoch: passwordChangedAtEpoch, ...user } = rows[0];
+
+	return {
+		user,
+		passwordChangedAtEpoch:
+			passwordChangedAtEpoch === null ? null : Number(passwordChangedAtEpoch),
+	};
+}
+
+async function findAuthenticatedUserById(id) {
+	const state = await findAuthenticationStateById(id);
+
+	return state ? state.user : null;
+}
+
+async function findPasswordHashById(id) {
+	const [rows] = await pool.execute(
+		`
+      SELECT password_hash
+      FROM users
+      WHERE id = ?
+        AND deleted_at IS NULL
+      LIMIT 1
+    `,
+		[id]
+	);
+
+	return rows[0] ? rows[0].password_hash : null;
+}
+
+async function updatePasswordHash(id, passwordHash) {
+	const [result] = await pool.execute(
+		`
+      UPDATE users
+      SET
+        password_hash = ?,
+        password_changed_at =
+          CURRENT_TIMESTAMP
+      WHERE id = ?
+        AND deleted_at IS NULL
+    `,
+		[passwordHash, id]
+	);
+
+	return result.affectedRows;
 }
 
 async function updateLastLoginAt(id) {
@@ -110,7 +161,10 @@ async function deleteExpiredRevocations() {
 
 module.exports = {
 	findLoginUserByEmail,
+	findAuthenticationStateById,
 	findAuthenticatedUserById,
+	findPasswordHashById,
+	updatePasswordHash,
 	updateLastLoginAt,
 	isAccessTokenRevoked,
 	revokeAccessToken,

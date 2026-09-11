@@ -18,4 +18,6 @@ router.get('/me', asyncHandler(authController.me));
 
 router.post('/logout', asyncHandler(authController.logout));
 
+router.patch('/password', asyncHandler(authController.changePassword));
+
 module.exports = router;

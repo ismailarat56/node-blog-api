@@ -54,10 +54,10 @@ function validateNewPassword(value) {
 
 	const length = Array.from(value).length;
 
-	if (length < 8 || length > 128) {
+	if (length < 15 || length > 128) {
 		throw new AppError(
 			422,
-			'password 8 ile 128 karakter arasında olmalıdır.',
+			'password 15 ile 128 karakter arasında olmalıdır.',
 			'INVALID_PASSWORD'
 		);
 	}
@@ -81,7 +81,6 @@ function validateCreateUser(body) {
 	}
 
 	const name = normalizeName(body.name);
-
 	const email = normalizeEmail(body.email);
 
 	if (!name || !email || body.password === undefined) {

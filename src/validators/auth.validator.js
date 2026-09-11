@@ -2,11 +2,13 @@ const AppError = require('../utils/app-error');
 
 const { assertPlainObject } = require('./common.validator');
 
-const { validateCreateUser } = require('./user.validator');
+const { validateCreateUser, validateNewPassword } = require('./user.validator');
 
 const loginFields = new Set(['email', 'password']);
 
 const registerFields = new Set(['name', 'email', 'password']);
+
+const passwordChangeFields = new Set(['current_password', 'new_password']);
 
 function validateLoginBody(body) {
 	if (!body || Array.isArray(body) || typeof body !== 'object') {
@@ -71,7 +73,46 @@ function validateRegisterBody(body) {
 	};
 }
 
+function validatePasswordChangeBody(body) {
+	assertPlainObject(body);
+
+	const unsupportedFields = Object.keys(body).filter((field) => !passwordChangeFields.has(field));
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(
+			422,
+			'Parola değişikliği yalnızca current_password ve new_password alanlarını kabul eder.',
+			'UNSUPPORTED_PASSWORD_CHANGE_FIELDS',
+			{
+				fields: unsupportedFields,
+			}
+		);
+	}
+
+	const current = body.current_password;
+
+	if (typeof current !== 'string' || current.length === 0 || Array.from(current).length > 256) {
+		throw new AppError(422, 'current_password gönderin.', 'INVALID_CURRENT_PASSWORD');
+	}
+
+	const newPassword = validateNewPassword(body.new_password);
+
+	if (newPassword === current) {
+		throw new AppError(
+			422,
+			'Yeni parola mevcut paroladan farklı olmalıdır.',
+			'PASSWORD_NOT_CHANGED'
+		);
+	}
+
+	return {
+		currentPassword: current,
+		newPassword,
+	};
+}
+
 module.exports = {
 	validateLoginBody,
 	validateRegisterBody,
+	validatePasswordChangeBody,
 };
