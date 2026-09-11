@@ -87,17 +87,27 @@ async function authenticate(request, response, next) {
 		throw createBearerError('Access token iptal edilmiş.', 'ACCESS_TOKEN_REVOKED');
 	}
 
-	const user = await authModel.findAuthenticatedUserById(auth.userId);
+	const state = await authModel.findAuthenticationStateById(auth.userId);
 
-	if (!user || Number(user.is_active) !== 1) {
+	if (!state || Number(state.user.is_active) !== 1) {
 		throw createBearerError(
 			'Access tokenın kullanıcısı aktif değil.',
 			'AUTHENTICATED_USER_UNAVAILABLE'
 		);
 	}
 
+	if (
+		state.passwordChangedAtEpoch !== null &&
+		auth.issuedAtEpoch < state.passwordChangedAtEpoch
+	) {
+		throw createBearerError(
+			'Parola değiştirildiği için access token geçersiz.',
+			'ACCESS_TOKEN_STALE'
+		);
+	}
+
 	request.auth = auth;
-	request.user = user;
+	request.user = state.user;
 
 	return next();
 }

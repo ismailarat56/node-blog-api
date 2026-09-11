@@ -4,7 +4,11 @@ const authModel = require('../models/auth.model');
 
 const userModel = require('../models/user.model');
 
-const { validateLoginBody, validateRegisterBody } = require('../validators/auth.validator');
+const {
+	validateLoginBody,
+	validateRegisterBody,
+	validatePasswordChangeBody,
+} = require('../validators/auth.validator');
 
 const { verifyPassword, performDummyPasswordWork, hashPassword } = require('../utils/password');
 
@@ -90,6 +94,40 @@ async function me(request, response) {
 	});
 }
 
+async function changePassword(request, response) {
+	const { currentPassword, newPassword } = validatePasswordChangeBody(request.body);
+
+	const passwordHash = await authModel.findPasswordHashById(request.user.id);
+
+	const passwordMatches = passwordHash
+		? await verifyPassword(currentPassword, passwordHash)
+		: false;
+
+	if (!passwordMatches) {
+		throw new AppError(422, 'Mevcut parola hatalı.', 'CURRENT_PASSWORD_MISMATCH');
+	}
+
+	const newPasswordHash = await hashPassword(newPassword);
+
+	const affectedRows = await authModel.updatePasswordHash(request.user.id, newPasswordHash);
+
+	if (affectedRows === 0) {
+		throw new AppError(409, 'Parola güncellenemedi.', 'PASSWORD_UPDATE_FAILED');
+	}
+
+	await authModel.revokeAccessToken({
+		jti: request.auth.jti,
+		userId: request.auth.userId,
+		expiresAtEpoch: request.auth.expiresAtEpoch,
+	});
+
+	response.setHeader('Cache-Control', 'no-store');
+
+	return sendSuccess(response, {
+		message: 'Parola güncellendi. Bütün oturumlar kapatıldı; yeniden giriş yapın.',
+	});
+}
+
 async function logout(request, response) {
 	await authModel.revokeAccessToken({
 		jti: request.auth.jti,
@@ -108,5 +146,6 @@ module.exports = {
 	register,
 	login,
 	me,
+	changePassword,
 	logout,
 };
