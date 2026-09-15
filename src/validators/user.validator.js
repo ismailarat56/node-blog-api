@@ -47,6 +47,16 @@ function normalizeEmail(value) {
 	return value.trim().toLowerCase();
 }
 
+function validateEmail(value) {
+	const email = normalizeEmail(value);
+
+	if (!emailPattern.test(email) || email.length > 255) {
+		throw new AppError(422, 'Geçerli bir e-posta adresi girin.', 'INVALID_EMAIL');
+	}
+
+	return email;
+}
+
 function validateNewPassword(value) {
 	if (typeof value !== 'string') {
 		throw new AppError(422, 'password string olmalıdır.', 'INVALID_PASSWORD');
@@ -81,9 +91,8 @@ function validateCreateUser(body) {
 	}
 
 	const name = normalizeName(body.name);
-	const email = normalizeEmail(body.email);
 
-	if (!name || !email || body.password === undefined) {
+	if (!name || body.email === undefined || body.password === undefined) {
 		throw new AppError(
 			422,
 			'name, email ve password alanları zorunludur.',
@@ -95,10 +104,7 @@ function validateCreateUser(body) {
 		throw new AppError(422, 'name 2 ile 100 karakter arasında olmalıdır.', 'INVALID_NAME');
 	}
 
-	if (!emailPattern.test(email) || email.length > 255) {
-		throw new AppError(422, 'Geçerli bir e-posta adresi girin.', 'INVALID_EMAIL');
-	}
-
+	const email = validateEmail(body.email);
 	const password = validateNewPassword(body.password);
 
 	return {
@@ -175,13 +181,7 @@ function validatePatchUser(body) {
 	}
 
 	if ('email' in body) {
-		const email = normalizeEmail(body.email);
-
-		if (!emailPattern.test(email) || email.length > 255) {
-			throw new AppError(422, 'Geçerli bir e-posta adresi girin.', 'INVALID_EMAIL');
-		}
-
-		data.email = email;
+		data.email = validateEmail(body.email);
 	}
 
 	if ('is_active' in body) {
@@ -220,6 +220,7 @@ module.exports = {
 	parsePositiveId,
 	normalizeName,
 	normalizeEmail,
+	validateEmail,
 	validateNewPassword,
 	validateCreateUser,
 	parseUserListQuery,

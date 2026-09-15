@@ -43,6 +43,24 @@ function buildFrom() {
 	return label === '' ? address : `${label} <${address}>`;
 }
 
+function readDevOutbox(mode) {
+	const enabled = (process.env.DEV_MAIL_OUTBOX ?? '').trim() === 'true';
+
+	if (!enabled) {
+		return false;
+	}
+
+	if (mode !== 'json') {
+		throw new Error('DEV_MAIL_OUTBOX yalnizca MAIL_TRANSPORT=json ile acilabilir.');
+	}
+
+	if (process.env.NODE_ENV === 'production') {
+		throw new Error('DEV_MAIL_OUTBOX production ortaminda acilamaz.');
+	}
+
+	return true;
+}
+
 let cached = null;
 
 function getMailConfig() {
@@ -62,6 +80,7 @@ function getMailConfig() {
 		user,
 		credential,
 		from: buildFrom(),
+		devOutbox: readDevOutbox(mode),
 		enabled: mode === 'json' || (user !== '' && credential !== ''),
 	});
 

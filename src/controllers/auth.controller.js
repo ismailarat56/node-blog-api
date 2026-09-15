@@ -18,7 +18,13 @@ const { sendSuccess } = require('../utils/response');
 
 const { queueMail } = require('../utils/mailer');
 
-const { buildWelcomeMail, buildPasswordChangedMail } = require('../utils/mail-templates');
+const { buildPasswordChangedMail } = require('../utils/mail-templates');
+
+const {
+	issueVerificationCode,
+	consumeVerificationCode,
+	queueVerificationCodeMail,
+} = require('../services/verification.service');
 
 function throwInvalidCredentials() {
 	throw new AppError(401, 'E-posta veya password hatalı.', 'INVALID_CREDENTIALS');
@@ -41,27 +47,29 @@ async function register(request, response) {
 		passwordHash,
 	});
 
-	const createdUser = await userModel.findUserById(userId);
+	const user = await userModel.findUserById(userId);
+
+	const issued = await issueVerificationCode({
+		userId: user.id,
+		purpose: 'email_verification',
+	});
 
 	sendSuccess(response, {
 		statusCode: 201,
-		message: 'Kayit olusturuldu.',
-		data: {
-			user: createdUser,
-		},
+		message: 'Kayıt tamamlandı. E-postana gelen 6 haneli kodla adresini doğrula.',
+		data: user,
 	});
 
-	queueMail(
-		buildWelcomeMail({
-			name: createdUser.name,
-			email: createdUser.email,
-		}),
-		{
-			event: 'register',
-			userId: createdUser.id,
-			requestId: request.requestId,
-		}
-	);
+	queueVerificationCodeMail({
+		recipient: {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+		},
+		purpose: 'email_verification',
+		issued,
+		requestId: request.request_id,
+	});
 }
 
 async function login(request, response) {
@@ -79,6 +87,14 @@ async function login(request, response) {
 
 	if (!passwordMatches || Number(loginUser.is_active) !== 1) {
 		throwInvalidCredentials();
+	}
+
+	if (loginUser.email_verified_at === null) {
+		throw new AppError(
+			403,
+			'E-posta adresin doğrulanmadı. Kayıtta gönderilen kodu kullan veya yeni kod iste.',
+			'EMAIL_NOT_VERIFIED'
+		);
 	}
 
 	await authModel.updateLastLoginAt(loginUser.id);
@@ -113,7 +129,7 @@ async function me(request, response) {
 }
 
 async function changePassword(request, response) {
-	const { currentPassword, newPassword } = validatePasswordChangeBody(request.body);
+	const { currentPassword, newPassword, code } = validatePasswordChangeBody(request.body);
 
 	const passwordHash = await authModel.findPasswordHashById(request.user.id);
 
@@ -124,6 +140,12 @@ async function changePassword(request, response) {
 	if (!passwordMatches) {
 		throw new AppError(422, 'Mevcut parola hatalı.', 'CURRENT_PASSWORD_MISMATCH');
 	}
+
+	await consumeVerificationCode({
+		userId: request.user.id,
+		purpose: 'password_change',
+		code,
+	});
 
 	const newPasswordHash = await hashPassword(newPassword);
 

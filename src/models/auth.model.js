@@ -10,6 +10,7 @@ async function findLoginUserByEmail(email) {
         password_hash,
         role,
         is_active,
+        email_verified_at,
         created_at,
         updated_at,
         last_login_at
@@ -33,6 +34,7 @@ async function findAuthenticationStateById(id) {
         email,
         role,
         is_active,
+        email_verified_at,
         created_at,
         updated_at,
         last_login_at,
@@ -81,6 +83,42 @@ async function findPasswordHashById(id) {
 	return rows[0] ? rows[0].password_hash : null;
 }
 
+async function findCodeRecipientByEmail(email) {
+	const [rows] = await pool.execute(
+		`
+      SELECT
+        id,
+        name,
+        email,
+        is_active,
+        email_verified_at
+      FROM users
+      WHERE email = ?
+        AND deleted_at IS NULL
+      LIMIT 1
+    `,
+		[email]
+	);
+
+	return rows[0] || null;
+}
+
+async function markEmailVerified(id) {
+	const [result] = await pool.execute(
+		`
+      UPDATE users
+      SET email_verified_at =
+        CURRENT_TIMESTAMP
+      WHERE id = ?
+        AND email_verified_at IS NULL
+        AND deleted_at IS NULL
+    `,
+		[id]
+	);
+
+	return result.affectedRows;
+}
+
 async function updatePasswordHash(id, passwordHash) {
 	const [result] = await pool.execute(
 		`
@@ -93,6 +131,45 @@ async function updatePasswordHash(id, passwordHash) {
         AND deleted_at IS NULL
     `,
 		[passwordHash, id]
+	);
+
+	return result.affectedRows;
+}
+
+async function resetPasswordHash(id, passwordHash) {
+	const [result] = await pool.execute(
+		`
+      UPDATE users
+      SET
+        password_hash = ?,
+        password_changed_at =
+          CURRENT_TIMESTAMP,
+        email_verified_at =
+          COALESCE(
+            email_verified_at,
+            CURRENT_TIMESTAMP
+          )
+      WHERE id = ?
+        AND deleted_at IS NULL
+    `,
+		[passwordHash, id]
+	);
+
+	return result.affectedRows;
+}
+
+async function updateEmail(id, email) {
+	const [result] = await pool.execute(
+		`
+      UPDATE users
+      SET
+        email = ?,
+        email_verified_at =
+          CURRENT_TIMESTAMP
+      WHERE id = ?
+        AND deleted_at IS NULL
+    `,
+		[email, id]
 	);
 
 	return result.affectedRows;
@@ -164,7 +241,11 @@ module.exports = {
 	findAuthenticationStateById,
 	findAuthenticatedUserById,
 	findPasswordHashById,
+	findCodeRecipientByEmail,
+	markEmailVerified,
 	updatePasswordHash,
+	resetPasswordHash,
+	updateEmail,
 	updateLastLoginAt,
 	isAccessTokenRevoked,
 	revokeAccessToken,
