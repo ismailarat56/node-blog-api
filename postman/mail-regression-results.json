@@ -1,0 +1,4490 @@
+{
+	"mail": {
+		"runId": "d8a8d057-4fa7-4856-9405-db9b855a70a3",
+		"startedAt": "2026-09-14T16:16:22.563Z",
+		"status": "finished",
+		"baseUrl": "http://localhost:3001",
+		"environment": "node-blog-local",
+		"requests": 6,
+		"assertions": {
+			"total": 8,
+			"passed": 8,
+			"failed": 0,
+			"skipped": 0
+		},
+		"errors": 0,
+		"results": [
+			{
+				"folder": "09 Mail",
+				"name": "01 POST register (mail)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "201 dondu",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "govdede mail bilgisi yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "02 POST login (ilk parola)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "03 PATCH password (mail)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "04 GET me (iptal edilen token)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 dondu",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "token iptal edildi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "05 POST login (yeni parola)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "06 GET me (yeni token)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			}
+		]
+	},
+	"regression": {
+		"runId": "4da723ad-2e87-44ab-86ea-ae9a51d6e514",
+		"startedAt": "2026-09-14T16:17:09.252Z",
+		"status": "finished",
+		"baseUrl": "http://localhost:3001",
+		"environment": "node-blog-local",
+		"requests": 238,
+		"assertions": {
+			"total": 456,
+			"passed": 274,
+			"failed": 182,
+			"skipped": 0
+		},
+		"errors": 0,
+		"results": [
+			{
+				"folder": "00 Health",
+				"name": "GET health",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (admin)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Login 200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (user)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Login 200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (admin)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Rol admin",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (user)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Rol user",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (wrong password)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "Yanlış parola 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu INVALID_CREDENTIALS",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (olmayan email)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "Olmayan e-posta 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yanlış parola ile aynı hata döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (eksik password)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "Eksik password 422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu INVALID_LOGIN_INPUT",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (desteklenmeyen alan)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "Desteklenmeyen alan 422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu UNSUPPORTED_LOGIN_FIELDS",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (geçersiz JSON)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "Geçersiz JSON 400 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu INVALID_JSON",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (header yok)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kimlik doğrulama gerekli",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "WWW-Authenticate doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (wrong scheme)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Authorization biçimi geçersiz",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (boş Bearer)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Eksik token başlığı reddedildi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (sahte token)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Sahte token reddedildi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST logout (user)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Logout 200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Çıkış başarılı",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "GET me (logout sonrası user)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "Logout sonrası 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Token iptal edilmiş",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST logout (ikinci deneme user)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "İkinci logout 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "İptal edilmiş token tekrar kullanılamadı",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "01 Auth",
+				"name": "POST login (user tekrar)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Login 200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (sayfalama)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kullanıcı listesinde role var, password_hash yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (arama)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kullanıcı listesinde role var, password_hash yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (aktif kullanıcılar)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kullanıcı listesinde role var, password_hash yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (isme göre artan)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kullanıcı listesinde role var, password_hash yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET user (ID ile)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "İstenen kullanıcı döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Role var, password_hash yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "POST user (oluştur)",
+				"method": "POST",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 409"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "POST user (duplicate email)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "Duplicate email 409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 201"
+					},
+					{
+						"name": "Hata kodu EMAIL_ALREADY_EXISTS",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'code')"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "POST user (role alanı)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "Role alanı 422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Desteklenmeyen alan reddedildi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "POST user (token yok)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "Token olmadan 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kimlik doğrulama gerekli",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PUT user (ad ve email)",
+				"method": "PUT",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "PUT 200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 409"
+					},
+					{
+						"name": "Ad ve email doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'name')"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH user (yalnızca ad)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "PATCH 200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Ad değişti, email korundu",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'jisus-1789068051854@example.com' to equal 'ayse@example.com'"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH user (role reddedilir)",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "Role alanı 422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Desteklenmeyen alan role",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (user yetkisiz)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 FORBIDDEN döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (geçersiz rol)",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 INVALID_USER_ROLE döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (ek alan)",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 UNSUPPORTED_ROLE_FIELDS döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (kendi rolü)",
+				"method": "PATCH",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "409 CANNOT_CHANGE_OWN_ROLE döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (user → admin)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü ve rol admin oldu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (terfi sonrası aynı token)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Aynı token yeni yetkiyle 200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH role (admin → user)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü ve rol tekrar user oldu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (rol geri alındı)",
+				"method": "GET",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "Kullanıcı listesi 403 FORBIDDEN döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET user (yetkisiz detay)",
+				"method": "GET",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "Kullanıcı detayı 403 FORBIDDEN döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET users (token yok)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "Tokensız istek 401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kimlik doğrulama gerekli",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "DELETE user (soft delete)",
+				"method": "DELETE",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "Soft delete 200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Doğru kullanıcı silindi",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'id')"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "GET user (silindikten sonra)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "Silinen kullanıcı 404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					},
+					{
+						"name": "Hata kodu USER_NOT_FOUND",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_USER_ID' to equal 'USER_NOT_FOUND'"
+					}
+				]
+			},
+			{
+				"folder": "02 Users",
+				"name": "PATCH user (restore)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "Restore 200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Doğru kullanıcı geri getirildi",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'id')"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (user)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (arama)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (aktif)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (pasif)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (slug artan)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (sayfalama)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Sayfalama doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (birleşik filtre)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Sayfalama ve aktiflik doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET category (ID ile)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "İstenen kategori döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (oluştur)",
+				"method": "POST",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 409"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (duplicate slug)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 201"
+					},
+					{
+						"name": "CATEGORY_SLUG_ALREADY_EXISTS döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'code')"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (geçersiz slug)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "INVALID_CATEGORY_SLUG döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (ardışık tire)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "INVALID_CATEGORY_SLUG döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (bilinmeyen query)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "UNSUPPORTED_QUERY_PARAMETERS döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (geçersiz sort_by)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "INVALID_QUERY_PARAMETER döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PUT categories (tam güncelle)",
+				"method": "PUT",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PUT categories (eksik alanlar)",
+				"method": "PUT",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (adı güncelle)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (pasif yap)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (aktif yap)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (description null)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (boş body)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (izin verilmeyen alanlar)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (geçici oluştur)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "DELETE categories (geçiciyi sil)",
+				"method": "DELETE",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (silinmiş kayıt)",
+				"method": "GET",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (silinenler dahil)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Silinen geçici kategori listede var",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (restore)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH categories (tekrar restore)",
+				"method": "PATCH",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "DELETE categories (geçiciyi tekrar sil)",
+				"method": "DELETE",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü; geçici kategori yeniden silindi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "POST categories (user yetkisiz oluşturma)",
+				"method": "POST",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu FORBIDDEN",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca admin yazabilir",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH category (user yetkisiz güncelleme)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu FORBIDDEN",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca admin yazabilir",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "DELETE category (user yetkisiz silme)",
+				"method": "DELETE",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu FORBIDDEN",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca admin yazabilir",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "PATCH category (user yetkisiz restore)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu FORBIDDEN",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca admin yazabilir",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET category (user okuyabilir)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "İstenen kategori döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'id')"
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (user include_deleted reddedilir)",
+				"method": "GET",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu FORBIDDEN",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "03 Categories",
+				"name": "GET categories (reader okuyabilir)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 401"
+					},
+					{
+						"name": "Kategori listesi döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected undefined to be an array"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (oluştur user)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (aynı başlık user)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (oluştur admin)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (title eksik)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "INVALID_POST_TITLE döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_JSON' to equal 'INVALID_POST_TITLE'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (title kısa)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "INVALID_POST_TITLE döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_JSON' to equal 'INVALID_POST_TITLE'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (content boş)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "INVALID_POST_CONTENT döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_JSON' to equal 'INVALID_POST_CONTENT'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (category bulunamadı)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "CATEGORY_NOT_AVAILABLE döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (izin verilmeyen alanlar)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "UNSUPPORTED_POST_FIELDS döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_JSON' to equal 'UNSUPPORTED_POST_FIELDS'"
+					},
+					{
+						"name": "Yalnızca user_id, slug ve status reddedildi",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of null (reading 'fields')"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (bozuk JSON)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "400 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "INVALID_JSON döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (listele user)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (listele admin)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Oluşturulan üç draft listede var",
+						"passed": false,
+						"skipped": false,
+						"error": "post_id: expected undefined to be an object"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (search)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (status draft)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (category_id)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 422"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (user_id admin)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (title artan sırala)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (sayfalama)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Admin draftı user listesinde yok",
+						"passed": false,
+						"skipped": false,
+						"error": "75 numaralı isteği önce çalıştır: expected undefined to exist"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (birleşik filtre admin)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 422"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (geçersiz status)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (geçersiz sort_by)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (bilinmeyen query)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (silinenler dahil user)",
+				"method": "GET",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (kendi postu user)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (admin draftı user)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (user postu admin)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "İstenen postun detayı döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected undefined to be an object"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (bulunamayan ID)",
+				"method": "GET",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (geçersiz ID)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "400 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (title güncelle)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (başkasının postu user)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (user postu admin)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PUT posts (tam güncelle)",
+				"method": "PUT",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PUT posts (eksik alanlar)",
+				"method": "PUT",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "MISSING_POST_FIELDS döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'MISSING_POST_FIELDS'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (boş body)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "EMPTY_POST_PATCH_BODY döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'EMPTY_POST_PATCH_BODY'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (başkasının postu boş body)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (publish user)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (tekrar publish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 400"
+					},
+					{
+						"name": "POST_ALREADY_PUBLISHED döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'POST_ALREADY_PUBLISHED'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (admin postunu publish user)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (publish admin)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (yayımlanan admin postu user)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (unpublish user)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (tekrar unpublish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 400"
+					},
+					{
+						"name": "POST_NOT_PUBLISHED döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'POST_NOT_PUBLISHED'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (yeniden publish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "DELETE posts (başkasının postu user)",
+				"method": "DELETE",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "DELETE posts (ikinci postu sil)",
+				"method": "DELETE",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (silinmiş kayıt)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (silinenler dahil admin)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Listede content alanı yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Silinen ikinci post listede var",
+						"passed": false,
+						"skipped": false,
+						"error": "expected undefined to be an object"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (restore user)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (tekrar restore)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					},
+					{
+						"name": "DELETED_POST_NOT_FOUND döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'DELETED_POST_NOT_FOUND'"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "POST posts (silinmiş category)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "CATEGORY_NOT_AVAILABLE döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "GET posts (token yok)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "DELETE category aktif postlu",
+				"method": "DELETE",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 400"
+					},
+					{
+						"name": "CATEGORY_HAS_POSTS döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_CATEGORY_ID' to equal 'CATEGORY_HAS_POSTS'"
+					},
+					{
+						"name": "Kategoride oluşturulan üç aktif post var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of null (reading 'active_posts')"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (public test için unpublish admin)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu draft",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "04 Posts",
+				"name": "PATCH posts (public test sonrası publish admin)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu published",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (listele)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca published postlar",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Content yok, comment_count var",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yeni yayımlanan postlar önce gelir",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (search)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca published postlar",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (category_id)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 422"
+					},
+					{
+						"name": "Kategori filtresi doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'forEach')"
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (user_id)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yazar filtresi doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (title sırala ve sayfala)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Sayfalama doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (status reddedilir)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (include_deleted reddedilir)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (created_at sıralaması reddedilir)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public post (slug ile)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Detayda content ve comment_count var",
+						"passed": false,
+						"skipped": false,
+						"error": "Target cannot be null or undefined."
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public post (draft slug)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 200"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'code')"
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public post (boşluklu slug)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "400 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public post (ardışık tireli slug)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "400 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public post (olmayan slug)",
+				"method": "GET",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public categories",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Her kategoride published_post_count var",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Geçici kategori listede varsa post sayısı 0",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "05 Public",
+				"name": "GET public posts (user token ile)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yalnızca published postlar",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Content yok, comment_count var",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (reader)",
+				"method": "POST",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "Kayıt 201 veya mevcut kullanıcı 409",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "E-posta zaten kayıtlı",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (duplicate e-posta)",
+				"method": "POST",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (role reddedilir)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Reddedilen alan role",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (is_active reddedilir)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Reddedilen alan is_active",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (kısa password)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (name eksik)",
+				"method": "POST",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata mesajında name alanı belirtiliyor",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST register (admin token ile)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Kullanıcının rolü user",
+						"passed": false,
+						"skipped": false,
+						"error": "expected undefined to equal 'user'"
+					},
+					{
+						"name": "Password hash ve token dönmüyor",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "POST login (reader)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "Login 200 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "06 Register",
+				"name": "GET me (reader)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Mehmet normal kullanıcı",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'Archie Brown' to equal 'Mehmet Okur'"
+					},
+					{
+						"name": "Okuyucu ile post yazarı farklı kişiler",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "01 POST comment (reader ilk yorum)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum yazarı doğru",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Üst yorum alanları doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "02 POST comment (post yazarı cevap)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					},
+					{
+						"name": "Yorum yazarı doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'author')"
+					},
+					{
+						"name": "Cevap ilk yoruma bağlı",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'parent_id')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "03 POST comment (cevabın cevabı)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'COMMENT_PARENT_INVALID'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "04 POST comment (admin postuna reader)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					},
+					{
+						"name": "Yorum yazarı doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'author')"
+					},
+					{
+						"name": "Üst yorum alanları doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'parent_id')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "05 POST comment (başka postun yorumuna cevap)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'COMMENT_PARENT_INVALID'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "06 POST comment (olmayan parent)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'COMMENT_PARENT_INVALID'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "07 POST comment (reader ikinci yorum)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "201 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 201 but got 400"
+					},
+					{
+						"name": "Yorum yazarı doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'author')"
+					},
+					{
+						"name": "Üst yorum alanları doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'parent_id')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "08 POST comment (boşluklu body)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'INVALID_COMMENT_BODY'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "09 POST comment (user_id ve status reddedilir)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'UNSUPPORTED_COMMENT_FIELDS'"
+					},
+					{
+						"name": "Reddedilen alanlar doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of null (reading 'fields')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "10 POST comment (body eksik)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'INVALID_COMMENT_BODY'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "11 PATCH admin post (draft oluşturma testi hazırlık)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "12 POST comment (draft posta reader)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'POST_NOT_FOUND'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "13 POST comment (kendi draftına admin)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 409 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'POST_NOT_PUBLISHED'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "14 PATCH admin post (oluşturma testi sonrası publish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "15 POST comment (token yok)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "16 GET post comments (reader iki yorum)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 2",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					},
+					{
+						"name": "İkinci yorumun cevabı yok",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '1')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "17 GET post comments (sayfalama)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Sayfalama üst yorumları sayar",
+						"passed": false,
+						"skipped": false,
+						"error": "Target cannot be null or undefined."
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "18 GET post comments (bilinmeyen parametre)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'UNSUPPORTED_QUERY_PARAMETERS'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "19 GET post comments (include_hidden reader)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'FORBIDDEN'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "20 GET post comments (include_hidden post yazarı)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 2",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					},
+					{
+						"name": "İkinci yorumun cevabı yok",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '1')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "21 PATCH admin post (draft liste testi hazırlık)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "22 GET post comments (draft posta reader)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'POST_NOT_FOUND'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "23 PATCH admin post (liste testi sonrası publish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "24 GET post comments (olmayan post)",
+				"method": "GET",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "25 GET post comments (geçersiz post ID)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "400 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "26 PATCH comment (reader kendi yorumunu düzenler)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum düzenlendi, yazar değişmedi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "27 PATCH comment (post yazarı düzenleyemez)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "28 PATCH comment (admin düzenler)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum düzenlendi, yazar değişmedi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "29 PATCH comment (boş PATCH body)",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "30 PATCH comment (parent_id değiştirilemez)",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Reddedilen alan parent_id",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "31 PATCH comment (yetki body kontrolünden önce)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "32 DELETE comment (ilgisi olmayan user silemez)",
+				"method": "DELETE",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 403 but got 404"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'COMMENT_NOT_FOUND' to equal 'COMMENT_FORBIDDEN'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "33 DELETE comment (post yazarı ikinci yorumu siler)",
+				"method": "DELETE",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 404"
+					},
+					{
+						"name": "Silinen yorum ID doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'id')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "34 PATCH comment (silinmiş yorumu düzenleme)",
+				"method": "PATCH",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "35 DELETE comment (silinmiş yorumu tekrar silme)",
+				"method": "DELETE",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "36 DELETE comment (reader kendi diğer yorumunu siler)",
+				"method": "DELETE",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 404"
+					},
+					{
+						"name": "Silinen yorum ID doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'id')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "37 GET post comments (silme sonrası reader)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 1",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					},
+					{
+						"name": "Silinen yorum listede yok",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'map')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "38 PATCH comment hide (reader yetkisiz)",
+				"method": "PATCH",
+				"status": 403,
+				"assertions": [
+					{
+						"name": "403 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "39 PATCH comment hide (post yazarı)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu hidden",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "40 PATCH comment hide (ikinci kez)",
+				"method": "PATCH",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "41 GET post comments (gizliyken reader)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 0",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "42 GET post comments (gizliyken post yazarı)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 1",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					},
+					{
+						"name": "Üst yorum hidden",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "43 PATCH comment (gizliyken reader düzenleyemez)",
+				"method": "PATCH",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "44 POST comment (gizli yoruma admin cevap)",
+				"method": "POST",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 422 but got 400"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected 'INVALID_POST_ID' to equal 'COMMENT_PARENT_INVALID'"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "45 GET public comments (gizliyken)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 0",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "46 GET public comments (include_hidden reddedilir)",
+				"method": "GET",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "47 PATCH comment unhide (post yazarı)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu visible",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "48 PATCH comment unhide (ikinci kez)",
+				"method": "PATCH",
+				"status": 409,
+				"assertions": [
+					{
+						"name": "409 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "49 PATCH comment hide (admin)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu hidden",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "50 PATCH comment unhide (admin)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu visible",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "51 GET public comments (görünür yorum ve cevap)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Üst yorum sayısı 1",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'total')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					},
+					{
+						"name": "Author yalnızca id ve name içerir",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'forEach')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "52 GET public comments (limit 1)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Public sayfalama doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'limit')"
+					},
+					{
+						"name": "İlk yorumun bir cevabı var",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading '0')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "53 GET public comments (olmayan slug)",
+				"method": "GET",
+				"status": 404,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "54 GET public post (comment_count 2)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "comment_count 2",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'comment_count')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "55 PATCH comment hide (sayaç testi)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu hidden",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "56 GET public post (gizliyken comment_count 1)",
+				"method": "GET",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "comment_count 1",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'comment_count')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "57 PATCH comment unhide (sayaç testi sonrası)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yorum durumu visible",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "58 GET posts (user comment_count kontrolü)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Her postta comment_count doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "expected [ 19, 18, 16, 14, 12, 11, 9, 8, 6, 5 ] to include NaN"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "59 PATCH admin post (public draft hazırlık)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "60 GET public comments (draft slug)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "404 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 404 but got 200"
+					},
+					{
+						"name": "Hata kodu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'code')"
+					}
+				]
+			},
+			{
+				"folder": "07 Comments",
+				"name": "61 PATCH admin post (public draft sonrası publish)",
+				"method": "PATCH",
+				"status": 400,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": false,
+						"skipped": false,
+						"error": "expected response to have status code 200 but got 400"
+					},
+					{
+						"name": "Post durumu doğru",
+						"passed": false,
+						"skipped": false,
+						"error": "Cannot read properties of undefined (reading 'status')"
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "POST login (reader) token A",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "POST login (reader) token B",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "A ve B farklı canlı oturum tokenları",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password yanlış mevcut",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu CURRENT_PASSWORD_MISMATCH",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password aynı parola",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu PASSWORD_NOT_CHANGED",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password kısa yeni",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu INVALID_PASSWORD",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password fazla alan",
+				"method": "PATCH",
+				"status": 422,
+				"assertions": [
+					{
+						"name": "422 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu UNSUPPORTED_PASSWORD_CHANGE_FIELDS",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Desteklenmeyen alan yalnızca password",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password token yok",
+				"method": "PATCH",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu AUTHENTICATION_REQUIRED",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password başarılı",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yanıtta data yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "no-store headerı var",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "GET me token B (revoked)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu ACCESS_TOKEN_REVOKED",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "GET me token A (stale)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu ACCESS_TOKEN_STALE",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "POST login eski parola (reader)",
+				"method": "POST",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Hata kodu INVALID_CREDENTIALS",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "POST login yeni parola (reader)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "GET me yeni token (reader)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yeni token okuyucunun e-postasını döndürür",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "PATCH password geri al",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Yanıtta data yok",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "no-store headerı var",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "08 Password Change",
+				"name": "POST login (reader) yeniden",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 döndü",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "Başarılı yanıt, hata yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "01 POST register (mail)",
+				"method": "POST",
+				"status": 201,
+				"assertions": [
+					{
+						"name": "201 dondu",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "govdede mail bilgisi yok",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "02 POST login (ilk parola)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "03 PATCH password (mail)",
+				"method": "PATCH",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "04 GET me (iptal edilen token)",
+				"method": "GET",
+				"status": 401,
+				"assertions": [
+					{
+						"name": "401 dondu",
+						"passed": true,
+						"skipped": false
+					},
+					{
+						"name": "token iptal edildi",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "05 POST login (yeni parola)",
+				"method": "POST",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			},
+			{
+				"folder": "09 Mail",
+				"name": "06 GET me (yeni token)",
+				"method": "GET",
+				"status": 200,
+				"assertions": [
+					{
+						"name": "200 dondu",
+						"passed": true,
+						"skipped": false
+					}
+				]
+			}
+		]
+	}
+}

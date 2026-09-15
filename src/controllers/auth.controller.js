@@ -16,6 +16,10 @@ const { createAccessToken } = require('../utils/jwt');
 
 const { sendSuccess } = require('../utils/response');
 
+const { queueMail } = require('../utils/mailer');
+
+const { buildWelcomeMail, buildPasswordChangedMail } = require('../utils/mail-templates');
+
 function throwInvalidCredentials() {
 	throw new AppError(401, 'E-posta veya password hatalı.', 'INVALID_CREDENTIALS');
 }
@@ -37,13 +41,27 @@ async function register(request, response) {
 		passwordHash,
 	});
 
-	const user = await userModel.findUserById(userId);
+	const createdUser = await userModel.findUserById(userId);
 
-	return sendSuccess(response, {
+	sendSuccess(response, {
 		statusCode: 201,
-		message: 'Kayıt tamamlandı. Giriş yapabilirsiniz.',
-		data: user,
+		message: 'Kayit olusturuldu.',
+		data: {
+			user: createdUser,
+		},
 	});
+
+	queueMail(
+		buildWelcomeMail({
+			name: createdUser.name,
+			email: createdUser.email,
+		}),
+		{
+			event: 'register',
+			userId: createdUser.id,
+			requestId: request.requestId,
+		}
+	);
 }
 
 async function login(request, response) {
@@ -115,6 +133,8 @@ async function changePassword(request, response) {
 		throw new AppError(409, 'Parola güncellenemedi.', 'PASSWORD_UPDATE_FAILED');
 	}
 
+	const changedAt = new Date();
+
 	await authModel.revokeAccessToken({
 		jti: request.auth.jti,
 		userId: request.auth.userId,
@@ -123,9 +143,24 @@ async function changePassword(request, response) {
 
 	response.setHeader('Cache-Control', 'no-store');
 
-	return sendSuccess(response, {
-		message: 'Parola güncellendi. Bütün oturumlar kapatıldı; yeniden giriş yapın.',
+	sendSuccess(response, {
+		message: 'Parola guncellendi. Butun oturumlar kapatildi; yeniden giris yapin.',
 	});
+
+	queueMail(
+		buildPasswordChangedMail(
+			{
+				name: request.user.name,
+				email: request.user.email,
+			},
+			changedAt
+		),
+		{
+			event: 'password-change',
+			userId: request.user.id,
+			requestId: request.requestId,
+		}
+	);
 }
 
 async function logout(request, response) {
