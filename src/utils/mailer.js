@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer');
+
 const { getMailConfig } = require('../config/mail.config');
+const { rememberMail } = require('./dev-mail-outbox');
 
 let transporter = null;
 
@@ -72,6 +74,10 @@ function queueMail(message, context) {
 		);
 
 		return;
+	}
+
+	if (config.devOutbox) {
+		rememberMail(message);
 	}
 
 	sendMail(message)

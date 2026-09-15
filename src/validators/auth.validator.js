@@ -2,13 +2,50 @@ const AppError = require('../utils/app-error');
 
 const { assertPlainObject } = require('./common.validator');
 
-const { validateCreateUser, validateNewPassword } = require('./user.validator');
+const { validateCreateUser, validateEmail, validateNewPassword } = require('./user.validator');
+
+const { CODE_PATTERN } = require('../utils/verification-code');
 
 const loginFields = new Set(['email', 'password']);
 
 const registerFields = new Set(['name', 'email', 'password']);
 
-const passwordChangeFields = new Set(['current_password', 'new_password']);
+const passwordChangeFields = new Set(['current_password', 'new_password', 'code']);
+
+function assertAllowedFields(body, allowedFields, appCode) {
+	const unsupportedFields = Object.keys(body).filter((field) => !allowedFields.includes(field));
+
+	if (unsupportedFields.length > 0) {
+		throw new AppError(
+			422,
+			`Bu istek yalnızca ${allowedFields.join(', ')} alanlarını kabul eder.`,
+			appCode,
+			{
+				fields: unsupportedFields,
+			}
+		);
+	}
+}
+
+function parseVerificationCode(value) {
+	if (typeof value !== 'string' || !CODE_PATTERN.test(value)) {
+		throw new AppError(
+			422,
+			'code 6 haneli bir string olmalıdır.',
+			'INVALID_VERIFICATION_CODE_FORMAT'
+		);
+	}
+
+	return value;
+}
+
+function parseCurrentPassword(value) {
+	if (typeof value !== 'string' || value.length === 0 || Array.from(value).length > 256) {
+		throw new AppError(422, 'current_password gönderin.', 'INVALID_CURRENT_PASSWORD');
+	}
+
+	return value;
+}
 
 function validateLoginBody(body) {
 	if (!body || Array.isArray(body) || typeof body !== 'object') {
@@ -81,7 +118,7 @@ function validatePasswordChangeBody(body) {
 	if (unsupportedFields.length > 0) {
 		throw new AppError(
 			422,
-			'Parola değişikliği yalnızca current_password ve new_password alanlarını kabul eder.',
+			'Parola değişikliği yalnızca current_password, new_password ve code alanlarını kabul eder.',
 			'UNSUPPORTED_PASSWORD_CHANGE_FIELDS',
 			{
 				fields: unsupportedFields,
@@ -89,11 +126,7 @@ function validatePasswordChangeBody(body) {
 		);
 	}
 
-	const current = body.current_password;
-
-	if (typeof current !== 'string' || current.length === 0 || Array.from(current).length > 256) {
-		throw new AppError(422, 'current_password gönderin.', 'INVALID_CURRENT_PASSWORD');
-	}
+	const current = parseCurrentPassword(body.current_password);
 
 	const newPassword = validateNewPassword(body.new_password);
 
@@ -105,9 +138,70 @@ function validatePasswordChangeBody(body) {
 		);
 	}
 
+	const code = parseVerificationCode(body.code);
+
 	return {
 		currentPassword: current,
 		newPassword,
+		code,
+	};
+}
+
+function validateEmailOnlyBody(body) {
+	assertPlainObject(body);
+
+	assertAllowedFields(body, ['email'], 'UNSUPPORTED_EMAIL_REQUEST_FIELDS');
+
+	return {
+		email: validateEmail(body.email),
+	};
+}
+
+function validateEmailVerifyBody(body) {
+	assertPlainObject(body);
+
+	assertAllowedFields(body, ['email', 'code'], 'UNSUPPORTED_EMAIL_VERIFY_FIELDS');
+
+	return {
+		email: validateEmail(body.email),
+		code: parseVerificationCode(body.code),
+	};
+}
+
+function validatePasswordResetBody(body) {
+	assertPlainObject(body);
+
+	assertAllowedFields(
+		body,
+		['email', 'code', 'new_password'],
+		'UNSUPPORTED_PASSWORD_RESET_FIELDS'
+	);
+
+	return {
+		email: validateEmail(body.email),
+		code: parseVerificationCode(body.code),
+		newPassword: validateNewPassword(body.new_password),
+	};
+}
+
+function validateEmailChangeBody(body) {
+	assertPlainObject(body);
+
+	assertAllowedFields(body, ['new_email', 'current_password'], 'UNSUPPORTED_EMAIL_CHANGE_FIELDS');
+
+	return {
+		newEmail: validateEmail(body.new_email),
+		currentPassword: parseCurrentPassword(body.current_password),
+	};
+}
+
+function validateEmailChangeConfirmBody(body) {
+	assertPlainObject(body);
+
+	assertAllowedFields(body, ['code'], 'UNSUPPORTED_EMAIL_CHANGE_CONFIRM_FIELDS');
+
+	return {
+		code: parseVerificationCode(body.code),
 	};
 }
 
@@ -115,4 +209,9 @@ module.exports = {
 	validateLoginBody,
 	validateRegisterBody,
 	validatePasswordChangeBody,
+	validateEmailOnlyBody,
+	validateEmailVerifyBody,
+	validatePasswordResetBody,
+	validateEmailChangeBody,
+	validateEmailChangeConfirmBody,
 };

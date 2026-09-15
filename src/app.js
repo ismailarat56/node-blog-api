@@ -1,21 +1,17 @@
 const express = require('express');
 
 const publicRouter = require('./routes/public.routes');
-
 const authRouter = require('./routes/auth.routes');
-
 const userRouter = require('./routes/user.routes');
-
 const categoryRouter = require('./routes/category.routes');
-
 const postRouter = require('./routes/post.routes');
-
 const commentRouter = require('./routes/comment.routes');
+const devRoutes = require('./routes/dev.routes');
+
+const { getMailConfig } = require('./config/mail.config');
 
 const requestLogger = require('./middlewares/request-logger.middleware');
-
 const notFoundHandler = require('./middlewares/not-found.middleware');
-
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
@@ -46,6 +42,10 @@ app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/posts', postRouter);
 
 app.use('/api/v1/comments', commentRouter);
+
+if (getMailConfig().devOutbox) {
+	app.use('/api/v1/dev', devRoutes);
+}
 
 app.use(notFoundHandler);
 
