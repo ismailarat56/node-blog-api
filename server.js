@@ -5,6 +5,7 @@ const pool = require('./src/config/database');
 
 const { getMailConfig } = require('./src/config/mail.config');
 const { getVerificationConfig } = require('./src/config/verification.config');
+const { getRateLimitConfig } = require('./src/config/rate-limit.config');
 
 const PORT = Number(process.env.PORT || 3000);
 
@@ -13,10 +14,49 @@ async function startServer() {
 
 	getMailConfig();
 	getVerificationConfig();
+	getRateLimitConfig();
 
-	app.listen(PORT, () => {
+	const server = app.listen(PORT, () => {
 		console.log(`Server http://localhost:${PORT} adresinde çalışıyor.`);
 	});
+
+	registerShutdown(server);
+}
+
+function registerShutdown(server) {
+	let closing = false;
+
+	function shutdown(signal) {
+		if (closing) {
+			return;
+		}
+
+		closing = true;
+
+		console.error(
+			`[server] ${signal} alındı, yeni bağlantı kabul edilmiyor.`
+		);
+
+		const forceTimer = setTimeout(
+			() => process.exit(1),
+			10_000
+		);
+
+		forceTimer.unref();
+
+		server.close(async () => {
+			await pool.end();
+			process.exit(0);
+		});
+	}
+
+	process.on('SIGTERM', () =>
+		shutdown('SIGTERM')
+	);
+
+	process.on('SIGINT', () =>
+		shutdown('SIGINT')
+	);
 }
 
 startServer().catch((error) => {
