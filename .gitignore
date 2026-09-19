@@ -4,3 +4,5 @@ node_modules/
 *.log
 backups/
 postman/*.postman_environment.json
+.env.docker
+.env.db

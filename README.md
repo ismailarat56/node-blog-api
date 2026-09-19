@@ -37,11 +37,143 @@ npm start
 
 Varsayılan adres `http://localhost:3000` olur. Başlangıçta veritabanı bağlantısı kurulamazsa HTTP sunucusu açılmaz. `npm run memory`, v4 özelliklerini içermeyen eski bellek içi CRUD örneğidir.
 
+## Rate Limiting
+
+İstekler sliding window ile, son zaman aralığındaki kayıtlar sayılarak sınırlandırılır. Limiti aşan istek `429 RATE_LIMITED` alır; `Retry-After` başlığı bekleme süresini saniye olarak verir. Yanıttaki `error.details` içinde `limit_name` ve `retry_after_seconds` bulunur.
+
+| Limiter | Anahtar | Sınır |
+| --- | --- | --- |
+| `login_ip` | IP | 15 dakikada 30 |
+| `login_account` | IP + e-posta | 15 dakikada 5 |
+| `register` | IP | Saatte 10 |
+| `public_code_mail_ip` | IP | 15 dakikada 10 |
+| `public_code_mail_email` | E-posta | Saatte 3 |
+| `code_check_ip` | IP | 15 dakikada 30 |
+| `code_check_email` | E-posta | Saatte 10 |
+| `account_code_mail` | Kullanıcı ID | Saatte 5 |
+| `comment_create` | Kullanıcı ID | Dakikada 10 |
+
+E-posta anahtarı oluşturulurken baştaki/sondaki boşluklar silinir ve harfler küçültülür. Aynı limiter nesnesini kullanan endpointler aynı kotayı paylaşır; sayaçlar yalnızca API sürecinin belleğinde tutulur. Limiter'dan geçen başarısız istekler de sayılır.
+
+## Docker ile Çalıştırma
+
+Docker ve Compose gerekir. Bu çalışma kopyasında `.env.docker.example` ve `.env.db.example` henüz yoktur; ilk kurulumdan önce aşağıdaki örnekleri bu adlarla kaydedin. Mevcut gerçek ortam dosyalarınız varsa üzerlerine kopyalamayın.
+
+`.env.docker.example` içeriği:
+
+```dotenv
+PORT=3000
+DB_HOST=db
+DB_PORT=3306
+DB_USER=blog_app
+DB_PASSWORD=replace-with-app-password
+DB_NAME=simple_user_api
+JWT_SECRET=replace-with-random-secret
+VERIFICATION_CODE_KEY=replace-with-64-hex-characters
+MAIL_TRANSPORT=json
+DEV_MAIL_OUTBOX=false
+RATE_LIMIT_ENABLED=true
+```
+
+`.env.db.example` içeriği:
+
+```dotenv
+MYSQL_DATABASE=simple_user_api
+MYSQL_USER=blog_app
+MYSQL_PASSWORD=replace-with-app-password
+MYSQL_ROOT_PASSWORD=replace-with-root-password
+```
+
+1. İki örnekten gerçek ortam dosyalarını oluşturun:
+
+   ```bash
+   cp .env.docker.example .env.docker
+   cp .env.db.example .env.db
+   ```
+
+2. Parola ve anahtar üretin; her değer için komutu yeniden çalıştırın:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   `DB_PASSWORD` ile `MYSQL_PASSWORD` aynı olsun. `MYSQL_ROOT_PASSWORD`, `JWT_SECRET` ve `VERIFICATION_CODE_KEY` için ayrı değerler kullanın. JSON mail modu gerçek e-posta göndermez.
+
+3. Servisleri başlatın (ilk seferde API image'ı da oluşturulur):
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. Container durumlarını kontrol edin; database'in sağlıklı olmasını bekleyin:
+
+   ```bash
+   docker compose ps
+   ```
+
+5. API sağlık kontrolünü yapın; `200` ve `success: true` beklenir:
+
+   ```bash
+   curl -i http://localhost:3001/health
+   ```
+
+6. İşiniz bitince servisleri kapatın; database volume'u ve veriler korunur:
+
+   ```bash
+   docker compose down
+   ```
+
+**Verileri silerek sıfırlama:** Aşağıdaki ayrı komut database volume'unu da siler; yalnızca verileri kaybetmeyi kabul ediyorsanız kullanın.
+
+```bash
+docker compose down -v
+```
+
+## Docker'da Migration Çalıştırma
+
+Servisler çalışırken yalnızca eksik migration'ları numara sırasıyla uygulayın. Örneğin `012` henüz uygulanmamışsa:
+
+```bash
+docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' < sql/migrations/012_create_verification_codes.sql
+```
+
+Temiz volume'da güncel `sql/schema.sql` otomatik çalışır; içerdiği migration'ları tekrar çalıştırmayın. Uygulanan migration'ları kaydeden tablo yoktur; `-T`, dosyadan SQL aktarırken terminal ayırmayı kapatır.
+
+## Docker'da İlk Admin
+
+Servisleri `docker compose up -d` ile açın. Temiz yerel kurulumda, yalnızca bu e-posta henüz yoksa başlangıç kullanıcısını oluşturun:
+
+```bash
+docker compose exec db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+```
+
+MySQL içinde aşağıdakileri çalıştırın. Burada yerel başlangıç hesabı elle doğrulanmış sayılır:
+
+```sql
+INSERT INTO users (name, email, email_verified_at)
+VALUES ('İlk Admin', 'admin@example.com', CURRENT_TIMESTAMP);
+exit
+```
+
+Ardından Bash terminalinde parola ve rol atayın. Scriptler yeni kullanıcı oluşturmaz; mevcut kaydı günceller:
+
+```bash
+export BOOTSTRAP_EMAIL=admin@example.com
+read -r -s -p 'Admin parolası (15–128 karakter): ' BOOTSTRAP_PASSWORD
+printf '\n'
+export BOOTSTRAP_PASSWORD
+docker compose exec -e BOOTSTRAP_EMAIL -e BOOTSTRAP_PASSWORD api npm run set-user-password
+docker compose exec -e BOOTSTRAP_EMAIL -e BOOTSTRAP_ROLE=admin api npm run set-user-role
+unset BOOTSTRAP_EMAIL BOOTSTRAP_PASSWORD
+```
+
+Artık `/api/v1/auth/login` üzerinden bu bilgilerle giriş yapabilirsiniz.
+
 ## Authentication ile Authorization Farkı
 
 **Authentication**, e-posta/parola veya access token ile kimliğin doğrulanmasıdır. **Authorization**, doğrulanan kullanıcının rolüne ve post sahipliğine göre işlem izninin belirlenmesidir.
 
-Yalnızca `GET /health` ve `POST /api/v1/auth/login` public’tir. Diğer tanımlı endpoint’ler `Authorization: Bearer <access_token>` bekler. Eksik/geçersiz kimlik doğrulaması `401`, yetersiz yetki `403` üretir. Başkasına ait draft postun varlığını gizlemek için okumada `404` kullanılır.
+`GET /health`, `/api/v1/public` altındaki okuma uçları ve aşağıdaki tabloda authentication gerektirmediği belirtilen auth uçları public’tir. Korumalı endpoint’ler `Authorization: Bearer <access_token>` bekler. Eksik/geçersiz kimlik doğrulaması `401`, yetersiz yetki `403` üretir. Başkasına ait draft postun varlığını gizlemek için okumada `404` kullanılır.
 
 ## Role Mimarisi
 
@@ -72,7 +204,17 @@ Authentication ve role birbirinden ayrı koşullardır. “Herkes”, authentica
 | Method | Endpoint | Authentication | Role | İşlem |
 | --- | --- | --- | --- | --- |
 | GET | `/health` | Hayır | — | Uygulama sağlık kontrolü |
-| POST | `/api/v1/auth/login` | Hayır | — | Giriş, access token üretimi |
+| POST | `/api/v1/auth/login` | Hayır | — | Giriş; `login_ip`, `login_account` |
+| POST | `/api/v1/auth/register` | Hayır | — | Kayıt; `register` |
+| POST | `/api/v1/auth/email/verify` | Hayır | — | E-posta doğrula; `code_check_ip`, `code_check_email` |
+| POST | `/api/v1/auth/email/verify/resend` | Hayır | — | Kod gönder; `public_code_mail_ip`, `public_code_mail_email` |
+| POST | `/api/v1/auth/password/forgot` | Hayır | — | Sıfırlama kodu gönder; `public_code_mail_ip`, `public_code_mail_email` |
+| POST | `/api/v1/auth/password/reset` | Hayır | — | Parolayı sıfırla; `code_check_ip`, `code_check_email` |
+| POST | `/api/v1/auth/password/change-code` | Evet | Herkes | Parola değişim kodu; `account_code_mail` |
+| PATCH | `/api/v1/auth/password` | Evet | Herkes | Parolayı kodla değiştir |
+| POST | `/api/v1/auth/email/change` | Evet | Herkes | E-posta değişim kodu; `account_code_mail` |
+| POST | `/api/v1/auth/email/change/confirm` | Evet | Herkes | E-posta değişimini onayla |
+| POST | `/api/v1/posts/:postId/comments` | Evet | Herkes | Yorum oluştur; `comment_create` |
 | GET | `/api/v1/auth/me` | Evet | Herkes | Kullanıcıyı role ile getir |
 | POST | `/api/v1/auth/logout` | Evet | Herkes | Mevcut token’ı iptal et |
 | GET | `/api/v1/users` | Evet | admin | Kullanıcıları listele |
@@ -114,12 +256,12 @@ Authentication ve role birbirinden ayrı koşullardır. “Herkes”, authentica
 
 ## Admin Bootstrap
 
-Public kayıt endpoint’i yoktur. Bootstrap scriptleri **mevcut, silinmemiş kullanıcıyı günceller**, yeni kullanıcı oluşturmaz. İlk kurulumda kullanıcı yoksa MySQL istemcisinde, uygulamanın kullandığı veritabanında bir başlangıç kaydı oluşturun:
+Public kayıt için `/api/v1/auth/register` kullanılabilir. Bootstrap scriptleri **mevcut, silinmemiş kullanıcıyı günceller**, yeni kullanıcı oluşturmaz. İlk yerel kurulumda kullanıcı yoksa MySQL istemcisinde, uygulamanın kullandığı veritabanında doğrulanmış bir başlangıç kaydı oluşturun:
 
 ```sql
 USE simple_user_api;
-INSERT INTO users (name, email)
-VALUES ('Ali Yılmaz', 'ali@example.com');
+INSERT INTO users (name, email, email_verified_at)
+VALUES ('Ali Yılmaz', 'ali@example.com', CURRENT_TIMESTAMP);
 ```
 
 Bu INSERT yalnızca kullanıcı henüz yoksa çalıştırılır. Mevcut kurulumda aktif bir kullanıcı seçin. Aşağıdaki komutlar seçilen hesabın parolasını ve rolünü değiştirir. Parola terminalde gösterilmeden okunur; `set -x` kullanmayın.
@@ -323,11 +465,12 @@ Otomatik migration takip mekanizması yoktur. `schema.sql`, mevcut tablo yapıs�
 
 ## Environment Değişkenleri
 
-V4 için yeni kalıcı environment değişkeni eklenmedi. Mevcut veritabanı ve authentication ayarları korunur:
+Temel veritabanı, authentication ve rate limit ayarları:
 
 | Değişken | Kullanım | Örnek / Varsayılan |
 | --- | --- | --- |
 | `PORT` | HTTP portu | `3000` |
+| `RATE_LIMIT_ENABLED` | Rate limit kontrolü; `false` production ortamında kabul edilmez | `true` |
 | `DB_HOST` | MySQL host | `127.0.0.1` |
 | `DB_PORT` | MySQL port | `3306` |
 | `DB_USER` | MySQL kullanıcı adı | `your_mysql_user` |
@@ -657,6 +800,7 @@ Logout mevcut token’ı iptal eder; `unset` terminal değişkenlerini siler. So
 | 409 | `CANNOT_CHANGE_OWN_ROLE` | Admin kendi rolünü değiştirmeye çalışıyor |
 | 422 | `INVALID_USER_ROLE` | Tanımsız/eksik role |
 | 422 | `UNSUPPORTED_ROLE_FIELDS` | Role body’sinde ek alan |
+| 429 | `RATE_LIMITED` | İstek sınırı aşıldı; `Retry-After` kadar bekleyin |
 
 Bearer middleware’in ürettiği 401 yanıtlarında `WWW-Authenticate: Bearer realm="api"` bulunur. Login `INVALID_CREDENTIALS` yanıtında bu header eklenmez. 403 yanıtlarında da bulunmaz.
 
@@ -766,7 +910,14 @@ Yukarıdaki curl akışı temel senaryoları kapsar. Matristeki diğer varyasyon
 
 ## Bilinen Sınırlamalar
 
-- Otomatik test paketi, migration geçmişi takibi, refresh token, parola sıfırlama, MFA ve login rate limit mekanizması yoktur.
+- Rate limit sayaçları süreç belleğinde; API yeniden başlayınca sıfırlanır, birden fazla API container'ı sayaç paylaşmaz.
+- Reverse proxy arkasında trust proxy ayarlanmadan bütün istemciler tek IP görünür.
+- Çok IP'si olan saldırgan login_account limitini IP başına ayrı ayrı kullanabilir; IPv6'da tek kullanıcı çok adrese sahiptir.
+- Register limiti yalnız IP başına; +etiket adreslerle aynı gelen kutusuna çok sayıda doğrulama maili gönderilebilir.
+- email/change/confirm ve PATCH /password kod denemeleri ayrıca limitlenmedi; kod başına beş deneme ve account_code_mail ile sınırlı.
+- Docker database'ine migration elle exec ile çalıştırılır; hangi migrationın koştuğunu tutan tablo yok.
+- Docker kurulumu yerel geliştirme içindir; HTTPS, reverse proxy ve sunucu deploy yok.
+- Otomatik entegrasyon test paketi, refresh token ve MFA yoktur.
 - Post validator 50000 karaktere kadar content kabul etse de Express JSON body limiti 20 KB’dir; büyük içerikler validator’a ulaşmadan 413 alabilir.
 - JSON parser request logger’dan önce çalışır. Bozuk/aşırı büyük JSON hatalarında request_id null olabilir.
 - `FORBIDDEN` response ayrıntıları, role middleware ve include_deleted kontrolünde aynı değildir.
@@ -795,10 +946,14 @@ date -u -d '@1788717600' '+%Y-%m-%dT%H:%M:%SZ'
 
 ## Sonraki Adımlar
 
+- Paylaşılan rate limit deposu (Redis) ve birden fazla API container'ı
+- Reverse proxy (nginx), trust proxy ve HTTPS
+- Sunucuya deploy (VPS üzerinde docker compose)
+- Migration takip tablosu veya migration aracı
 - Authorization ve Post contractlarını ilgili notes dosyalarında tamamlamak
 - Test matrisini otomatik entegrasyon testlerine dönüştürmek
 - FORBIDDEN yanıtlarını, parola politikasını ve body/validator boyut sınırlarını tutarlı hale getirmek
-- Son admin koruması, login rate limit ve token iptal kayıtlarının periyodik temizliğini eklemek
+- Son admin koruması ve token iptal kayıtlarının periyodik temizliğini eklemek
 - Category/post eşzamanlılık ve restore/publish kullanılabilirlik kurallarını netleştirmek
 - Request ID üretimini JSON parse hatalarını da kapsayacak şekilde geliştirmek
 
