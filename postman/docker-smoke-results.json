@@ -1,0 +1,19 @@
+{
+  "environment": "node-blog-docker",
+  "folders": [
+    "00 Health",
+    "01 Auth",
+    "04 Posts"
+  ],
+  "requests": 69,
+  "tests": 127,
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "runId": "3411d6d8-74ca-49ec-9a3b-c314fae708f9",
+  "runTime": "03:54:07 PM",
+  "verifiedAt": "2026-09-22T12:55:19.727Z",
+  "runner": "Postman Desktop",
+  "uiSummary": "Node Blog API - Run results\nRerun\nNew Run\nSchedule\nPostman CLI\nConfigure CI/CD\nShare\nRan today at 03:54:07 PM\nView all runs\nSource\nRunner\nEnvironment\nnode-blog-docker\nIterations\n1\nDuration\n3s 85ms\nAll tests\n127\nErrors\n0\nAvg. Resp. Time\n19 ms\nAll127\nPassed127\nFailed0\nSkipped0\nErrors0\nConsole log\nList\nGrid\n"
+}

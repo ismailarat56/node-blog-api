@@ -139,6 +139,16 @@ docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_D
 
 Temiz volume'da güncel `sql/schema.sql` otomatik çalışır; içerdiği migration'ları tekrar çalıştırmayın. Uygulanan migration'ları kaydeden tablo yoktur; `-T`, dosyadan SQL aktarırken terminal ayırmayı kapatır.
 
+Eski Docker volume'larında `users.password_changed_at`, `users.email_verified_at` ve `verification_codes` eksikse sırasıyla `010`, `011` ve `012` migration'larını uygulayın. `docker compose up --build` mevcut veritabanına migration uygulamaz.
+
+## Docker ile Postman Testleri
+
+`node-blog-docker` environment'ında `base_url=http://127.0.0.1:3001` kullanın. Docker veritabanı yerel MySQL'den ayrıdır: environment'taki `admin_email` / `admin_password` ve `user_email` / `user_password` ile eşleşen aktif, e-postası doğrulanmış kullanıcılar Docker veritabanında da bulunmalıdır. Rolleri sırasıyla `admin` ve `user` olmalıdır.
+
+`04 Posts`, aktif bir kategori için `category_id` ve silinmiş bir kategori için `empty_category_id` değişkenlerine ihtiyaç duyar. İlk hazırlıkta `00 Health → 01 Auth → 03 Categories → 04 Posts` sırasını kullanabilirsiniz; `03 Categories` bu kategori kayıtlarını ve değişkenlerini hazırlar. Kategoriler hazır olduğunda yalnızca `00 Health → 01 Auth → 04 Posts` çalıştırılabilir. Runner'da **Keep variable values** açık olsun; `01 Auth` her koşuda yeni token alır.
+
+Art arda yapılan işlev testleri login kotasını aşabilir. Yerel geliştirmede bu testleri rate limit testlerinden ayrı çalıştırmak için `.env.docker` içinde `RATE_LIMIT_ENABLED=false` kullanıp API servisini yeniden oluşturun. `/health` yanıtının `200` olması, kullanıcıların ve veritabanı şemasının hazır olduğunu tek başına göstermez.
+
 ## Docker'da İlk Admin
 
 Servisleri `docker compose up -d` ile açın. Temiz yerel kurulumda, yalnızca bu e-posta henüz yoksa başlangıç kullanıcısını oluşturun:
