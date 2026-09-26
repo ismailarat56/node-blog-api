@@ -237,6 +237,9 @@ CREATE TABLE IF NOT EXISTS posts (
         NULL
         DEFAULT NULL,
 
+    cover_path VARCHAR(255)
+        NULL,
+
     PRIMARY KEY (id),
 
     UNIQUE INDEX uq_posts_slug (

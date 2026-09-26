@@ -1,0 +1,2 @@
+ALTER TABLE posts
+  ADD COLUMN cover_path VARCHAR(255) NULL;

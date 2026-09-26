@@ -9,12 +9,23 @@ const commentRouter = require('./routes/comment.routes');
 const devRoutes = require('./routes/dev.routes');
 
 const { getMailConfig } = require('./config/mail.config');
+const { getUploadConfig } = require('./config/upload.config');
 
 const requestLogger = require('./middlewares/request-logger.middleware');
 const notFoundHandler = require('./middlewares/not-found.middleware');
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
+
+const hops = Number(process.env.TRUST_PROXY_HOPS ?? '0');
+
+if (!Number.isInteger(hops) || hops < 0 || hops > 5) {
+	throw new Error('TRUST_PROXY_HOPS 0 ile 5 arasinda bir tam sayi olmalidir.');
+}
+
+if (hops > 0) {
+	app.set('trust proxy', hops);
+}
 
 app.use(
 	express.json({
@@ -23,6 +34,19 @@ app.use(
 );
 
 app.use(requestLogger);
+
+const uploadConfig = getUploadConfig();
+
+if (uploadConfig.serveUploads) {
+	app.use(
+		'/uploads',
+		express.static(uploadConfig.directory, {
+			index: false,
+			dotfiles: 'ignore',
+			maxAge: '7d',
+		})
+	);
+}
 
 app.get('/health', (request, response) => {
 	return response.status(200).json({

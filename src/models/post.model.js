@@ -44,6 +44,7 @@ const listColumns = `
 	p.title,
 	p.slug,
 	p.excerpt,
+	p.cover_path,
 	p.status,
 	p.published_at,
 	p.created_at,
@@ -147,6 +148,7 @@ function mapPostRow(row) {
 		title: row.title,
 		slug: row.slug,
 		excerpt: row.excerpt,
+		cover_path: row.cover_path,
 		status: row.status,
 		published_at: row.published_at,
 
@@ -354,6 +356,20 @@ async function updatePostFields(id, data) {
 	return result.affectedRows;
 }
 
+async function updatePostCoverPath(postId, coverPath) {
+	const [result] = await pool.execute(
+		`
+				UPDATE posts
+				SET cover_path = ?
+				WHERE id = ?
+					AND deleted_at IS NULL
+			`,
+		[coverPath, postId]
+	);
+
+	return result.affectedRows === 1;
+}
+
 async function publishPost(id) {
 	const [result] = await pool.execute(
 		`
@@ -431,6 +447,7 @@ module.exports = {
 	createPost,
 	replacePost,
 	updatePostFields,
+	updatePostCoverPath,
 	publishPost,
 	unpublishPost,
 	softDeletePost,

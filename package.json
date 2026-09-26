@@ -9,7 +9,8 @@
 		"set-user-password": "node scripts/set-user-password.js",
 		"set-user-role": "node scripts/set-user-role.js",
 		"mail:test": "node scripts/send-test-mail.js",
-		"check-sliding-window": "node scripts/check-sliding-window.js"
+		"check-sliding-window": "node scripts/check-sliding-window.js",
+		"check-image-signature": "node scripts/check-image-signature.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -19,6 +20,7 @@
 		"dotenv": "^17.4.2",
 		"express": "^5.2.1",
 		"jsonwebtoken": "^9.0.3",
+		"multer": "^2.4.0",
 		"mysql2": "^3.24.2",
 		"nodemailer": "^9.1.1"
 	}

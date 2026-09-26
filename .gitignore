@@ -6,3 +6,7 @@ backups/
 postman/*.postman_environment.json
 .env.docker
 .env.db
+uploads/*
+!uploads/covers/
+uploads/covers/*
+!uploads/covers/.gitkeep

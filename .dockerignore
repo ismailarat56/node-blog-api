@@ -14,3 +14,4 @@ backups
 Dockerfile
 .dockerignore
 compose.yaml
+uploads
