@@ -7,6 +7,7 @@ const categoryModel = require('../models/category.model');
 const commentModel = require('../models/comment.model');
 
 const { sendSuccess } = require('../utils/response');
+const { withCoverUrl } = require('../utils/cover-url');
 
 const { buildPaginationMeta } = require('../utils/pagination');
 
@@ -23,7 +24,7 @@ async function listPosts(request, response) {
 	]);
 
 	return sendSuccess(response, {
-		data: posts,
+		data: posts.map(withCoverUrl),
 		meta: buildPaginationMeta(options.page, options.limit, total),
 	});
 }
@@ -38,7 +39,7 @@ async function showPost(request, response) {
 	}
 
 	return sendSuccess(response, {
-		data: post,
+		data: withCoverUrl(post),
 	});
 }
 

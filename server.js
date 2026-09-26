@@ -1,11 +1,13 @@
 require('dotenv').config();
 
+const fs = require('node:fs');
 const app = require('./src/app');
 const pool = require('./src/config/database');
 
 const { getMailConfig } = require('./src/config/mail.config');
 const { getVerificationConfig } = require('./src/config/verification.config');
 const { getRateLimitConfig } = require('./src/config/rate-limit.config');
+const { getUploadConfig } = require('./src/config/upload.config');
 
 const PORT = Number(process.env.PORT || 3000);
 
@@ -15,6 +17,9 @@ async function startServer() {
 	getMailConfig();
 	getVerificationConfig();
 	getRateLimitConfig();
+	const uploadConfig = getUploadConfig();
+
+	fs.mkdirSync(uploadConfig.coverDirectory, { recursive: true });
 
 	const server = app.listen(PORT, () => {
 		console.log(`Server http://localhost:${PORT} adresinde çalışıyor.`);

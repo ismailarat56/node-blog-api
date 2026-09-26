@@ -8,9 +8,10 @@ const { slugify } = require('../utils/slugify');
 
 const { isAdmin } = require('../middlewares/authorize.middleware');
 
-const { canViewPost, canManagePost } = require('../utils/post-visibility');
+const { canViewPost, assertPostOwnerOrAdmin } = require('../utils/post-visibility');
 
 const { sendSuccess } = require('../utils/response');
+const { withCoverUrl } = require('../utils/cover-url');
 
 const {
 	parsePostId,
@@ -67,14 +68,6 @@ async function findExistingPost(id, { includeDeleted = false } = {}) {
 	return post;
 }
 
-function assertPostOwnerOrAdmin(post, user) {
-	if (canManagePost(post, user)) {
-		return;
-	}
-
-	throw new AppError(403, 'Bu post üzerinde işlem yapma yetkiniz yok.', 'POST_FORBIDDEN');
-}
-
 async function index(request, response) {
 	const options = parsePostListQuery(request.query);
 
@@ -98,7 +91,7 @@ async function index(request, response) {
 	const totalPages = total === 0 ? 0 : Math.ceil(total / options.limit);
 
 	return sendSuccess(response, {
-		data: posts,
+		data: posts.map(withCoverUrl),
 
 		meta: {
 			page: options.page,
@@ -123,7 +116,7 @@ async function show(request, response) {
 	}
 
 	return sendSuccess(response, {
-		data: post,
+		data: withCoverUrl(post),
 	});
 }
 

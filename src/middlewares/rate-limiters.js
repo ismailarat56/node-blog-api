@@ -66,6 +66,13 @@ const commentCreateLimiter = rateLimit({
 	key: keyBy.user,
 });
 
+const coverUploadLimiter = rateLimit({
+	name: 'cover_upload',
+	limit: 20,
+	windowSeconds: HOUR,
+	key: keyBy.user,
+});
+
 module.exports = {
 	loginIpLimiter,
 	loginAccountLimiter,
@@ -76,4 +83,5 @@ module.exports = {
 	codeCheckEmailLimiter,
 	accountCodeMailLimiter,
 	commentCreateLimiter,
+	coverUploadLimiter,
 };

@@ -1,0 +1,941 @@
+{
+  "verifiedAt": "2026-09-22T14:36:05.924Z",
+  "runner": "Postman Desktop",
+  "collection": "Node Blog API",
+  "environment": "node-blog-docker",
+  "uniqueRequests": 292,
+  "summary": {
+    "requests": 310,
+    "passed": 571,
+    "failed": 0,
+    "errors": 0
+  },
+  "groups": [
+    {
+      "folders": "00–08",
+      "runId": "76f2f022-bb63-46e9-b91b-b4b1cc879291",
+      "baseUrl": "http://127.0.0.1:3001",
+      "requests": 240,
+      "passed": 472,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "folders": "09–10",
+      "runId": "b43a44c5-95a2-45c0-9e73-98a4057ad50b",
+      "baseUrl": "http://127.0.0.1:3001",
+      "requests": 36,
+      "passed": 55,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "folders": "11 Rate Limit",
+      "runId": "057cf68c-5493-4947-9d76-8435069f571f",
+      "baseUrl": "http://127.0.0.1:3002",
+      "rateLimitEnabled": true,
+      "requests": 25,
+      "passed": 31,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "folders": "12 Cover",
+      "runId": "ae32dce0-85e4-481c-a580-f7522a4f4045",
+      "baseUrl": "http://127.0.0.1:3001",
+      "requests": 9,
+      "passed": 13,
+      "failed": 0,
+      "errors": 0
+    }
+  ],
+  "cover": {
+    "folderId": "57626617-d120fa7a-1f50-4554-9d15-176a01cdd965",
+    "runId": "ae32dce0-85e4-481c-a580-f7522a4f4045",
+    "records": [
+      {
+        "name": "12.0 Hazırlık",
+        "path": " / 12 Cover / 12.0 Hazırlık",
+        "method": "POST",
+        "status": 201,
+        "tests": [
+          {
+            "name": "post olusturuldu",
+            "passed": true,
+            "skipped": false
+          },
+          {
+            "name": "post id pozitif bir sayi",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.1 Kapak Yükle",
+        "path": " / 12 Cover / 12.1 Kapak Yükle",
+        "method": "PUT",
+        "status": 200,
+        "tests": [
+          {
+            "name": "200 donuyor",
+            "passed": true,
+            "skipped": false
+          },
+          {
+            "name": "cover_url dogru klasorde",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.2 Çok Büyük Dosya",
+        "path": " / 12 Cover / 12.2 Çok Büyük Dosya",
+        "method": "PUT",
+        "status": 413,
+        "tests": [
+          {
+            "name": "413 ve COVER_TOO_LARGE",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.3 İzin Verilmeyen Tür",
+        "path": " / 12 Cover / 12.3 İzin Verilmeyen Tür",
+        "method": "PUT",
+        "status": 415,
+        "tests": [
+          {
+            "name": "415 ve COVER_TYPE_NOT_ALLOWED",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.4 Tür Yalanı",
+        "path": " / 12 Cover / 12.4 Tür Yalanı",
+        "method": "PUT",
+        "status": 415,
+        "tests": [
+          {
+            "name": "415 ve COVER_CONTENT_MISMATCH",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.5 Başkasının Post'u",
+        "path": " / 12 Cover / 12.5 Başkasının Post'u",
+        "method": "PUT",
+        "status": 403,
+        "tests": [
+          {
+            "name": "403 ve POST_FORBIDDEN",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.6 Görseli Aç",
+        "path": " / 12 Cover / 12.6 Görseli Aç",
+        "method": "GET",
+        "status": 200,
+        "tests": [
+          {
+            "name": "200 ve gorsel dondu",
+            "passed": true,
+            "skipped": false
+          },
+          {
+            "name": "7 gun onbellek basligi",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.7 Kapağı Sil",
+        "path": " / 12 Cover / 12.7 Kapağı Sil",
+        "method": "DELETE",
+        "status": 204,
+        "tests": [
+          {
+            "name": "204 donuyor",
+            "passed": true,
+            "skipped": false
+          },
+          {
+            "name": "204 yaniti bos",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      },
+      {
+        "name": "12.8 İkinci Silme",
+        "path": " / 12 Cover / 12.8 İkinci Silme",
+        "method": "DELETE",
+        "status": 404,
+        "tests": [
+          {
+            "name": "404 ve COVER_NOT_FOUND",
+            "passed": true,
+            "skipped": false
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "filesystem": {
+    "checkpointRunIds": [
+      "27fa03fc-f096-4721-b77e-64f6a03e231a",
+      "82ea391c-550d-4091-a47c-e1e6c55f81c4",
+      "3e8d80e1-e2e1-447e-85b7-25629a4005b5"
+    ],
+    "afterUpload": [
+      ".gitkeep",
+      "096bd4397aed8630b3104a6acdcba1b3.png",
+      "219dc72880511113d80739522cf18e8b.png",
+      "bd83d4b0a90aa4c2ae5b0300352d4510.png"
+    ],
+    "afterRejectedUploads": [
+      ".gitkeep",
+      "096bd4397aed8630b3104a6acdcba1b3.png",
+      "219dc72880511113d80739522cf18e8b.png",
+      "bd83d4b0a90aa4c2ae5b0300352d4510.png"
+    ],
+    "afterDelete": [
+      ".gitkeep",
+      "219dc72880511113d80739522cf18e8b.png",
+      "bd83d4b0a90aa4c2ae5b0300352d4510.png"
+    ],
+    "rejectedUploadsLeftNoNewFiles": true,
+    "deleteRemovedExactlyOneCover": true
+  },
+  "resolvedSetupIssues": [
+    {
+      "issue": "Postman blocked /tmp file reads (PPERM), causing COVER_REQUIRED.",
+      "resolution": "Working directory set to /tmp; insecureFileRead remains false.",
+      "initialRunId": "bd14ece6-6c3b-4fc6-a280-dee0f3ffd0c3"
+    },
+    {
+      "issue": "mail_inbox was empty; 09 Mail and 10 Verification failed.",
+      "resolution": "Set mail_inbox to postman-regression@example.test in the Docker environment, then reran 09–10 with 55 passed and no failures/errors. MAIL_TRANSPORT=json; no external mail sent.",
+      "initialRunId": "76f2f022-bb63-46e9-b91b-b4b1cc879291",
+      "initialCounts": {
+        "passed": 480,
+        "failed": 41,
+        "errors": 6
+      },
+      "initialFailures": [
+        {
+          "name": "01 POST register (mail)",
+          "path": " / 09 Mail / 01 POST register (mail)",
+          "status": 422,
+          "tests": [
+            {
+              "name": "201 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 201 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "02 GET e-posta dogrulama kodu",
+          "path": " / 09 Mail / 02 GET e-posta dogrulama kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "03 POST email verify",
+          "path": " / 09 Mail / 03 POST email verify",
+          "status": 422,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "04 POST login (ilk parola)",
+          "path": " / 09 Mail / 04 POST login (ilk parola)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "05 POST password change-code",
+          "path": " / 09 Mail / 05 POST password change-code",
+          "status": 401,
+          "tests": [
+            {
+              "name": "202 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 202 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "06 GET parola degisikligi kodu",
+          "path": " / 09 Mail / 06 GET parola degisikligi kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "07 PATCH password (mail)",
+          "path": " / 09 Mail / 07 PATCH password (mail)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "08 GET me (iptal edilen token)",
+          "path": " / 09 Mail / 08 GET me (iptal edilen token)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "token iptal edildi",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_ACCESS_TOKEN' to deeply equal 'ACCESS_TOKEN_REVOKED'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "09 POST login (yeni parola)",
+          "path": " / 09 Mail / 09 POST login (yeni parola)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "10 GET me (yeni token)",
+          "path": " / 09 Mail / 10 GET me (yeni token)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "01 POST register",
+          "path": " / 10 Verification / 10.1 Email Verify / 01 POST register",
+          "status": 422,
+          "tests": [
+            {
+              "name": "201 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 201 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "02 POST login (dogrulanmamis)",
+          "path": " / 10 Verification / 10.1 Email Verify / 02 POST login (dogrulanmamis)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "403 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 403 but got 401"
+              }
+            },
+            {
+              "name": "EMAIL_NOT_VERIFIED",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_CREDENTIALS' to deeply equal 'EMAIL_NOT_VERIFIED'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "03 GET dogrulama kodu",
+          "path": " / 10 Verification / 10.1 Email Verify / 03 GET dogrulama kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "04 POST email verify (yanlis kod)",
+          "path": " / 10 Verification / 10.1 Email Verify / 04 POST email verify (yanlis kod)",
+          "status": 422,
+          "tests": [
+            {
+              "name": "INVALID_VERIFICATION_CODE",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_EMAIL' to deeply equal 'INVALID_VERIFICATION_CODE'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "05 POST email verify",
+          "path": " / 10 Verification / 10.1 Email Verify / 05 POST email verify",
+          "status": 422,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "06 POST email verify (ayni kod tekrar)",
+          "path": " / 10 Verification / 10.1 Email Verify / 06 POST email verify (ayni kod tekrar)",
+          "status": 422,
+          "tests": [
+            {
+              "name": "INVALID_VERIFICATION_CODE",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_EMAIL' to deeply equal 'INVALID_VERIFICATION_CODE'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "07 POST email verify resend (dogrulanmis)",
+          "path": " / 10 Verification / 10.1 Email Verify / 07 POST email verify resend (dogrulanmis)",
+          "status": 422,
+          "tests": [
+            {
+              "name": "202 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 202 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "08 POST login",
+          "path": " / 10 Verification / 10.1 Email Verify / 08 POST login",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "01 POST password forgot",
+          "path": " / 10 Verification / 10.2 Forgot Password / 01 POST password forgot",
+          "status": 422,
+          "tests": [
+            {
+              "name": "202 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 202 but got 422"
+              }
+            },
+            {
+              "name": "mesaj ayni",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected undefined to deeply equal null"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "02 POST password forgot (olmayan adres)",
+          "path": " / 10 Verification / 10.2 Forgot Password / 02 POST password forgot (olmayan adres)",
+          "status": 202,
+          "tests": [
+            {
+              "name": "mesaj ayni",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'Adres uygunsa birkaç dakika içinde bi…' to deeply equal null"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "03 GET parola sifirlama kodu",
+          "path": " / 10 Verification / 10.2 Forgot Password / 03 GET parola sifirlama kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "04 POST password reset",
+          "path": " / 10 Verification / 10.2 Forgot Password / 04 POST password reset",
+          "status": 422,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 422"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "05 GET me (eski token)",
+          "path": " / 10 Verification / 10.2 Forgot Password / 05 GET me (eski token)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "ACCESS_TOKEN_STALE",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_ACCESS_TOKEN' to deeply equal 'ACCESS_TOKEN_STALE'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "06 POST login (yeni parola)",
+          "path": " / 10 Verification / 10.2 Forgot Password / 06 POST login (yeni parola)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "01 POST password change-code",
+          "path": " / 10 Verification / 10.3 Password Change / 01 POST password change-code",
+          "status": 401,
+          "tests": [
+            {
+              "name": "202 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 202 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "02 POST password change-code (tekrar)",
+          "path": " / 10 Verification / 10.3 Password Change / 02 POST password change-code (tekrar)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "429 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 429 but got 401"
+              }
+            },
+            {
+              "name": "Retry-After var",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected NaN to be above +0"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "03 GET parola degisikligi kodu",
+          "path": " / 10 Verification / 10.3 Password Change / 03 GET parola degisikligi kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "04 PATCH password (kod yok)",
+          "path": " / 10 Verification / 10.3 Password Change / 04 PATCH password (kod yok)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "422 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 422 but got 401"
+              }
+            },
+            {
+              "name": "INVALID_VERIFICATION_CODE_FORMAT",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected 'INVALID_ACCESS_TOKEN' to deeply equal 'INVALID_VERIFICATION_CODE_FORMAT'"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "05 PATCH password",
+          "path": " / 10 Verification / 10.3 Password Change / 05 PATCH password",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "06 POST login (yeni parola)",
+          "path": " / 10 Verification / 10.3 Password Change / 06 POST login (yeni parola)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "01 POST email change",
+          "path": " / 10 Verification / 10.4 Email Change / 01 POST email change",
+          "status": 401,
+          "tests": [
+            {
+              "name": "202 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 202 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "02 GET eski adrese bildirim",
+          "path": " / 10 Verification / 10.4 Email Change / 02 GET eski adrese bildirim",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            },
+            {
+              "name": "eski adrese bildirim gitti",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "TypeError",
+                "message": "Cannot read properties of undefined (reading 'subject')"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "03 GET yeni adresin kodu",
+          "path": " / 10 Verification / 10.4 Email Change / 03 GET yeni adresin kodu",
+          "status": 404,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 404"
+              }
+            }
+          ],
+          "errors": [
+            {
+              "name": "TypeError",
+              "code": "test",
+              "message": "Cannot read properties of undefined (reading 'text')"
+            }
+          ]
+        },
+        {
+          "name": "04 POST email change confirm",
+          "path": " / 10 Verification / 10.4 Email Change / 04 POST email change confirm",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            },
+            {
+              "name": "e-posta guncellendi",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "TypeError",
+                "message": "Cannot read properties of undefined (reading 'email')"
+              }
+            }
+          ],
+          "errors": []
+        },
+        {
+          "name": "05 POST login (yeni adres)",
+          "path": " / 10 Verification / 10.4 Email Change / 05 POST login (yeni adres)",
+          "status": 401,
+          "tests": [
+            {
+              "name": "200 dondu",
+              "passed": false,
+              "skipped": false,
+              "error": {
+                "name": "AssertionError",
+                "message": "expected response to have status code 200 but got 401"
+              }
+            }
+          ],
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "finalState": {
+    "baseUrl": "http://127.0.0.1:3001",
+    "postmanWorkingDirectory": "/tmp",
+    "allowReadingFilesOutsideWorkingDirectory": false,
+    "temporaryRateLimitContainerRemoved": true,
+    "applicationCodeChanged": false
+  }
+}

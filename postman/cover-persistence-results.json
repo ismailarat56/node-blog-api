@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-09-22T15:08:33.064Z",
+  "baseUrl": "http://127.0.0.1:3001",
+  "postId": 13,
+  "coverUrl": "/uploads/covers/3709f74bcf25eea0e53a877712c0b5cd.png",
+  "postman": {
+    "runId": "0cc82c85-6c61-4dc2-99af-ea18411cf1ae",
+    "passed": 12,
+    "failed": 0,
+    "errors": 0,
+    "excludedRequests": [
+      "12.7 Kapağı Sil",
+      "12.8 İkinci Silme"
+    ]
+  },
+  "restartCommands": [
+    "docker compose down",
+    "docker compose up -d"
+  ],
+  "before": [
+    {
+      "name": "3709f74bcf25eea0e53a877712c0b5cd.png",
+      "size": 3335,
+      "sha256": "7bd574064526653a8b93af5d301704866befaa41781d1765083d974b602d2108"
+    }
+  ],
+  "after": [
+    {
+      "name": "3709f74bcf25eea0e53a877712c0b5cd.png",
+      "size": 3335,
+      "sha256": "7bd574064526653a8b93af5d301704866befaa41781d1765083d974b602d2108"
+    }
+  ],
+  "identicalFileContent": true,
+  "http": {
+    "status": 200,
+    "contentType": "image/png",
+    "sha256": "7bd574064526653a8b93af5d301704866befaa41781d1765083d974b602d2108"
+  },
+  "volumes": [
+    "node-blog_db-data",
+    "node-blog_uploads-data"
+  ],
+  "setupIssueResolved": "Expired user and reader tokens were refreshed using existing Postman login requests."
+}

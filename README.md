@@ -52,6 +52,7 @@ Varsayılan adres `http://localhost:3000` olur. Başlangıçta veritabanı bağl
 | `code_check_email` | E-posta | Saatte 10 |
 | `account_code_mail` | Kullanıcı ID | Saatte 5 |
 | `comment_create` | Kullanıcı ID | Dakikada 10 |
+| `cover_upload` | Kullanıcı ID | Saatte 20 |
 
 E-posta anahtarı oluşturulurken baştaki/sondaki boşluklar silinir ve harfler küçültülür. Aynı limiter nesnesini kullanan endpointler aynı kotayı paylaşır; sayaçlar yalnızca API sürecinin belleğinde tutulur. Limiter'dan geçen başarısız istekler de sayılır.
 
@@ -114,7 +115,7 @@ MYSQL_ROOT_PASSWORD=replace-with-root-password
 5. API sağlık kontrolünü yapın; `200` ve `success: true` beklenir:
 
    ```bash
-   curl -i http://localhost:3001/health
+   curl -i http://127.0.0.1:8080/health
    ```
 
 6. İşiniz bitince servisleri kapatın; database volume'u ve veriler korunur:
@@ -143,11 +144,83 @@ Eski Docker volume'larında `users.password_changed_at`, `users.email_verified_a
 
 ## Docker ile Postman Testleri
 
-`node-blog-docker` environment'ında `base_url=http://127.0.0.1:3001` kullanın. Docker veritabanı yerel MySQL'den ayrıdır: environment'taki `admin_email` / `admin_password` ve `user_email` / `user_password` ile eşleşen aktif, e-postası doğrulanmış kullanıcılar Docker veritabanında da bulunmalıdır. Rolleri sırasıyla `admin` ve `user` olmalıdır.
+`node-blog-nginx` environment'ında `base_url=http://127.0.0.1:8080` kullanın. API portu host'a yayınlanmaz; erişim nginx üzerinden sağlanır. Tokensız ve parolasız örnek: `postman/node-blog-nginx.postman_environment.example.json`. Docker veritabanı yerel MySQL'den ayrıdır: environment'taki `admin_email` / `admin_password` ve `user_email` / `user_password` ile eşleşen aktif, e-postası doğrulanmış kullanıcılar Docker veritabanında da bulunmalıdır. Rolleri sırasıyla `admin` ve `user` olmalıdır.
 
 `04 Posts`, aktif bir kategori için `category_id` ve silinmiş bir kategori için `empty_category_id` değişkenlerine ihtiyaç duyar. İlk hazırlıkta `00 Health → 01 Auth → 03 Categories → 04 Posts` sırasını kullanabilirsiniz; `03 Categories` bu kategori kayıtlarını ve değişkenlerini hazırlar. Kategoriler hazır olduğunda yalnızca `00 Health → 01 Auth → 04 Posts` çalıştırılabilir. Runner'da **Keep variable values** açık olsun; `01 Auth` her koşuda yeni token alır.
 
 Art arda yapılan işlev testleri login kotasını aşabilir. Yerel geliştirmede bu testleri rate limit testlerinden ayrı çalıştırmak için `.env.docker` içinde `RATE_LIMIT_ENABLED=false` kullanıp API servisini yeniden oluşturun. `/health` yanıtının `200` olması, kullanıcıların ve veritabanı şemasının hazır olduğunu tek başına göstermez.
+
+`09 Mail` ve `10 Verification` için `mail_inbox`, `mail_pass_a` ve `mail_pass_b` test değişkenlerini doldurun. `MAIL_TRANSPORT=json` ve `DEV_MAIL_OUTBOX=true` kullanılan Docker ortamında `mail_inbox=postman-regression@example.test` kullanılabilir; gerçek adrese e-posta gönderilmez. `11 Rate Limit` klasörünü `RATE_LIMIT_ENABLED=true` olan ayrı bir koşuda çalıştırın.
+
+## Kapak Görseli Yükleme
+
+Kapak için iki uç vardır: `PUT /api/v1/posts/:postId/cover` kapağı yükler veya değiştirir; `DELETE /api/v1/posts/:postId/cover` kapağı siler. İkisi de Bearer token ve post sahibi veya admin yetkisi ister. Post ve yetki kontrolü dosya diske yazılmadan yapılır; yükleme ucunda ayrıca kullanıcı başına saatte 20 istek sınırı olan `cover_upload` limiter'ı çalışır.
+
+Yükleme isteği `multipart/form-data` biçiminde, tek dosyalık `cover` alanıyla gönderilir. İzin verilen türler `image/jpeg`, `image/png` ve `image/webp`; varsayılan dosya sınırı 2 MB (`2097152` bayt, 2 MiB) olur. Sunucu dosya adını rastgele üretir ve izin verilen türe göre `.jpg`, `.png` veya `.webp` uzantısını seçer; istemcinin dosya adı kullanılmaz.
+
+Dosya kaydedildikten sonra ilk 12 bayt üzerinden imza kontrolü yapılır. Beyan edilen tür ile imza uyuşmazsa yeni dosya silinir ve `415 COVER_CONTENT_MISMATCH` döner. Kontrol geçerse veritabanındaki `cover_path` güncellenir, eski kapak varsa silinir ve `200` yanıtındaki `data.cover_url` alanı `/uploads/covers/<rastgele>.png` gibi bir adres verir. Post yanıtlarında da `cover_url` bulunur; kapak yoksa değeri `null` olur. Silme başarılıysa gövdesiz `204`, kapak zaten yoksa `404 COVER_NOT_FOUND` döner.
+
+### Postman test dosyaları
+
+`12 Cover` klasörünü çalıştırmadan önce dosyaları yerel terminalde hazırlayın:
+
+```bash
+curl -fL -sS -o /tmp/kapak.png \
+  'https://dummyimage.com/600x400/2f6fed/ffffff.png&text=kapak'
+dd if=/dev/urandom of=/tmp/buyuk.png bs=1024 count=2560
+dd if=/dev/urandom of=/tmp/cok-buyuk.png bs=1024 count=5120
+printf 'bu bir metin dosyasidir' > /tmp/sahte.png
+printf 'bu bir metin dosyasidir' > /tmp/not.txt
+ls -lh /tmp/kapak.png /tmp/buyuk.png /tmp/cok-buyuk.png \
+  /tmp/sahte.png /tmp/not.txt
+file --mime-type /tmp/kapak.png /tmp/sahte.png
+```
+
+`buyuk.png` 2,5 MiB, `cok-buyuk.png` 5 MiB rastgele veridir; ikinci dosya sonraki nginx boyut sınırı testi içindir. `sahte.png` PNG uzantısına rağmen metin içerir. Postman'de form-data anahtarı `cover`, türü **File** olmalıdır: 12.1 ve 12.5 için `kapak.png`, 12.2 için `buyuk.png`, 12.3 için `not.txt`, 12.4 için `sahte.png` seçin. Multipart `Content-Type` başlığını elle eklemeyin; boundary değerini Postman üretir.
+
+Dosya içeriği koleksiyon export'una gömülmez. Başka bilgisayarda dosyaları yeniden üretip File alanından tekrar seçin; yerel dosya yolu taşınabilir değildir. `/tmp` temizlenirse bu komutları yeniden çalıştırın.
+
+Bu yolları Runner'da kullanmak için Postman **Settings → General → Working directory** değerini `/tmp` seçin. **Allow reading files outside working directory** kapalı kalabilir. Aksi halde Postman dosyayı `PPERM` nedeniyle göndermez ve API `COVER_REQUIRED` döndürür.
+
+Aktif ve e-postası doğrulanmış iki farklı normal kullanıcıya ait `user_token` ve `reader_token`, ayrıca aktif bir `category_id` gereklidir. `12 Cover` istekleri `user_token`, 12.5 isteği `reader_token`, 12.6 ise **No Auth** kullanır. Runner'da **Keep variable values** açıkken 12.0–12.8 sırasıyla çalıştırılır. 12.0 her koşuda ayrı post oluşturup `cover_post_id` koleksiyon değişkenine yazar; 12.1 `cover_url` değişkenini kaydeder, 12.7 kapağı siler.
+
+12.4 ve 12.5 öncesinde ve sonrasında `docker compose exec api ls -la /app/uploads/covers` ile klasörü karşılaştırın: reddedilen yüklemeler yeni dosya bırakmamalıdır. 12.7 sonrasında bu koşuda yüklenen kapak da silinmiş olmalıdır.
+
+## nginx Reverse Proxy ile Çalıştırma
+
+Proje dizininde servisleri başlatın:
+
+```bash
+docker compose up -d
+```
+
+Giriş adresi `http://127.0.0.1:8080` olur; Postman'da `node-blog-nginx` ortamını bu adresle kullanın. Nginx container içinde 80 portunda dinler; host'a yalnız IPv4 `127.0.0.1:8080` üzerinden yayınlanır.
+
+```bash
+curl -i http://127.0.0.1:8080/health
+```
+
+`nginx/default.conf` değiştiğinde önce yapılandırmayı doğrulayın, başarılıysa yeniden yükleyin:
+
+```bash
+docker compose exec nginx nginx -t && \
+  docker compose exec nginx nginx -s reload
+```
+
+`/uploads/` istekleri nginx'te biter: `alias /srv/uploads/` ile ortak `uploads-data` volume'undan okunur ve Node'a iletilmez. API dosyaları `/app/uploads` üzerinden yazar; nginx aynı volume'u salt okunur bağlar. Docker ortamında `SERVE_UPLOADS=false` kullanılır.
+
+API portu dışarı açılmaz; `api` servisinde `ports` bloğu yoktur ve `127.0.0.1:3001` üzerinden erişilemez. Nginx API'ye Compose iç ağındaki `http://api:3000` adresinden ulaşır. `.env.docker` içindeki `TRUST_PROXY_HOPS=1`, tek nginx katmanını tanımlar; nginx `X-Forwarded-For` başlığını `$remote_addr` ile yeniden yazar.
+
+## Boyut Sınırları: İki Katman
+
+Bir sınırı değiştirirken `UPLOAD_MAX_BYTES` ve nginx'teki `client_max_body_size` birlikte düşünülmelidir. Multipart alanları, boundary satırları ve başlıkları da gövdeye dahil olduğundan `client_max_body_size` her zaman `UPLOAD_MAX_BYTES` değerinden biraz büyük olmalıdır.
+
+| Sınır | Katman | Yanıt |
+| --- | --- | --- |
+| 2 MB (`UPLOAD_MAX_BYTES=2097152`) | multer, dosya boyutu | `413 COVER_TOO_LARGE`, JSON, `details.max_bytes` |
+| 3 MB (`client_max_body_size 3m`) | nginx, toplam gövde boyutu | `413 PAYLOAD_TOO_LARGE`, JSON; istek API'ye ulaşmaz |
+
+2,5 MB dosya nginx'i geçer ve multer tarafından reddedilir; 5 MB dosya nginx tarafından reddedilir. Nginx'teki `error_page 413 = @json413` HTML yerine JSON hata sözleşmesini korur; `=` yanıt durum kodunu da hedef konumun belirlemesini sağlar.
 
 ## Docker'da İlk Admin
 
@@ -245,6 +318,8 @@ Authentication ve role birbirinden ayrı koşullardır. “Herkes”, authentica
 | GET | `/api/v1/posts` | Evet | Herkes | Görünür postları listele; include_deleted=1 yalnızca admin |
 | GET | `/api/v1/posts/:id` | Evet | Herkes | Published post; draft için yazar veya admin |
 | POST | `/api/v1/posts` | Evet | Herkes | Draft oluştur |
+| PUT | `/api/v1/posts/:postId/cover` | Evet | Yazar veya admin | Kapak yükle/değiştir; `cover_upload` |
+| DELETE | `/api/v1/posts/:postId/cover` | Evet | Yazar veya admin | Kapağı sil; `204`, limiter yok |
 | PUT | `/api/v1/posts/:id` | Evet | Yazar veya admin | Postu tamamen güncelle |
 | PATCH | `/api/v1/posts/:id` | Evet | Yazar veya admin | Postu kısmen güncelle |
 | PATCH | `/api/v1/posts/:id/publish` | Evet | Yazar veya admin | Yayınla |
@@ -329,6 +404,8 @@ Create, PUT ve PATCH body’lerinde yalnızca `title`, `content`, `excerpt`, `ca
 | GET | `/api/v1/posts` | Bearer | Herkes; include_deleted=1 admin | 200, liste + meta |
 | GET | `/api/v1/posts/:id` | Bearer | Published: herkes; draft: yazar/admin | 200, detay |
 | POST | `/api/v1/posts` | Bearer | Herkes | 201, draft detay |
+| PUT | `/api/v1/posts/:postId/cover` | Bearer | Yazar veya admin | 200, `data.cover_url`; `cover_upload` |
+| DELETE | `/api/v1/posts/:postId/cover` | Bearer | Yazar veya admin | 204, gövde yok |
 | PUT | `/api/v1/posts/:id` | Bearer | Yazar veya admin | 200, detay |
 | PATCH | `/api/v1/posts/:id` | Bearer | Yazar veya admin | 200, detay |
 | PATCH | `/api/v1/posts/:id/publish` | Bearer | Yazar veya admin | 200, published detay |
@@ -475,12 +552,16 @@ Otomatik migration takip mekanizması yoktur. `schema.sql`, mevcut tablo yapıs�
 
 ## Environment Değişkenleri
 
-Temel veritabanı, authentication ve rate limit ayarları:
+Temel veritabanı, authentication, rate limit, yükleme ve proxy ayarları:
 
 | Değişken | Kullanım | Örnek / Varsayılan |
 | --- | --- | --- |
 | `PORT` | HTTP portu | `3000` |
 | `RATE_LIMIT_ENABLED` | Rate limit kontrolü; `false` production ortamında kabul edilmez | `true` |
+| `UPLOAD_DIR` | Yüklemelerin kök dizini; kapaklar `covers/` altında saklanır | `uploads`; Docker'da `/app/uploads` |
+| `UPLOAD_MAX_BYTES` | Multer dosya boyutu sınırı, bayt cinsinden | `2097152` (2 MB / 2 MiB) |
+| `SERVE_UPLOADS` | Express'in `/uploads` statik sunumunu açar/kapatır | Varsayılan `true`; nginx ile `false` |
+| `TRUST_PROXY_HOPS` | Express'in güveneceği proxy atlama sayısı | Varsayılan `0`; tek nginx ile `1` |
 | `DB_HOST` | MySQL host | `127.0.0.1` |
 | `DB_PORT` | MySQL port | `3306` |
 | `DB_USER` | MySQL kullanıcı adı | `your_mysql_user` |
@@ -853,6 +934,13 @@ Mevcut kodda normal kullanıcının `include_deleted=1` isteği de `403 FORBIDDE
 | 422 | `EMPTY_POST_PATCH_BODY` | PATCH body boş |
 | 422 | `INVALID_QUERY_PARAMETER` | Query değeri geçersiz |
 | 422 | `UNSUPPORTED_QUERY_PARAMETERS` | Query alanı tanımsız |
+| 422 | `COVER_REQUIRED` | Multipart isteğinde `cover` dosyası eksik |
+| 413 | `COVER_TOO_LARGE` | Dosya `UPLOAD_MAX_BYTES` sınırında reddedildi; `error.details.max_bytes` sınırı belirtir |
+| 415 | `COVER_TYPE_NOT_ALLOWED` | Beyan edilen tür izinli değil veya beklenmeyen dosya alanı var |
+| 415 | `COVER_CONTENT_MISMATCH` | Dosya imzası beyan edilen türle uyuşmuyor; yeni dosya silinir |
+| 404 | `COVER_NOT_FOUND` | Silinecek kapak kaydı yok |
+| 413 | `PAYLOAD_TOO_LARGE` | Nginx toplam gövdeyi `client_max_body_size` sınırında reddetti |
+| 502 | `UPSTREAM_UNAVAILABLE` | Nginx'in ürettiği 502/504 hatası JSON 502 yanıtına çevrildi |
 
 Örnek `422` yanıtı:
 
@@ -921,12 +1009,18 @@ Yukarıdaki curl akışı temel senaryoları kapsar. Matristeki diğer varyasyon
 ## Bilinen Sınırlamalar
 
 - Rate limit sayaçları süreç belleğinde; API yeniden başlayınca sıfırlanır, birden fazla API container'ı sayaç paylaşmaz.
-- Reverse proxy arkasında trust proxy ayarlanmadan bütün istemciler tek IP görünür.
 - Çok IP'si olan saldırgan login_account limitini IP başına ayrı ayrı kullanabilir; IPv6'da tek kullanıcı çok adrese sahiptir.
 - Register limiti yalnız IP başına; +etiket adreslerle aynı gelen kutusuna çok sayıda doğrulama maili gönderilebilir.
 - email/change/confirm ve PATCH /password kod denemeleri ayrıca limitlenmedi; kod başına beş deneme ve account_code_mail ile sınırlı.
 - Docker database'ine migration elle exec ile çalıştırılır; hangi migrationın koştuğunu tutan tablo yok.
-- Docker kurulumu yerel geliştirme içindir; HTTPS, reverse proxy ve sunucu deploy yok.
+- nginx yalnız 80 portunda düz http dinler; TLS sertifikası ve HTTPS yok.
+- Tek API kopyası var; API yeniden başlarken kısa bir 502 penceresi oluşur.
+- Yüklenen görseller yalnız uploads-data volume'unda; yedekleme yok.
+- Yükleme veya silme sırasında hata olursa sahipsiz dosya kalabilir, temizlik işi yok.
+- İmza kontrolü yalnız jpeg, png ve webp başlıklarını tanır; görselin gerçekten açılabildiği doğrulanmaz.
+- EXIF verisi (konum bilgisi dahil) temizlenmeden saklanır ve servis edilir.
+- Görseller yeniden boyutlandırılmaz; 2 MB'lık orijinal dosya olduğu gibi indirilir.
+- TRUST_PROXY_HOPS değeri proxy sayısıyla elle eşleştirilir; yanlış değer IP taklidine açar.
 - Otomatik entegrasyon test paketi, refresh token ve MFA yoktur.
 - Post validator 50000 karaktere kadar content kabul etse de Express JSON body limiti 20 KB’dir; büyük içerikler validator’a ulaşmadan 413 alabilir.
 - JSON parser request logger’dan önce çalışır. Bozuk/aşırı büyük JSON hatalarında request_id null olabilir.
@@ -956,9 +1050,11 @@ date -u -d '@1788717600' '+%Y-%m-%dT%H:%M:%SZ'
 
 ## Sonraki Adımlar
 
-- Paylaşılan rate limit deposu (Redis) ve birden fazla API container'ı
-- Reverse proxy (nginx), trust proxy ve HTTPS
-- Sunucuya deploy (VPS üzerinde docker compose)
+- Görsel boyutlandırma ve thumbnail üretimi
+- EXIF temizliği
+- Sahipsiz dosyaları bulan temizlik scripti
+- Paylaşılan rate limit deposu (Redis) ve ikinci API kopyası
+- HTTPS sertifikası ve gerçek sunucuya deploy
 - Migration takip tablosu veya migration aracı
 - Authorization ve Post contractlarını ilgili notes dosyalarında tamamlamak
 - Test matrisini otomatik entegrasyon testlerine dönüştürmek
