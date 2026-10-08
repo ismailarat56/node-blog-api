@@ -45,6 +45,7 @@ Varsayılan adres `http://localhost:3000` olur. Başlangıçta veritabanı bağl
 | --- | --- | --- |
 | `login_ip` | IP | 15 dakikada 30 |
 | `login_account` | IP + e-posta | 15 dakikada 5 |
+| `refresh_ip` | IP | Dakikada 60 |
 | `register` | IP | Saatte 10 |
 | `public_code_mail_ip` | IP | 15 dakikada 10 |
 | `public_code_mail_email` | E-posta | Saatte 3 |
@@ -74,6 +75,8 @@ VERIFICATION_CODE_KEY=replace-with-64-hex-characters
 MAIL_TRANSPORT=json
 DEV_MAIL_OUTBOX=false
 RATE_LIMIT_ENABLED=true
+REFRESH_TOKEN_TTL_SECONDS=604800
+REFRESH_COOKIE_SECURE=false
 ```
 
 `.env.db.example` içeriği:
@@ -571,6 +574,8 @@ Temel veritabanı, authentication, rate limit, yükleme ve proxy ayarları:
 | `JWT_ISSUER` | Beklenen token issuer | `node-user-crud-mysql` |
 | `JWT_AUDIENCE` | Beklenen token audience | `node-user-crud-client` |
 | `JWT_EXPIRES_IN_SECONDS` | Token ömrü, 60–86400 saniye | Varsayılan `900` |
+| `REFRESH_TOKEN_TTL_SECONDS` | Refresh token ömrü, 3600–2592000 saniye | Varsayılan `604800` (7 gün) |
+| `REFRESH_COOKIE_SECURE` | Cookie'nin `Secure` bayrağı; `false` yalnız yerel HTTP için, production'da açılışta hata verir | Varsayılan `true` |
 
 Örnek `.env`:
 
@@ -585,6 +590,8 @@ JWT_SECRET=replace-with-a-long-random-secret
 JWT_ISSUER=node-user-crud-mysql
 JWT_AUDIENCE=node-user-crud-client
 JWT_EXPIRES_IN_SECONDS=900
+REFRESH_TOKEN_TTL_SECONDS=604800
+REFRESH_COOKIE_SECURE=false
 ```
 
 JWT_SECRET örnek metnini gerçek kurulumda rastgele anahtarla değiştirin. Anahtar üretimi:
@@ -999,14 +1006,50 @@ Yukarıdaki curl akışı temel senaryoları kapsar. Matristeki diğer varyasyon
 - Parolalar rastgele salt ile scrypt hash olarak saklanır; login yanıtları hash içermez.
 - Login, bulunamayan kullanıcı ve yanlış parola için aynı credential hatasını verir; kullanıcı/hash yoksa dummy parola çalışması yapılır.
 - JWT için HS256, issuer, audience, süre ve claim kontrolleri uygulanır. Secret en az 32 byte olmalıdır.
-- Her istekte token iptali ve kullanıcının aktifliği kontrol edilir. Logout yalnızca kullanılan token’ın jti değerini iptal eder.
+- Her istekte token iptali ve kullanıcının aktifliği kontrol edilir. Logout kullanılan access token’ın jti değerini ve cookie'deki refresh token ailesini iptal eder, cookie'yi siler.
 - Roller veritabanından okunur; kullanıcı gönderdiği body veya token rolüyle yetki kazanamaz.
 - User CRUD admin ile, Post yazma işlemleri sahiplik/admin ile sınırlandırılır. Draft görünürlüğü liste ve detayda uygulanır.
 - Parametreli SQL ve izin verilen sıralama/alan listeleri kullanılır.
 - Token yanıtları `Cache-Control: no-store` ve `Pragma: no-cache` ile döner; loglarda request body veya token yazdırılmaz.
 - Bu projenin yetki tablosu gereği category oluşturma, düzenleme ve silme giriş yapan herkese açıktır.
 
+## Refresh Token ve httpOnly Cookie
+
+| Endpoint / Konu | Davranış |
+| --- | --- |
+| `POST /api/v1/auth/login` | Access token gövdede (15 dk); refresh token httpOnly cookie'de (7 gün) |
+| `POST /api/v1/auth/refresh` | Cookie'deki token'ı tüketir, yenisini cookie'ye yazar, yeni access token döner |
+| `POST /api/v1/auth/logout` | Access token'ı ve cookie'deki refresh token ailesini iptal eder, cookie'yi siler |
+| Cookie | `refresh_token`; `HttpOnly`; `SameSite=Strict`; `Path=/api/v1/auth`; `Secure` (`REFRESH_COOKIE_SECURE`) |
+| Veritabanı | `refresh_tokens`: token'ın kendisi değil SHA-256 özeti saklanır; `family_id` aynı girişten doğan zinciri tutar |
+| Rotation | Her refresh eski kaydı `used_at` ile kapatır, aynı aileye yeni kayıt ekler (tek transaction, `FOR UPDATE`) |
+| Reuse detection | `used_at` dolu bir token tekrar gelirse bütün aile iptal edilir: `401 REFRESH_TOKEN_REUSED` |
+
+Süreler varsayılan ayarlar içindir. Parola değişince veya sıfırlanınca kullanıcının bütün refresh token'ları iptal edilir. Pasif veya silinmiş kullanıcının refresh isteği aileyi iptal eder; hesap geri açılınca eski oturum dönmez.
+
+| HTTP | Hata kodu | Durum |
+| --- | --- | --- |
+| 401 | `REFRESH_TOKEN_MISSING` | Refresh cookie'si yok veya boş |
+| 401 | `REFRESH_TOKEN_INVALID` | Token biçimi geçersiz, kayıt bulunamadı, süresi dolmuş veya iptal edilmiş; kullanıcı pasif veya silinmiş |
+| 401 | `REFRESH_TOKEN_REUSED` | Daha önce kullanılmış token tekrar gönderildi; bütün aile iptal edilir |
+| 429 | `RATE_LIMITED` | `refresh_ip` sınırı aşıldı; `Retry-After` kadar beklenmeli |
+
+401 yanıtlarında cookie silinir. 500 gibi geçici hatalarda silinmez.
+
+Cookie'nin zaten bulunmadığı veya boş olduğu `REFRESH_TOKEN_MISSING` yanıtında ayrıca cookie silme başlığı gönderilmez.
+
+Postman'da `postman/node-blog-api.postman_collection.json` içindeki `13 Refresh Token` klasörünü sırayla çalıştırın. Kurulum ve akış notları: [Refresh token notları](notes/refresh-token-notes.md).
+
 ## Bilinen Sınırlamalar
+
+- XSS olursa sayfadaki script refresh isteği atıp yeni access token alabilir; httpOnly cookie yalnız refresh token'ın okunup dışarı taşınmasını engeller.
+- Reuse tespit edilince zaten verilmiş access token'lar süreleri dolana kadar (varsayılan ayarla en çok 15 dakika) geçerli kalır.
+- Refresh süresi kayan (sliding); mutlak oturum ömrü yok, her refresh varsayılan 7 günü baştan başlatır.
+- Refresh yanıtı yolda kaybolursa istemci eski cookie'yle kalır; sonraki refresh reuse sayılır ve oturum kapanır (grace period yok).
+- Süresi dolmuş ve iptal edilmiş refresh token kayıtları tabloda birikir; temizleme scripti yok.
+- Kullanıcı açık oturumlarını göremez ve tek tek kapatamaz.
+- Postman SameSite özelliğini uygulamaz; SameSite davranışı yalnız tarayıcıda denenebilir.
+- Docker'da HTTPS olmadığı için `REFRESH_COOKIE_SECURE=false`; production'da `false` ile sunucu açılmaz.
 
 - Rate limit sayaçları süreç belleğinde; API yeniden başlayınca sıfırlanır, birden fazla API container'ı sayaç paylaşmaz.
 - Çok IP'si olan saldırgan login_account limitini IP başına ayrı ayrı kullanabilir; IPv6'da tek kullanıcı çok adrese sahiptir.
@@ -1021,7 +1064,7 @@ Yukarıdaki curl akışı temel senaryoları kapsar. Matristeki diğer varyasyon
 - EXIF verisi (konum bilgisi dahil) temizlenmeden saklanır ve servis edilir.
 - Görseller yeniden boyutlandırılmaz; 2 MB'lık orijinal dosya olduğu gibi indirilir.
 - TRUST_PROXY_HOPS değeri proxy sayısıyla elle eşleştirilir; yanlış değer IP taklidine açar.
-- Otomatik entegrasyon test paketi, refresh token ve MFA yoktur.
+- Otomatik entegrasyon test paketi ve MFA yoktur.
 - Post validator 50000 karaktere kadar content kabul etse de Express JSON body limiti 20 KB’dir; büyük içerikler validator’a ulaşmadan 413 alabilir.
 - JSON parser request logger’dan önce çalışır. Bozuk/aşırı büyük JSON hatalarında request_id null olabilir.
 - `FORBIDDEN` response ayrıntıları, role middleware ve include_deleted kontrolünde aynı değildir.
@@ -1050,6 +1093,9 @@ date -u -d '@1788717600' '+%Y-%m-%dT%H:%M:%SZ'
 
 ## Sonraki Adımlar
 
+- Açık oturumlar listesi ve tek oturumu kapatma
+- Süresi dolmuş refresh token ve revocation kayıtlarını temizleyen script
+- Mutlak oturum ömrü
 - Görsel boyutlandırma ve thumbnail üretimi
 - EXIF temizliği
 - Sahipsiz dosyaları bulan temizlik scripti
@@ -1059,7 +1105,7 @@ date -u -d '@1788717600' '+%Y-%m-%dT%H:%M:%SZ'
 - Authorization ve Post contractlarını ilgili notes dosyalarında tamamlamak
 - Test matrisini otomatik entegrasyon testlerine dönüştürmek
 - FORBIDDEN yanıtlarını, parola politikasını ve body/validator boyut sınırlarını tutarlı hale getirmek
-- Son admin koruması ve token iptal kayıtlarının periyodik temizliğini eklemek
+- Son admin koruması eklemek
 - Category/post eşzamanlılık ve restore/publish kullanılabilirlik kurallarını netleştirmek
 - Request ID üretimini JSON parse hatalarını da kapsayacak şekilde geliştirmek
 
