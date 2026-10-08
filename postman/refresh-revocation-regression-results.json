@@ -1,0 +1,56 @@
+{
+  "verifiedAt": "2026-10-08T16:59:55.132Z",
+  "runner": "Postman Desktop",
+  "collection": "Node Blog API",
+  "environment": "node-blog-nginx",
+  "runId": "484c2cb3-05bc-41b5-a782-9191fc33efb7",
+  "status": "finished",
+  "rateLimitEnabled": false,
+  "selectedRequests": 294,
+  "folders": [
+    "00 Health",
+    "01 Auth",
+    "02 Users",
+    "03 Categories",
+    "04 Posts",
+    "05 Public",
+    "06 Register",
+    "07 Comments",
+    "08 Password Change",
+    "09 Mail",
+    "10 Verification",
+    "12 Cover",
+    "13 Refresh Token"
+  ],
+  "summary": {
+    "requests": 291,
+    "tests": 550,
+    "passed": 550,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "notes": [
+    "Cover fixture files were recreated using the existing README instructions before the successful full rerun."
+  ],
+  "rateLimitRun": {
+    "verifiedAt": "2026-10-08T17:03:23.390Z",
+    "runner": "Postman Desktop",
+    "environment": "node-blog-nginx",
+    "runId": "9bb8b863-5abb-4669-97db-f15e135669de",
+    "status": "finished",
+    "rateLimitEnabled": true,
+    "selectedRequests": 7,
+    "folders": [
+      "11 Rate Limit"
+    ],
+    "summary": {
+      "requests": 25,
+      "tests": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    }
+  }
+}
