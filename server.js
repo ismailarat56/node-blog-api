@@ -7,6 +7,7 @@ const pool = require('./src/config/database');
 const { getMailConfig } = require('./src/config/mail.config');
 const { getVerificationConfig } = require('./src/config/verification.config');
 const { getRateLimitConfig } = require('./src/config/rate-limit.config');
+const { getRefreshTokenConfig } = require('./src/config/refresh-token.config');
 const { getUploadConfig } = require('./src/config/upload.config');
 
 const PORT = Number(process.env.PORT || 3000);
@@ -17,6 +18,7 @@ async function startServer() {
 	getMailConfig();
 	getVerificationConfig();
 	getRateLimitConfig();
+	getRefreshTokenConfig();
 	const uploadConfig = getUploadConfig();
 
 	fs.mkdirSync(uploadConfig.coverDirectory, { recursive: true });

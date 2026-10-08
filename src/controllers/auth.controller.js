@@ -4,6 +4,8 @@ const authModel = require('../models/auth.model');
 
 const userModel = require('../models/user.model');
 
+const refreshTokenModel = require('../models/refresh-token.model');
+
 const {
 	validateLoginBody,
 	validateRegisterBody,
@@ -16,6 +18,14 @@ const { createAccessToken } = require('../utils/jwt');
 
 const { sendSuccess } = require('../utils/response');
 
+const { setRefreshCookie, clearRefreshCookie, readRefreshCookie } = require('../utils/refresh-cookie');
+
+const {
+	issueRefreshToken,
+	rotateRefreshToken,
+	revokeRefreshSession,
+} = require('../services/refresh-token.service');
+
 const { queueMail } = require('../utils/mailer');
 
 const { buildPasswordChangedMail } = require('../utils/mail-templates');
@@ -25,6 +35,26 @@ const {
 	consumeVerificationCode,
 	queueVerificationCodeMail,
 } = require('../services/verification.service');
+
+function sendSession(response, { message, user, refreshToken }) {
+	const { accessToken, tokenType, expiresIn } = createAccessToken(user);
+
+	setRefreshCookie(response, refreshToken);
+
+	response.setHeader('Cache-Control', 'no-store');
+
+	response.setHeader('Pragma', 'no-cache');
+
+	return sendSuccess(response, {
+		message,
+		data: {
+			access_token: accessToken,
+			token_type: tokenType,
+			expires_in: expiresIn,
+			user,
+		},
+	});
+}
 
 function throwInvalidCredentials() {
 	throw new AppError(401, 'E-posta veya password hatalı.', 'INVALID_CREDENTIALS');
@@ -105,20 +135,37 @@ async function login(request, response) {
 		throwInvalidCredentials();
 	}
 
-	const { accessToken, tokenType, expiresIn } = createAccessToken(user);
+	const refreshToken = await issueRefreshToken(user.id);
 
-	response.setHeader('Cache-Control', 'no-store');
-
-	response.setHeader('Pragma', 'no-cache');
-
-	return sendSuccess(response, {
+	return sendSession(response, {
 		message: 'Giriş başarılı.',
-		data: {
-			access_token: accessToken,
-			token_type: tokenType,
-			expires_in: expiresIn,
-			user,
-		},
+		user,
+		refreshToken,
+	});
+}
+
+async function refresh(request, response) {
+	const presentedToken = readRefreshCookie(request);
+
+	if (!presentedToken) {
+		throw new AppError(401, 'Oturum bulunamadı. Giriş yap.', 'REFRESH_TOKEN_MISSING');
+	}
+
+	let rotated;
+
+	try {
+		rotated = await rotateRefreshToken(presentedToken);
+	} catch (error) {
+		if (error.statusCode === 401) {
+			clearRefreshCookie(response);
+		}
+
+		throw error;
+	}
+
+	return sendSession(response, {
+		message: 'Oturum yenilendi.',
+		...rotated,
 	});
 }
 
@@ -163,6 +210,10 @@ async function changePassword(request, response) {
 		expiresAtEpoch: request.auth.expiresAtEpoch,
 	});
 
+	await refreshTokenModel.revokeUserRefreshTokens(request.user.id);
+
+	clearRefreshCookie(response);
+
 	response.setHeader('Cache-Control', 'no-store');
 
 	sendSuccess(response, {
@@ -192,6 +243,14 @@ async function logout(request, response) {
 		expiresAtEpoch: request.auth.expiresAtEpoch,
 	});
 
+	const presentedToken = readRefreshCookie(request);
+
+	if (presentedToken) {
+		await revokeRefreshSession(presentedToken, request.auth.userId);
+	}
+
+	clearRefreshCookie(response);
+
 	response.setHeader('Cache-Control', 'no-store');
 
 	return sendSuccess(response, {
@@ -202,6 +261,7 @@ async function logout(request, response) {
 module.exports = {
 	register,
 	login,
+	refresh,
 	me,
 	changePassword,
 	logout,

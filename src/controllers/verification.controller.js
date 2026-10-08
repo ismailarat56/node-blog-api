@@ -2,6 +2,7 @@ const AppError = require('../utils/app-error');
 
 const authModel = require('../models/auth.model');
 const userModel = require('../models/user.model');
+const refreshTokenModel = require('../models/refresh-token.model');
 
 const { sendSuccess } = require('../utils/response');
 
@@ -170,6 +171,8 @@ async function resetPassword(request, response) {
 	if (affectedRows === 0) {
 		throw new AppError(409, 'Parola güncellenemedi.', 'PASSWORD_UPDATE_FAILED');
 	}
+
+	await refreshTokenModel.revokeUserRefreshTokens(user.id);
 
 	response.setHeader('Cache-Control', 'no-store');
 

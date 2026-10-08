@@ -9,6 +9,7 @@ const authenticate = require('../middlewares/authenticate.middleware');
 const {
 	loginIpLimiter,
 	loginAccountLimiter,
+	refreshLimiter,
 	registerLimiter,
 	publicCodeMailIpLimiter,
 	publicCodeMailEmailLimiter,
@@ -22,6 +23,8 @@ const asyncHandler = require('../utils/async-handler');
 const router = Router();
 
 router.post('/login', loginIpLimiter, loginAccountLimiter, asyncHandler(authController.login));
+
+router.post('/refresh', refreshLimiter, asyncHandler(authController.refresh));
 
 router.post('/register', registerLimiter, asyncHandler(authController.register));
 

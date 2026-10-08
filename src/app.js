@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const publicRouter = require('./routes/public.routes');
 const authRouter = require('./routes/auth.routes');
@@ -32,6 +33,8 @@ app.use(
 		limit: '20kb',
 	})
 );
+
+app.use(cookieParser());
 
 app.use(requestLogger);
 

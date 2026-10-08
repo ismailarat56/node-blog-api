@@ -25,8 +25,8 @@ async function findLoginUserByEmail(email) {
 	return rows[0] || null;
 }
 
-async function findAuthenticationStateById(id) {
-	const [rows] = await pool.execute(
+async function findAuthenticationStateById(id, executor = pool) {
+	const [rows] = await executor.execute(
 		`
       SELECT
         id,

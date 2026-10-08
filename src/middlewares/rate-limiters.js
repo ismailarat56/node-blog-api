@@ -17,6 +17,13 @@ const loginAccountLimiter = rateLimit({
 	key: keyBy.ipAndEmail,
 });
 
+const refreshLimiter = rateLimit({
+	name: 'refresh_ip',
+	limit: 60,
+	windowSeconds: MINUTE,
+	key: keyBy.ip,
+});
+
 const registerLimiter = rateLimit({
 	name: 'register',
 	limit: 10,
@@ -76,6 +83,7 @@ const coverUploadLimiter = rateLimit({
 module.exports = {
 	loginIpLimiter,
 	loginAccountLimiter,
+	refreshLimiter,
 	registerLimiter,
 	publicCodeMailIpLimiter,
 	publicCodeMailEmailLimiter,
