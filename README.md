@@ -1,42 +1,46 @@
+**English** · [Türkçe](README.tr.md)
+
 <div align="center">
 
 # Node Blog API
 
-**Express ve MySQL ile yazılmış, JWT kimlik doğrulamalı blog REST API'si.**
+**A blog REST API written with Express and MySQL, with JWT authentication.**
 
 ![Express](https://img.shields.io/badge/Express-5.2-222?logo=express&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)
-![Lisans](https://img.shields.io/badge/lisans-MIT-2ea44f)
+![License](https://img.shields.io/badge/license-MIT-2ea44f)
 
-[Öne çıkanlar](#öne-çıkanlar) · [Kurulum](#kurulum-ve-çalıştırma) · [Docker](#docker-ile-çalıştırma) · [API özeti](#api-özeti) · [Belgeler](#belgeler)
+[Highlights](#highlights) · [Setup](#setup-and-running) · [Docker](#running-with-docker) · [API summary](#api-summary) · [Documentation](#documentation)
 
 </div>
 
-Kullanıcı, kategori, yazı ve yorum yönetimi sunan bir blog REST API'si. Node.js, Express 5 ve MySQL ile yazıldı; sorgular ORM olmadan `mysql2` üzerinden parametreli SQL ile çalışır. Uç noktalar `/api/v1` altındadır.
+A blog REST API for managing users, categories, posts and comments. It is written with Node.js, Express 5 and MySQL. Queries run as parameterized SQL through `mysql2`, without an ORM. The endpoints are under `/api/v1`.
 
-Arayüz ayrı bir repodadır: [node-blog-web](https://github.com/ismailarat56/node-blog-web) (React).
+The front end is in a separate repo: [node-blog-web](https://github.com/ismailarat56/node-blog-web) (React).
 
-## Öne çıkanlar
+The detailed documents under `docs/` and the working notes under `notes/` are in Turkish.
 
-- **Kimlik doğrulama:** HS256 imzalı JWT access token (varsayılan 15 dakika); logout token'ı iptal eder.
-- **Refresh token:** httpOnly cookie'de tutulur, her yenilemede değişir; kullanılmış token tekrar gelirse oturum ailesi iptal edilir.
-- **Roller ve sahiplik:** `user` ve `admin` rolleri her istekte veritabanından okunur; yazılarda yazar veya admin kontrolü yapılır.
-- **Kayıt ve doğrulama:** 6 haneli kodla e-posta doğrulama, parola sıfırlama, parola ve e-posta değiştirme.
-- **Yazılar:** başlıktan slug üretimi, taslak ve yayın akışı, soft delete ve geri getirme, arama, filtre, sıralama, sayfalama.
-- **Yorumlar:** tek seviye yanıt; yazı sahibi veya admin yorumu gizleyebilir.
-- **Public uçlar:** yayındaki yazılar, kategoriler ve yorumlar token olmadan okunur (`/api/v1/public`).
-- **Kapak görseli:** JPEG, PNG ve WebP yükleme; varsayılan 2 MB sınır ve dosya imzası kontrolü.
-- **Rate limiting:** bellek içi sliding window ile 11 ayrı limit; aşımda `429` ve `Retry-After` başlığı.
-- **Docker:** API, MySQL 8.4 ve nginx 1.27 için Compose dosyası; API'ye erişim nginx üzerinden sağlanır.
-- **Migration ve Postman:** 002-014 numaralı SQL migration dosyaları ve 14 klasörlü Postman koleksiyonu.
+## Highlights
 
-## Gereksinimler
+- **Authentication:** HS256-signed JWT access token (15 minutes by default); logout revokes the token.
+- **Refresh token:** stored in an httpOnly cookie and changed on every refresh; if a used token is sent again, the session family is revoked.
+- **Roles and ownership:** the `user` and `admin` roles are read from the database on every request; posts are checked for author or admin.
+- **Registration and verification:** email verification with a 6-digit code, password reset, password and email change.
+- **Posts:** slug generation from the title, draft and publish flow, soft delete and restore, search, filtering, sorting, pagination.
+- **Comments:** single-level replies; the post owner or an admin can hide a comment.
+- **Public endpoints:** published posts, categories and comments can be read without a token (`/api/v1/public`).
+- **Cover image:** JPEG, PNG and WebP upload; 2 MB limit by default and a file signature check.
+- **Rate limiting:** 11 separate limits with an in-memory sliding window; exceeding a limit returns `429` and a `Retry-After` header.
+- **Docker:** a Compose file for the API, MySQL 8.4 and nginx 1.27; the API is reached through nginx.
+- **Migrations and Postman:** SQL migration files numbered 002-014 and a Postman collection with 14 folders.
 
-- Node.js ve npm. Docker imajı `node:24-alpine` kullanır.
-- MySQL. Compose dosyası `mysql:8.4` kullanır.
-- Docker ve Docker Compose (isteğe bağlı, konteynerle çalıştırmak için).
+## Requirements
 
-## Kurulum ve çalıştırma
+- Node.js and npm. The Docker image uses `node:24-alpine`.
+- MySQL. The Compose file uses `mysql:8.4`.
+- Docker and Docker Compose (optional, for running in containers).
+
+## Setup and running
 
 ```bash
 git clone https://github.com/ismailarat56/node-blog-api.git
@@ -45,32 +49,32 @@ npm install
 cp .env.example .env
 ```
 
-`.env` içinde `DB_USER` ve `DB_PASSWORD` değerlerini düzenleyin. `JWT_SECRET` en az 32 bayt, `VERIFICATION_CODE_KEY` 64 karakterlik hex olmalıdır; ikincisi boşsa sunucu açılmaz. İkisi için de ayrı ayrı değer üretin:
+Edit the `DB_USER` and `DB_PASSWORD` values in `.env`. `JWT_SECRET` must be at least 32 bytes and `VERIFICATION_CODE_KEY` must be a 64-character hex string; the server does not start if the second one is empty. Generate a separate value for each of them:
 
 ```bash
 node -e 'console.log(require("node:crypto").randomBytes(32).toString("hex"))'
 ```
 
-Temiz veritabanını kurun ve sunucuyu başlatın:
+Create a clean database and start the server:
 
 ```bash
 mysql -u your_mysql_user -p < sql/schema.sql
 npm start
 ```
 
-Varsayılan adres `http://localhost:3000` olur. `npm start` sunucuyu `node --watch` ile çalıştırır. Kontrol için:
+The default address is `http://localhost:3000`. `npm start` runs the server with `node --watch`. To check it:
 
 ```bash
 curl -i http://localhost:3000/health
 ```
 
-`.env.example` içindeki `MAIL_TRANSPORT=json` ayarıyla gerçek e-posta gönderilmez. İlk admin hesabı için `npm run set-user-password` ve `npm run set-user-role` betikleri kullanılır: [docs/KIMLIK_DOGRULAMA.md](docs/KIMLIK_DOGRULAMA.md#admin-bootstrap).
+With the `MAIL_TRANSPORT=json` setting in `.env.example`, no real email is sent. The `npm run set-user-password` and `npm run set-user-role` scripts are used for the first admin account: [docs/KIMLIK_DOGRULAMA.md](docs/KIMLIK_DOGRULAMA.md#admin-bootstrap) (authentication).
 
-Ortam değişkenleri ve mevcut veritabanına migration uygulama: [docs/KURULUM.md](docs/KURULUM.md)
+Environment variables and applying migrations to an existing database: [docs/KURULUM.md](docs/KURULUM.md) (setup)
 
-## Docker ile çalıştırma
+## Running with Docker
 
-Compose dosyası `.env.docker` (API) ve `.env.db` (MySQL) dosyalarını bekler. İkisinin örnek içeriği [docs/DOCKER.md](docs/DOCKER.md) içindedir. Dosyalar hazır olduğunda:
+The Compose file expects the `.env.docker` (API) and `.env.db` (MySQL) files. Example contents for both are in [docs/DOCKER.md](docs/DOCKER.md). When the files are ready:
 
 ```bash
 docker compose up -d
@@ -78,99 +82,99 @@ docker compose ps
 curl -i http://127.0.0.1:8080/health
 ```
 
-nginx `127.0.0.1:8080` adresinde dinler ve istekleri API'ye iletir. API portu host'a açılmaz. Yüklenen kapak görsellerini nginx ortak volume'dan sunar.
+nginx listens on `127.0.0.1:8080` and forwards requests to the API. The API port is not published to the host. nginx serves uploaded cover images from the shared volume.
 
-## API özeti
+## API summary
 
-| Grup | Yol | Erişim |
+| Group | Path | Access |
 | --- | --- | --- |
-| Sağlık | `GET /health` | Token gerekmez |
-| Public | `GET /api/v1/public/posts`, `/posts/:slug`, `/posts/:slug/comments`, `/categories` | Token gerekmez |
-| Auth | `/api/v1/auth`: `login`, `refresh`, `register`, `email/verify`, `email/verify/resend`, `password/forgot`, `password/reset` | Token gerekmez |
-| Auth | `/api/v1/auth`: `me`, `logout`, `password`, `password/change-code`, `email/change`, `email/change/confirm` | Giriş yapan herkes |
-| Users | `/api/v1/users` | Yalnız admin |
-| Categories | `/api/v1/categories` | Okuma: giriş yapan herkes. Yazma: admin |
-| Posts | `/api/v1/posts`, `/:id/publish`, `/:id/unpublish`, `/:id/restore` | Okuma ve oluşturma: giriş yapan herkes. Değiştirme: yazar veya admin |
-| Kapak | `PUT` ve `DELETE /api/v1/posts/:postId/cover` | Yazar veya admin |
-| Yorumlar | `/api/v1/posts/:postId/comments`, `/api/v1/comments/:id`, `/:id/hide`, `/:id/unhide` | Giriş yapan herkes; gizleme: yazı sahibi veya admin |
+| Health | `GET /health` | No token required |
+| Public | `GET /api/v1/public/posts`, `/posts/:slug`, `/posts/:slug/comments`, `/categories` | No token required |
+| Auth | `/api/v1/auth`: `login`, `refresh`, `register`, `email/verify`, `email/verify/resend`, `password/forgot`, `password/reset` | No token required |
+| Auth | `/api/v1/auth`: `me`, `logout`, `password`, `password/change-code`, `email/change`, `email/change/confirm` | Any signed-in user |
+| Users | `/api/v1/users` | Admin only |
+| Categories | `/api/v1/categories` | Read: any signed-in user. Write: admin |
+| Posts | `/api/v1/posts`, `/:id/publish`, `/:id/unpublish`, `/:id/restore` | Read and create: any signed-in user. Modify: author or admin |
+| Cover | `PUT` and `DELETE /api/v1/posts/:postId/cover` | Author or admin |
+| Comments | `/api/v1/posts/:postId/comments`, `/api/v1/comments/:id`, `/:id/hide`, `/:id/unhide` | Any signed-in user; hiding: post owner or admin |
 
-Korumalı uçlar `Authorization: Bearer <access_token>` başlığı bekler. Eksik veya geçersiz kimlik `401`, yetersiz yetki `403` döner.
+Protected endpoints expect an `Authorization: Bearer <access_token>` header. Missing or invalid credentials return `401`; insufficient permissions return `403`.
 
-Başarılı yanıt ve hata yanıtı biçimi:
+Format of a success response and an error response:
 
 ```json
 { "success": true, "request_id": "...", "message": "...", "data": {}, "meta": {} }
 { "success": false, "error": { "code": "POST_NOT_FOUND", "message": "...", "details": null }, "request_id": "..." }
 ```
 
-`message`, `data` ve `meta` yalnız ilgili yanıtlarda bulunur. Tüm uç noktalar, sorgu parametreleri ve hata kodları: [docs/API.md](docs/API.md)
+`message`, `data` and `meta` are present only in the responses they apply to. All endpoints, query parameters and error codes: [docs/API.md](docs/API.md)
 
-## E-posta ve doğrulama kodları
+## Email and verification codes
 
-- `MAIL_TRANSPORT` `smtp` ya da `json` olabilir. `json` modunda e-posta gönderilmez; `smtp` için `SMTP_USER` ve `SMTP_PASS` gerekir.
-- Doğrulama kodları 6 hanelidir, 10 dakika geçerlidir ve en fazla 5 kez denenebilir. Yeni kod istemek için 60 saniye beklenir.
-- `DEV_MAIL_OUTBOX=true` yalnız `json` modunda ve production dışında açılır; `GET /api/v1/dev/mail-outbox/latest?to=<adres>` son e-postayı döner.
-- SMTP bağlantısını denemek için: `node scripts/send-test-mail.js <adres>`
+- `MAIL_TRANSPORT` can be `smtp` or `json`. In `json` mode no email is sent; `smtp` requires `SMTP_USER` and `SMTP_PASS`.
+- Verification codes have 6 digits, are valid for 10 minutes and can be tried at most 5 times. There is a 60-second wait before a new code can be requested.
+- `DEV_MAIL_OUTBOX=true` is enabled only in `json` mode and outside production; `GET /api/v1/dev/mail-outbox/latest?to=<adres>` returns the latest email (`<adres>` is the recipient's email address).
+- To test the SMTP connection: `node scripts/send-test-mail.js <adres>`
 
-## Belgeler
+## Documentation
 
-| Belge | İçerik |
+| Document | Contents |
 | --- | --- |
-| [docs/KURULUM.md](docs/KURULUM.md) | Kurulum, ortam değişkenleri, migration'lar |
-| [docs/DOCKER.md](docs/DOCKER.md) | Compose, nginx reverse proxy, boyut sınırları, Docker'da ilk admin |
-| [docs/KIMLIK_DOGRULAMA.md](docs/KIMLIK_DOGRULAMA.md) | Roller, yetki tablosu, admin bootstrap, refresh token, güvenlik kararları |
-| [docs/API.md](docs/API.md) | Uç noktalar, rate limit tablosu, post veri modeli, kapak yükleme, hata kodları |
-| [docs/TESTLER.md](docs/TESTLER.md) | curl senaryoları, test matrisi, Postman koşuları |
-| [docs/BILINEN_EKSIKLER.md](docs/BILINEN_EKSIKLER.md) | Bilinen sınırlamalar ve sonraki adımlar |
-| [docs/curl-scenarios.md](docs/curl-scenarios.md) | API v2 dönemine ait eski curl senaryoları |
+| [docs/KURULUM.md](docs/KURULUM.md) | Setup, environment variables, migrations |
+| [docs/DOCKER.md](docs/DOCKER.md) | Compose, nginx reverse proxy, size limits, first admin in Docker |
+| [docs/KIMLIK_DOGRULAMA.md](docs/KIMLIK_DOGRULAMA.md) | Roles, permission table, admin bootstrap, refresh token, security decisions |
+| [docs/API.md](docs/API.md) | Endpoints, rate limit table, post data model, cover upload, error codes |
+| [docs/TESTLER.md](docs/TESTLER.md) | curl scenarios, test matrix, Postman runs |
+| [docs/BILINEN_EKSIKLER.md](docs/BILINEN_EKSIKLER.md) | Known limitations and next steps |
+| [docs/curl-scenarios.md](docs/curl-scenarios.md) | Old curl scenarios from the API v2 period |
 
-`docs/` altındaki ayrıntı README'nin önceki sürümünden taşındı. Kodla uyuşmayan yerler ilgili belgenin başında not edilmiştir. Konu bazlı çalışma notları `notes/` klasöründedir.
+The details under `docs/` were moved from the previous version of the README. Places that do not match the code are noted at the top of the relevant document. Topic-based working notes are in the `notes/` folder.
 
-## Klasör yapısı
+## Folder structure
 
 ```
-server.js            giriş noktası: ayarları doğrular, MySQL bağlantısını dener, sunucuyu açar
+server.js            entry point: validates settings, tries the MySQL connection, starts the server
 src/
-  app.js             Express uygulaması ve route bağlama
-  config/            ortam değişkenlerini okuma ve doğrulama
+  app.js             Express application and route mounting
+  config/            reading and validating environment variables
   routes/            auth, users, categories, posts, comments, public, dev
-  controllers/       istek işleyiciler
-  models/            mysql2 sorguları
-  services/          refresh token ve doğrulama kodu akışları
-  middlewares/       authenticate, authorize, rate limit, upload, hata yönetimi
-  validators/        body ve query doğrulama
-  utils/             JWT, parola hash, slug, sayfalama, mail ve cookie yardımcıları
-sql/                 schema.sql ve migrations/ (002-014)
-scripts/             admin bootstrap, mail testi ve kontrol betikleri
-postman/             koleksiyon, örnek environment dosyaları, koşu sonuçları
-nginx/               reverse proxy yapılandırması
-docs/                ayrıntılı belgeler
-notes/               çalışma notları
-uploads/covers/      yüklenen kapak görselleri (git'e girmez)
-server-memory.js     veritabanı kullanmayan eski CRUD örneği (npm run memory)
+  controllers/       request handlers
+  models/            mysql2 queries
+  services/          refresh token and verification code flows
+  middlewares/       authenticate, authorize, rate limit, upload, error handling
+  validators/        body and query validation
+  utils/             JWT, password hash, slug, pagination, mail and cookie helpers
+sql/                 schema.sql and migrations/ (002-014)
+scripts/             admin bootstrap, mail test and check scripts
+postman/             collection, example environment files, run results
+nginx/               reverse proxy configuration
+docs/                detailed documents
+notes/               working notes
+uploads/covers/      uploaded cover images (not tracked by git)
+server-memory.js     old CRUD example that does not use a database (npm run memory)
 ```
 
-## Testler
+## Tests
 
-Projede `npm test` betiği ve otomatik entegrasyon test paketi yoktur. Veritabanı gerektirmeyen iki kontrol betiği vardır:
+The project has no `npm test` script and no automated integration test suite. There are two check scripts that do not need a database:
 
 ```bash
 npm run check-sliding-window
 npm run check-image-signature
 ```
 
-Uçtan uca denemeler Postman ile yapılır. `postman/node-blog-api.postman_collection.json` koleksiyonunu ve `postman/` altındaki örnek environment dosyalarından birini içe aktarın. Klasörler `00 Health` ile `13 Refresh Token` arasında numaralıdır. Sıra, gerekli değişkenler ve curl senaryoları: [docs/TESTLER.md](docs/TESTLER.md)
+End-to-end trials are done with Postman. Import the `postman/node-blog-api.postman_collection.json` collection and one of the example environment files under `postman/`. The folders are numbered from `00 Health` to `13 Refresh Token`. Run order, required variables and curl scenarios: [docs/TESTLER.md](docs/TESTLER.md)
 
-## Bilinen eksikler
+## Known limitations
 
-- Otomatik entegrasyon testi yok; doğrulama Postman koşuları ve elle çalıştırılan betiklerle yapılıyor.
-- Rate limit sayaçları süreç belleğinde tutulur; API yeniden başlayınca sıfırlanır.
-- Migration takip tablosu yok; migration'lar numara sırasıyla elle uygulanır.
-- nginx yalnız 80 portunda HTTP dinler; TLS yapılandırması yok.
-- Yüklenen görseller yeniden boyutlandırılmaz, EXIF verisi temizlenmez.
+- There are no automated integration tests; verification is done with Postman runs and manually run scripts.
+- Rate limit counters are kept in process memory; they reset when the API restarts.
+- There is no migration tracking table; migrations are applied by hand in numeric order.
+- nginx listens only for HTTP on port 80; there is no TLS configuration.
+- Uploaded images are not resized and EXIF data is not stripped.
 
-Tam liste: [docs/BILINEN_EKSIKLER.md](docs/BILINEN_EKSIKLER.md)
+Full list: [docs/BILINEN_EKSIKLER.md](docs/BILINEN_EKSIKLER.md)
 
-## Lisans
+## License
 
-Kod [MIT lisansı](LICENSE) ile sunulur.
+The code is released under the [MIT license](LICENSE).
